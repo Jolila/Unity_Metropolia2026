@@ -166,6 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   movementSpeed: 0
+  _characterBody: {fileID: 760820157}
+  _animator: {fileID: 760820158}
 --- !u!50 &487923281
 Rigidbody2D:
   serializedVersion: 5
