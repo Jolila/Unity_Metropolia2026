@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         color = _characterBody.color;
-        movementSpeed = 3.5f;
+        movementSpeed = 4.5f;
         isDead = false;
     }
 
