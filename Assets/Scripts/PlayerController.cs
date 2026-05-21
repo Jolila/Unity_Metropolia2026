@@ -4,11 +4,12 @@ using static UnityEngine.Input;
 
 public class PlayerController : MonoBehaviour
 {
-
+    float _nextFootstepAudio = 0.0f;
     private Rigidbody2D _rb;
     public float movementSpeed;
     [SerializeField] SpriteRenderer _characterBody;
     [SerializeField] private Animator _animator;
+    [SerializeField] AudioClip _footstep;
     Color color;
     private bool isDead;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,6 +58,10 @@ public class PlayerController : MonoBehaviour
 
         bool characterIsWalking = movement.magnitude > 0.0f;
         _animator.SetBool("isWalking", characterIsWalking);
+        if(characterIsWalking)
+        {
+            HandleWalkingSounds();
+        }
 
         bool flipSprite = movement.x < 0.0f;
         _characterBody.flipX = flipSprite;
@@ -81,5 +86,16 @@ public class PlayerController : MonoBehaviour
         }
         color.a = endValue;
         _characterBody.color = color;
+    }
+
+    public void HandleWalkingSounds()
+    {
+        if(Time.time >= _nextFootstepAudio)
+        {
+            
+            AudioManager.Instance.PlayAudio(_footstep, AudioManager.SoundType.SFX, 1f, false);
+            float audioFrequency = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / 2f;
+            _nextFootstepAudio = Time.time + audioFrequency;
+        }
     }
 }
