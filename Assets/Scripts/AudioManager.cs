@@ -27,6 +27,7 @@ public class AudioManager : MonoBehaviour
    
     
     [SerializeField] AudioMixer _mixer;
+    [SerializeField] AudioClip _music;
     AudioMixerGroup _musicGroup;
     AudioMixerGroup _sfxGroup;
 
@@ -52,6 +53,7 @@ public class AudioManager : MonoBehaviour
     {
         _musicGroup = _mixer.FindMatchingGroups(MUSIC_GROUP_NAME)[0];
         _sfxGroup = _mixer.FindMatchingGroups(SFX_GROUP_NAME)[0];
+        PlayAudio(_music, SoundType.Music, 1.0f, true);
 
     }
 
