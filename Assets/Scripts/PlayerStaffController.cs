@@ -6,6 +6,7 @@ public class PlayerStaffController : MonoBehaviour
     [SerializeField] Projectile _projectile;
     [SerializeField] FireRing _fireRing;
     [SerializeField] AudioClip _shootSound;
+    [SerializeField] AudioClip _fireRingSound;
     [SerializeField] Transform _tip;
     [SerializeField] float _fireRate;
     [SerializeField] float _fireRingRate;
@@ -52,7 +53,7 @@ public class PlayerStaffController : MonoBehaviour
     void UseFireRing()
     {
         FireRing newFireRing = Instantiate(_fireRing, transform.position, Quaternion.identity);
-        // add audio next...
+        AudioManager.Instance.PlayAudio(_fireRingSound, AudioManager.SoundType.SFX, 0.3f, false);
         newFireRing.InitializeFireAttack(transform);
     }
 
