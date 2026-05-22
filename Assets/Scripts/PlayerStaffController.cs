@@ -4,9 +4,12 @@ public class PlayerStaffController : MonoBehaviour
 {
 
     [SerializeField] Projectile _projectile;
+    [SerializeField] FireRing _fireRing;
     [SerializeField] AudioClip _shootSound;
     [SerializeField] Transform _tip;
     [SerializeField] float _fireRate;
+    [SerializeField] float _fireRingRate;
+    float _nextFireRingTime;
     Vector2 _lookDirection;
     float _nextFireTime;
     // Update is called once per frame
@@ -19,6 +22,11 @@ public class PlayerStaffController : MonoBehaviour
         {
             _nextFireTime = Time.time + 1f / _fireRate;
             Shoot();
+        }
+        if(Input.GetButton("Fire2") && Time.time >= _nextFireRingTime)
+        {
+            _nextFireRingTime = Time.time + 1f / _fireRingRate;
+            UseFireRing();
         }
     }
 
@@ -39,6 +47,13 @@ public class PlayerStaffController : MonoBehaviour
         Projectile newProjectile = Instantiate(_projectile, _tip.position, Quaternion.identity);
         AudioManager.Instance.PlayAudio(_shootSound, AudioManager.SoundType.SFX, 0.4f, false);
         newProjectile.InitializeProjectile(_lookDirection);
+    }
+
+    void UseFireRing()
+    {
+        FireRing newFireRing = Instantiate(_fireRing, transform.position, Quaternion.identity);
+        // add audio next...
+        newFireRing.InitializeFireAttack(transform);
     }
 
 
