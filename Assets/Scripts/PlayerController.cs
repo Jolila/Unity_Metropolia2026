@@ -10,29 +10,33 @@ public class PlayerController : MonoBehaviour
     [SerializeField] SpriteRenderer _characterBody;
     [SerializeField] private Animator _animator;
     [SerializeField] AudioClip _footstep;
+    EntityHealth _entityHealth;
     Color color;
     private bool isDead;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Awake()
+    {
+        _entityHealth = GetComponent<EntityHealth>();
+    }
+
     void Start()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         color = _characterBody.color;
         movementSpeed = 7.5f;
         isDead = false;
+        _entityHealth.OnDeath += PlayDeathAnimation;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isDead = true;
-            Debug.Log("space pressed, hero dies");
-            _animator.SetBool("isDead", isDead);
-            StartCoroutine(alphaLerpingFunction(0.5f, 4.5f));
+        
 
-        }
+
+        
 
         if (!isDead)
         {
@@ -97,5 +101,12 @@ public class PlayerController : MonoBehaviour
             float audioFrequency = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / 2f;
             _nextFootstepAudio = Time.time + audioFrequency;
         }
+    }
+
+    void PlayDeathAnimation()
+    {
+        isDead = true;
+        _animator.SetBool("isDead", isDead);
+        StartCoroutine(alphaLerpingFunction(0.5f, 4.5f));
     }
 }
