@@ -4940,3 +4940,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireAttack
   _timer: 2
+  _dps: 10
