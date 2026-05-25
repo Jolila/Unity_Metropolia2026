@@ -21,13 +21,14 @@ public class EnemyOrienter : MonoBehaviour
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        Quaternion targetRotation = Quaternion.Euler(90f, 0f, angle); // apply same fix as the x
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle); // apply same fix as the x
 
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         */
 
 
-      // A simpler version for first prototype, lets keep exploring 
+     
+       
         if(player.position.x < transform.position.x)
         {
             sprite.flipX = true;
