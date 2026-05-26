@@ -7,14 +7,20 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] Tilemap _groundTiles;
     List<Vector3> _spawnPositions = new();
+    [SerializeField] Enemy _ratPrefab;
+    [SerializeField] Enemy _batPrefab;
+    [SerializeField] Enemy _slimePrefab;
 
-    [SerializeField] Enemy _enemyPrefab;
+    List<Enemy> enemies = new List<Enemy>();
     [SerializeField] float _spawnCooldown;
     [SerializeField] float _spawnCooldownReductionMultiplier;
     float _currentCooldown;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        enemies.Add(_ratPrefab);
+        enemies.Add(_batPrefab);
+        enemies.Add(_slimePrefab);
         SetEnemySpawnPositions();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
     }
@@ -58,6 +64,15 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemyToRandomLocation()
     {
-        Instantiate(_enemyPrefab, GetRandomPosition(), Quaternion.identity);
+        
+
+
+            Instantiate(enemies[(Random.Range(0, enemies.Count))]
+                , GetRandomPosition(), Quaternion.identity);
+        
+       
+        
+         
+            
     }
 }

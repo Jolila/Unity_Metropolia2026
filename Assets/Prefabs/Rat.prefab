@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 2789361539517078082}
   - component: {fileID: 4125876475502800399}
   m_Layer: 0
-  m_Name: BasicEnemy
+  m_Name: Rat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
