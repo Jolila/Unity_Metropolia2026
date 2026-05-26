@@ -2,25 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+
 public class EnemySpawner : MonoBehaviour
 {
 
     [SerializeField] Tilemap _groundTiles;
     List<Vector3> _spawnPositions = new();
-    [SerializeField] Enemy _ratPrefab;
-    [SerializeField] Enemy _batPrefab;
-    [SerializeField] Enemy _slimePrefab;
-
-    List<Enemy> enemies = new List<Enemy>();
     [SerializeField] float _spawnCooldown;
     [SerializeField] float _spawnCooldownReductionMultiplier;
     float _currentCooldown;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        enemies.Add(_ratPrefab);
-        enemies.Add(_batPrefab);
-        enemies.Add(_slimePrefab);
+
         SetEnemySpawnPositions();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
     }
@@ -62,21 +56,25 @@ public class EnemySpawner : MonoBehaviour
         return _spawnPositions[Random.Range(0, _spawnPositions.Count)];
     }
 
+    PoolID GetRandomEnemyType()
+    {
+        int n = Random.Range(0, 3);
+        return n switch
+        {
+            0 => PoolID.Rat,
+            1 => PoolID.Bat,
+            2 => PoolID.Slime,
+        };
+    }
+
     void SpawnEnemyToRandomLocation()
     {
 
-        GameObject enemy = ObjectPool.SharedInstance.GetPooledObject();
-        if(enemy != null)
-        {
-            enemy.transform.position = GetRandomPosition();
-            enemy.SetActive(true);
-        }
-        /*
-         * 
-            Instantiate(enemies[(Random.Range(0, enemies.Count))]
-                , GetRandomPosition(), Quaternion.identity);
-        */
+        PoolID id = GetRandomEnemyType();
+        Vector3 pos = GetRandomPosition();
+        PoolManager.Instance.Get(id, pos, Quaternion.identity);
         
+  
        
         
          
