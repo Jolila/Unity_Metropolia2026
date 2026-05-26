@@ -14,6 +14,22 @@ public class EntityHealth : MonoBehaviour
     {
         _currentHealth = _maxHealth;
     }
+
+    // This seemed to be missing for object pooling script
+    void OnEnable()
+    {
+        ResetHealth();
+    }
+
+    void OnDisable()
+    {
+
+    }
+
+    void ResetHealth()
+    {
+        _currentHealth = _maxHealth;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,16 +39,18 @@ public class EntityHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_currentHealth <= 0)
-        {
-            Death();
-        }
+        
     }
 
     public void LoseHealth(float healthLost)
     {
         _currentHealth -= healthLost;
         OnHealthChanged?.Invoke(Mathf.Clamp(_currentHealth, 0, _maxHealth), _maxHealth);
+
+        if(_currentHealth <= 0)
+        {
+            Death();
+        }
     }
 
     void HandleHealthRegen()

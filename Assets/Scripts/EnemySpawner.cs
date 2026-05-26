@@ -64,11 +64,18 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemyToRandomLocation()
     {
-        
 
-
+        GameObject enemy = ObjectPool.SharedInstance.GetPooledObject();
+        if(enemy != null)
+        {
+            enemy.transform.position = GetRandomPosition();
+            enemy.SetActive(true);
+        }
+        /*
+         * 
             Instantiate(enemies[(Random.Range(0, enemies.Count))]
                 , GetRandomPosition(), Quaternion.identity);
+        */
         
        
         
