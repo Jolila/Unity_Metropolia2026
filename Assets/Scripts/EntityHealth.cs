@@ -19,6 +19,7 @@ public class EntityHealth : MonoBehaviour
     void OnEnable()
     {
         ResetHealth();
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
     }
 
     void OnDisable()

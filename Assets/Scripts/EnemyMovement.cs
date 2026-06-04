@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
-        _entityHealth = GetComponent<EntityHealth>();
+        _entityHealth = GetComponentInParent<EntityHealth>();
         _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         _agent.updateRotation = false;
     }

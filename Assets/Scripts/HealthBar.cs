@@ -5,17 +5,17 @@ public class HealthBar : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] Image _hpBarFill;
-    [SerializeField] EntityHealth _playerHealth;
+    [SerializeField] EntityHealth entityHealth;
 
 
     void OnEnable()
     {
-        _playerHealth.OnHealthChanged += OnHealthChanged;
+        entityHealth.OnHealthChanged += OnHealthChanged;
     }
 
     void OnDisable()
     {
-        _playerHealth.OnHealthChanged -= OnHealthChanged;
+        entityHealth.OnHealthChanged -= OnHealthChanged;
     }
     void Start()
     {
@@ -30,6 +30,7 @@ public class HealthBar : MonoBehaviour
 
     public void OnHealthChanged(float currentHealth, float maxHealth)
     {
+        Debug.Log($"Health Changed: {currentHealth}/{maxHealth}");
         _hpBarFill.fillAmount = currentHealth / maxHealth;
     }
 }

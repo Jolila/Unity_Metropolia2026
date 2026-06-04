@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum PoolID
 {
-    Rat, Bat, Slime
+    Rat, Bat, Slime, Zombie
 }
 
 public class PoolManager : MonoBehaviour

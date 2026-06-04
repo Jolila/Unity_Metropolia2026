@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 5940123364507658054}
   - component: {fileID: 2186376703116628539}
   m_Layer: 0
-  m_Name: BasicEnemyVisual
+  m_Name: RatVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
