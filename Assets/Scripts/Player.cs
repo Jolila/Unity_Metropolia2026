@@ -20,12 +20,13 @@ public class Player : MonoBehaviour
     {
 
         StartCoroutine(WaitAndExecute());
-        GameManager.Instance.GameOver();
+        
 
     }
 
     IEnumerator WaitAndExecute()
     {
         yield return new WaitForSeconds(5f);
+        GameManager.Instance.GameOver();
     }
 }
