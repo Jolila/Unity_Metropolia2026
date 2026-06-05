@@ -176,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7479149665833364189}
   - component: {fileID: 5119120584864825059}
-  - component: {fileID: 7284002629381848723}
+  - component: {fileID: 4310325271839738669}
   m_Layer: 0
   m_Name: DamageDealer
   m_TagString: Untagged
@@ -193,8 +193,8 @@ Transform:
   m_GameObject: {fileID: 1103205922100976843}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.021, y: -0.006, z: 0}
+  m_LocalScale: {x: 0.5658049, y: 1.046739, z: 0.9430081}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8090055179908432311}
@@ -212,8 +212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
   _dps: 3
---- !u!58 &7284002629381848723
-CircleCollider2D:
+--- !u!61 &4310325271839738669
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -247,7 +247,17 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1254969882248009922
 GameObject:
   m_ObjectHideFlags: 0
