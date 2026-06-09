@@ -7,10 +7,12 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] CanvasGroup _mainMenuButtonsCG;
     [SerializeField] CanvasGroup _quitConfirmCG;
     CanvasGroup _mainMenuCG;
+    [SerializeField] CanvasGroup _settingsMenuCG;
 
     void Awake()
     {
         _mainMenuCG = GetComponent<CanvasGroup>();
+        
         OpenMainMenu();
     }
 
@@ -59,6 +61,12 @@ public class MainMenuManager : MonoBehaviour
     {
         CanvasGroupSetState(_quitConfirmCG, false);
         CanvasGroupSetState(_mainMenuButtonsCG, true);
+    }
+
+    public void SettingsMenuToggle(bool open)
+    {
+        CanvasGroupSetState(_mainMenuButtonsCG, !open);
+        CanvasGroupSetState(_settingsMenuCG, open);
     }
 
     public void Quit()

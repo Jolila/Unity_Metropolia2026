@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
         Time.timeScale = 0f;
     }
     void Start()

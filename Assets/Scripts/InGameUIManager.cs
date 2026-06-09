@@ -23,6 +23,9 @@ public class InGameUIManager : MonoBehaviour
         _gameOverPanelCG.interactable = true;
         _gameOverPanelCG.blocksRaycasts = true;
 
+        _cg.alpha = 0;
+      
+
     }
 
     public void ReturnToMainMenu()

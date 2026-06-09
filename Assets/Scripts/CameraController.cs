@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (Time.timeScale == 0f) return;
         previousPos = transform.position;
         // wonder if raycast deprojection is needed for querying mouse position in 2D game, but I guess it doesn't hurt
         Vector3 mouseScrPos = Input.mousePosition;

@@ -47,7 +47,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Ambient: 0.5
-    - _Bevel: 0.5
+    - _Bevel: 0.497
     - _BevelClamp: 0
     - _BevelOffset: 0
     - _BevelRoundness: 0
@@ -89,10 +89,10 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 512
     - _TextureWidth: 512
-    - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
-    - _UnderlaySoftness: 0
+    - _UnderlayDilate: -0.121
+    - _UnderlayOffsetX: 0.305
+    - _UnderlayOffsetY: -0.14
+    - _UnderlaySoftness: 0.11
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.75
