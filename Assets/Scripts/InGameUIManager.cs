@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class InGameUIManager : MonoBehaviour
 {
-    CanvasGroup _cg;
+    
     [SerializeField] CanvasGroup _gameOverPanelCG;
+    [SerializeField] CanvasGroup _inGameCanvasGroup;
 
     private void Awake()
     {
-        _cg = GetComponent<CanvasGroup>();
     }
 
     public void ShowInGameUI()
     {
-        _cg.alpha = 1.0f;
-        _cg.interactable = true;
-        _cg.blocksRaycasts = true;
+        _inGameCanvasGroup.alpha = 1.0f;
+        _inGameCanvasGroup.interactable = true;
+        _inGameCanvasGroup.blocksRaycasts = true;
     }
 
     public void ShowGameOverPanel()
@@ -23,8 +23,9 @@ public class InGameUIManager : MonoBehaviour
         _gameOverPanelCG.interactable = true;
         _gameOverPanelCG.blocksRaycasts = true;
 
-        _cg.alpha = 0;
-      
+        _inGameCanvasGroup.alpha = 0;
+        _inGameCanvasGroup.interactable = false;
+        _inGameCanvasGroup.blocksRaycasts = false;
 
     }
 

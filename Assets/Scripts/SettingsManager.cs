@@ -8,9 +8,15 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] Slider _mainSlider;
     [SerializeField] Slider _musicSlider;
     [SerializeField] Slider _sfxSlider;
+
+    const float DEFAULT_MAIN_VOLUME = 0.5f;
+    const float DEFAULT_MUSIC_VOLUME = 1f;
+    const float DEFAULT_SFX_VOLUME = 1f;
     void Start()
     {
-        
+        _mainSlider.value = PlayerPrefs.GetFloat("Settings.MasterVolume", DEFAULT_MAIN_VOLUME);
+        _musicSlider.value = PlayerPrefs.GetFloat("Settings.MusicVolume", DEFAULT_MUSIC_VOLUME);
+        _sfxSlider.value = PlayerPrefs.GetFloat("Settings.SFXVolume", DEFAULT_SFX_VOLUME);
     }
 
     // Update is called once per frame
