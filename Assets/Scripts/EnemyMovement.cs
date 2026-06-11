@@ -11,9 +11,15 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the Mono
     // Behaviour is created
 
+    void OnEnable()
+    {
+        _entityHealth.OnDeath += DestroyEnemy;
+    }
+
+
     void Awake()
     {
-        _entityHealth = GetComponent<EntityHealth>();
+        _entityHealth = GetComponentInParent<EntityHealth>();
         _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         _agent.updateRotation = false;
     }
@@ -37,6 +43,6 @@ public class Enemy : MonoBehaviour
     void DestroyEnemy()
     {
         AudioManager.Instance.PlayAudio(_deathSound, AudioManager.SoundType.SFX, 1.0f, false);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

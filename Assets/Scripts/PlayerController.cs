@@ -32,10 +32,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        
-
-
         
 
         if (!isDead)
@@ -108,5 +104,10 @@ public class PlayerController : MonoBehaviour
         isDead = true;
         _animator.SetBool("isDead", isDead);
         StartCoroutine(alphaLerpingFunction(0.5f, 4.5f));
+    }
+
+    public bool getIsDead()
+    {
+        return isDead;
     }
 }

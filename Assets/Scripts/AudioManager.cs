@@ -28,6 +28,8 @@ public class AudioManager : MonoBehaviour
     
     [SerializeField] AudioMixer _mixer;
     [SerializeField] AudioClip _music;
+
+    private AudioSource _musicSource;
     AudioMixerGroup _musicGroup;
     AudioMixerGroup _sfxGroup;
 
@@ -43,18 +45,45 @@ public class AudioManager : MonoBehaviour
     {
         if(_instance != null && _instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-    void Start()
-    {
         _musicGroup = _mixer.FindMatchingGroups(MUSIC_GROUP_NAME)[0];
         _sfxGroup = _mixer.FindMatchingGroups(SFX_GROUP_NAME)[0];
-        PlayAudio(_music, SoundType.Music, 1.0f, true);
 
+
+        _musicSource = gameObject.AddComponent<AudioSource>();
+        _musicSource.playOnAwake = false;
+        _musicSource.loop = true;
+        _musicSource.clip = _music;
+        _musicSource.outputAudioMixerGroup = _musicGroup;
+    }
+
+    void Start()
+    {
+        PlayMusic();
+    }
+
+    void PlayMusic()
+    {
+        if(_musicSource == null)
+        {
+            return;
+        }
+
+        if(_musicSource.isPlaying)
+        {
+            return;
+        }
+        _musicSource.Play();
+    }
+
+    public void RestartMusic()
+    {
+        _musicSource.Stop();
+        _musicSource.Play();
     }
 
     // Update is called once per frame
@@ -66,42 +95,52 @@ public class AudioManager : MonoBehaviour
     public void ChangeMasterVolume(float volume)
     {
         _mixer.SetFloat(MASTER_VOLUME_NAME, Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("Settings.MasterVolume", volume);
+        PlayerPrefs.Save();
     }
 
-    public void changeMusicVolume(float volume)
+    public void ChangeMusicVolume(float volume)
     {
         _mixer.SetFloat(MUSIC_VOLUME_NAME, Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("Settings.MusicVolume", volume);
+        PlayerPrefs.Save();
     }
 
 
     public void ChangeSFXVolume(float volume)
     {
         _mixer.SetFloat(SFX_VOLUME_NAME, Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("Settings.SFXVolume", volume);
+        PlayerPrefs.Save();
     }
 
     public void PlayAudio(AudioClip audioClip, SoundType soundType, float volume, bool loop)
     {
-        GameObject newAudioSource = new(audioClip.name + " Source");
-        AudioSource audioSource = newAudioSource.AddComponent<AudioSource>();
+        
+
+        if(soundType == SoundType.Music)
+        {
+            _musicSource.clip = audioClip;
+            _musicSource.volume = volume;
+            _musicSource.loop = loop;
+
+            _musicSource.Stop();
+            _musicSource.Play();
+
+            return;
+        }
+
+
+        GameObject audioObject = new GameObject(audioClip.name + " Source");
+        AudioSource audioSource = audioObject.AddComponent<AudioSource>();
         audioSource.clip = audioClip;
         audioSource.volume = volume;
-        audioSource.loop = loop;
-       
-
-        switch(soundType)
-        {
-            case SoundType.SFX:
-            audioSource.outputAudioMixerGroup = _instance._sfxGroup;
-                break;
-            case SoundType.Music:
-                audioSource.outputAudioMixerGroup = _instance._musicGroup;
-                break;
-        }
+        audioSource.loop = false;
+        audioSource.outputAudioMixerGroup = _sfxGroup;
         audioSource.Play();
-        if (!loop)
-        {
-            Destroy(audioSource.gameObject, audioClip.length);
-        }
+        Destroy(audioObject, audioClip.length);
+      
+       
     }
 
 }

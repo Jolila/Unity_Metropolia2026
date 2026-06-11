@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 5940123364507658054}
   - component: {fileID: 2186376703116628539}
   m_Layer: 0
-  m_Name: BasicEnemyVisual
+  m_Name: Slimevisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,7 +166,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -3578019587575532720, guid: ac908db6ba0bc404ca9d6008a4abf3e1, type: 3}
+  m_Sprite: {fileID: -7282886668606283007, guid: 3255ac9716240bc4f94a68a170dcd782, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -186,7 +186,7 @@ Animator:
   m_GameObject: {fileID: 5813610988173597968}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8de7e3f776b2c244e94661de6aee3c54, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8ceeb0d0b840dbf4d8098ab27d2c1ed9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -207,9 +207,9 @@ Animation:
   m_GameObject: {fileID: 5813610988173597968}
   m_Enabled: 1
   serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 0faa0a41505dfb34ab527a3e0e3d6ba5, type: 2}
+  m_Animation: {fileID: 7400000, guid: c257370768206034e9890821ad40c93b, type: 2}
   m_Animations:
-  - {fileID: 0}
+  - {fileID: 7400000, guid: c257370768206034e9890821ad40c93b, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 2789361539517078082}
   - component: {fileID: 4125876475502800399}
   m_Layer: 0
-  m_Name: BasicEnemy
+  m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b9b9bda62431941a2024f7e2114774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityHealth
-  _maxHealth: 2
+  _maxHealth: 3
   _currentHealth: 0
   _healthRegen: 0
 --- !u!114 &7708220620291066493
@@ -368,7 +368,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.1
-  m_Speed: 3.5
+  m_Speed: 1.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

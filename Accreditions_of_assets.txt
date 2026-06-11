@@ -1,0 +1,5 @@
+
+Font: Pizel(2021) by CopheeMoth:
+https://opengameart.org/content/pizel-font
+- used throughout the game
+

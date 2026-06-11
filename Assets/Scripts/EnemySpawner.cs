@@ -2,19 +2,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+
 public class EnemySpawner : MonoBehaviour
 {
 
     [SerializeField] Tilemap _groundTiles;
     List<Vector3> _spawnPositions = new();
-
-    [SerializeField] Enemy _enemyPrefab;
     [SerializeField] float _spawnCooldown;
     [SerializeField] float _spawnCooldownReductionMultiplier;
+    [SerializeField] GameObject player;
+    Vector3 playerPosition;
+    double minimumDistance;
     float _currentCooldown;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
+        minimumDistance = 15.0f;
         SetEnemySpawnPositions();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
     }
@@ -38,6 +42,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerPosition = player.transform.position;
         HandleEnemySpawning();
     }
 
@@ -53,11 +58,43 @@ public class EnemySpawner : MonoBehaviour
 
     Vector3 GetRandomPosition()
     {
-        return _spawnPositions[Random.Range(0, _spawnPositions.Count)];
+        Vector3 spawnPosition = _spawnPositions[0];
+   
+
+        const int maxIters = 3;
+
+        for(int i = 0; i <= maxIters; i++)
+        {
+            spawnPosition = _spawnPositions[Random.Range(0, _spawnPositions.Count)];
+            Vector3 toPlayer = spawnPosition - playerPosition;
+            if(toPlayer.magnitude > minimumDistance)
+            {
+                return spawnPosition;
+            }
+        }
+
+        return spawnPosition;
+    }
+
+    PoolID GetRandomEnemyType()
+    {
+        int n = Random.Range(0, 4);
+        return n switch
+        {
+            0 => PoolID.Rat,
+            1 => PoolID.Bat,
+            2 => PoolID.Slime,
+            3 => PoolID.Zombie,
+            _ => PoolID.Rat
+        };
     }
 
     void SpawnEnemyToRandomLocation()
     {
-        Instantiate(_enemyPrefab, GetRandomPosition(), Quaternion.identity);
+
+        PoolID id = GetRandomEnemyType();
+        Vector3 pos = GetRandomPosition();
+        PoolManager.Instance.Get(id, pos, Quaternion.identity);
+            
     }
 }

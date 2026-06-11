@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerStaffController : MonoBehaviour
 {
@@ -10,13 +11,30 @@ public class PlayerStaffController : MonoBehaviour
     [SerializeField] Transform _tip;
     [SerializeField] float _fireRate;
     [SerializeField] float _fireRingRate;
+    [SerializeField] GameObject player;
+    private Light2D staffLight;
+    private EntityHealth playerHealth;
+    private bool controlStaff;
     float _nextFireRingTime;
     Vector2 _lookDirection;
     float _nextFireTime;
     // Update is called once per frame
+
+    void Awake()
+    {
+        staffLight = GetComponentInChildren<Light2D>();
+    }
+
+    void Start()
+    {
+        playerHealth = player.GetComponent<EntityHealth>();
+        playerHealth.OnDeath += StopStaffControl;
+        controlStaff = true;
+
+    }
     void Update()
     {
-        if (Time.timeScale == 0f) return;
+        if (Time.timeScale == 0f || !controlStaff) return;
         SetLookDirection();
         RotateStaff();
         if(Input.GetButton("Fire1") && Time.time >= _nextFireTime)
@@ -55,6 +73,12 @@ public class PlayerStaffController : MonoBehaviour
         FireRing newFireRing = Instantiate(_fireRing, transform.position, Quaternion.identity);
         AudioManager.Instance.PlayAudio(_fireRingSound, AudioManager.SoundType.SFX, 0.3f, false);
         newFireRing.InitializeFireAttack(transform);
+    }
+
+    void StopStaffControl()
+    {
+        controlStaff = false;
+        staffLight.intensity = 0f;
     }
 
 
