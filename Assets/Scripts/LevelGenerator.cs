@@ -12,19 +12,48 @@ using JetBrains.Annotations;
 public class LevelGenerator : MonoBehaviour
 {
 
-
+    struct Islet
+    {
+        public int height, width;
+        public Vector2Int pos;
+        public Islet(int h, int w, Vector2Int position)
+        {
+            height = h;
+            width = w;
+            pos = position;
+        }
+    }
+    /*
+     * levelWidth : 64
+levelHeight : 64
+seed : 42
+num of islets : 15
+minIsletHeight : 2
+maxIsletHeight : 9
+minIsletWidth : 2
+minIsletWidth : 9
+space between islets : 3
+maxIterations : 100
+protrusionrollmax : 255
+protrusionrollThreshold: 140
+maxYProtrusion : 3
+maxXProtrusion : 3
+     * 
+     * */
 
     [SerializeField] int levelWidth = 64;
     [SerializeField] int levelHeight = 64;
-    [SerializeField] int seed = 1337;
+    [SerializeField] int seed = 42;
     [SerializeField] int levelNumber = 0;
     [SerializeField] int numOfIslets = 2;
-    [SerializeField] int isletHeight = 2;
-    [SerializeField] int isletWidth = 3;
-    [SerializeField] int spaceBetweenIslets = 2;
+    [SerializeField] int minIsletHeight = 2;
+    [SerializeField] int maxIsletHeight = 9;
+    [SerializeField] int minIsletWidth = 2;
+    [SerializeField] int maxIsletWidth = 9;
+    [SerializeField] int spaceBetweenIslets = 3;
     [SerializeField] int maxIterations = 100;
     [SerializeField] int protrusionRollMax = 255;
-    [SerializeField] int protrusionRollThreshold = 140;
+    [SerializeField] int protrusionRollThreshold = 64;
     [SerializeField] int maxXProtrusion = 3;
     [SerializeField] int maxYProtrusion = 3;
 
@@ -112,7 +141,6 @@ public class LevelGenerator : MonoBehaviour
     {
         int protrusionX = UnityEngine.Random.Range(0, maxXProtrusion);
         int protrusionY = UnityEngine.Random.Range(0, maxYProtrusion);
-        protrusionY = 4; // rolling 0 for testing is fun
         int roll = UnityEngine.Random.Range(0, protrusionRollMax);
 
         for (int y = 2; y < levelHeight - 2; ++y)
@@ -131,13 +159,13 @@ public class LevelGenerator : MonoBehaviour
                     {
                         if (levelGrid[x + v.x, y + v.y] == '#')
                         {
-
                             neighborCount++;
-                            break;
                         }
                     }
 
-                    if (neighborCount < 1) continue;
+                    if (neighborCount < 5) continue;
+                    // introduce rule here for : if y is protruding and / or x is protruding:
+                    // the protrusion must always happen at neighboring
                     for (int proty = y; proty < y + protrusionY; ++proty)
                     {
                         for (int protx = x; protx < x + protrusionX; ++protx)
@@ -145,6 +173,8 @@ public class LevelGenerator : MonoBehaviour
                             levelGrid[protx, proty] = '#';
                         }
                     }
+
+                    
                     protrusionX = UnityEngine.Random.Range(0, maxXProtrusion);
                     protrusionY = UnityEngine.Random.Range(0, maxYProtrusion);
                 }
@@ -167,24 +197,30 @@ public class LevelGenerator : MonoBehaviour
 
         int isletsPlaced = 0;
         int iterations = 0;
+        List<Islet> islets = new List<Islet>();
 
         int x, y;
         float epsi = 0.01f;
         List<Vector2Int> isletPositions = new List<Vector2Int>();
-        while (isletsPlaced != numOfIslets && iterations < maxIterations)
+
+
+        while (isletsPlaced <= numOfIslets && iterations < maxIterations)
         {
 
             // generate new x, new y
             // loop through the existing islet locations, and try to get a non-clashing x and y
+            int isletHeight = UnityEngine.Random.Range(minIsletHeight, maxIsletHeight);
+            int isletWidth = UnityEngine.Random.Range(minIsletWidth, maxIsletWidth);
+
             x = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
             y = UnityEngine.Random.Range(3 + isletWidth, levelWidth - 1 - isletWidth);
 
             // if the distance between x + width and pos.x - width is less than space between, reroll for new x
             // repeat for y
             bool isClash = false;
-            foreach(Vector2Int pos in isletPositions){
+            foreach(Islet other in islets){
                 int x1 = x + isletWidth;
-                int x2 = pos.x + isletWidth;
+                int x2 = other.pos.x + other.width;
                 double dx = (x1 - x2) * (x1 - x2);
                 double distx = Math.Sqrt(dx);
                 if (Math.Abs(distx - spaceBetweenIslets) <= epsi){
@@ -193,7 +229,7 @@ public class LevelGenerator : MonoBehaviour
                 }
 
                 int y1 = y + isletHeight;
-                int y2 = pos.y + isletHeight;
+                int y2 = other.pos.y + other.height;
                 double dy = (y1 - y2) * (y1 - y2);
                 double disty = Math.Sqrt(dy);
                 if (Math.Abs(disty - spaceBetweenIslets) <= epsi){
@@ -209,10 +245,11 @@ public class LevelGenerator : MonoBehaviour
                         levelGrid[i, j] = '#';
                     }
                 }
+                islets.Add(new Islet(isletHeight, isletWidth, new Vector2Int(x, y)));
+                ++isletsPlaced;
+                ++iterations;
             }
-            isletPositions.Add(new Vector2Int(x, y));
-            ++isletsPlaced;
-            ++iterations;
+            
 
         }
         Debug.Log("Iterations used " + iterations + ", produced :" + isletsPlaced + " islets");
@@ -240,8 +277,10 @@ public class LevelGenerator : MonoBehaviour
         output.Append("levelHeight : " + levelHeight + "\n");
         output.Append("seed : " + seed + "\n");
         output.Append("num of islets : " + numOfIslets+ "\n");
-        output.Append("isletHeight : " + isletHeight + "\n");
-        output.Append("isletWidth : " + isletWidth + "\n");
+        output.Append("minIsletHeight : " + minIsletHeight + "\n");
+        output.Append("maxIsletHeight : " + maxIsletHeight + "\n");
+        output.Append("minIsletWidth : " + minIsletWidth + "\n");
+        output.Append("minIsletWidth : " + maxIsletWidth + "\n");
 
         output.Append("space between islets : " + spaceBetweenIslets + "\n");
         output.Append("maxIterations : " + maxIterations + "\n");
