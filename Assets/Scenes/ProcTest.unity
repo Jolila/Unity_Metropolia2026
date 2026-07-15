@@ -255,15 +255,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018023c717cbaf24f808e6db1193279f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelGenerator
-  levelWidth: 128
-  levelHeight: 128
+  levelWidth: 64
+  levelHeight: 64
   seed: 1337
   levelNumber: 1
   numOfIslets: 2
   isletHeight: 2
   isletWidth: 3
   spaceBetweenIslets: 2
-  maxIterations: 5
+  maxIterations: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

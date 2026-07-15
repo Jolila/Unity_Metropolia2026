@@ -37,8 +37,9 @@ public class LevelGenerator : MonoBehaviour
         {
             for(int x = 0; x < levelWidth; ++x)
             {
-                if(y == 0 || y == levelHeight -1 ||
-                    x == 0 || x == levelWidth -1){
+                // size 2 for walls for the ruletilemap to look better
+                if(y == 0 || y == levelHeight -2 ||
+                    x == 0 || x == levelWidth -2){
                     levelGrid[x, y] = '#';
                 }
                 else {
@@ -51,7 +52,7 @@ public class LevelGenerator : MonoBehaviour
         OutputLevel(fileName, levelGrid);
     }
 
-    char[,] generateIslets(char[,] levelGrid)
+    void generateIslets(char[,] levelGrid)
     {
 
         int isletsPlaced = 0;
@@ -63,33 +64,69 @@ public class LevelGenerator : MonoBehaviour
          * generate additional islets by validating the minimum distance
          * iterate through max iterations or until the islets are placed
          */
-        int firstIsletY = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
-        int firstIsletX = UnityEngine.Random.Range(3 + isletWidth, levelWidth - 1 - isletWidth);
+        //int firstIsletY = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
+        //int firstIsletX = UnityEngine.Random.Range(3 + isletWidth, levelWidth - 1 - isletWidth);
 
-        Debug.Log("X : " + firstIsletX + " , Y :" + firstIsletY);
+        //Debug.Log("X : " + firstIsletX + " , Y :" + firstIsletY);
 
-        List<Vector2Int> isletPositions = new List<Vector2Int>();
-        isletPositions.Add(new Vector2Int(firstIsletX, firstIsletY));
+        //List<Vector2Int> isletPositions = new List<Vector2Int>();
+        //isletPositions.Add(new Vector2Int(firstIsletX, firstIsletY));
 
-        for(int j = firstIsletY; j < firstIsletY + isletHeight; ++j){
-            for(int i = firstIsletX; i < firstIsletX + isletWidth; ++i)
-            {
-                levelGrid[i, j] = '#';
-            }
-        }
-        int x, y;
-        //while(isletsPlaced != numOfIslets && iterations < maxIterations)
-        //{
-
-        //    // generate new x, new y
-        //    // loop through the existing islet locations, and try to get a non-clashing x and y
-        //    x = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
-        //    y = UnityEngine.Random.Range(3 + isletWidth, levelWidth - 1 - isletWidth);
-        //    ++iterations;
-            
+        //for(int j = firstIsletY; j < firstIsletY + isletHeight; ++j){
+        //    for(int i = firstIsletX; i < firstIsletX + isletWidth; ++i)
+        //    {
+        //        levelGrid[i, j] = '#';
+        //    }
         //}
+        int x, y;
+        float epsi = 0.01f;
+        List<Vector2Int> isletPositions = new List<Vector2Int>();
+        while (isletsPlaced != numOfIslets && iterations < maxIterations)
+        {
+
+            // generate new x, new y
+            // loop through the existing islet locations, and try to get a non-clashing x and y
+            x = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
+            y = UnityEngine.Random.Range(3 + isletWidth, levelWidth - 1 - isletWidth);
+
+            // if the distance between x + width and pos.x - width is less than space between, reroll for new x
+            // repeat for y
+            bool isClash = false;
+            foreach(Vector2Int pos in isletPositions){
+                int x1 = x + isletWidth;
+                int x2 = pos.x + isletWidth;
+                double dx = (x1 - x2) * (x1 - x2);
+                double distx = Math.Sqrt(dx);
+                if (Math.Abs(distx - spaceBetweenIslets) <= epsi){
+                    isClash = true;
+                    break;
+                }
+
+                int y1 = y + isletHeight;
+                int y2 = pos.y + isletHeight;
+                double dy = (y1 - y2) * (y1 - y2);
+                double disty = Math.Sqrt(dy);
+                if (Math.Abs(disty - spaceBetweenIslets) <= epsi){
+                    isClash = true;
+                    break;
+                }
+            }
+            if(!isClash){
+                for (int j = x; j < x + isletHeight; ++j)
+                {
+                    for (int i = y; i < y + isletWidth; ++i)
+                    {
+                        levelGrid[i, j] = '#';
+                    }
+                }
+            }
+            isletPositions.Add(new Vector2Int(x, y));
+            ++isletsPlaced;
+            ++iterations;
+
+        }
         Debug.Log("Iterations used " + iterations + ", produced :" + isletsPlaced + " islets");
-        return levelGrid;
+      
     }
 
     void OutputLevel(string filePath, char[,] levelGrid)
