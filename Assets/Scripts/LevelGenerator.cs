@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using UnityEngine;
 using System.Text;
+using UnityEngine.Tilemaps;
 using NUnit.Framework;
 using System.Linq;
 using JetBrains.Annotations;
@@ -26,6 +27,30 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] int protrusionRollThreshold = 140;
     [SerializeField] int maxXProtrusion = 3;
     [SerializeField] int maxYProtrusion = 3;
+
+    [SerializeField] Tilemap groundTilemap;
+    [SerializeField] Tilemap wallTilemap;
+    [SerializeField] Tilemap decorationsTilemap;
+    [SerializeField] Tilemap outlineTileMap;
+
+    [SerializeField] RuleTile groundTile;
+    [SerializeField] RuleTile wallTile;
+
+    [ContextMenu("Test tile")]
+    public void placeTestTile(){
+
+
+    }
+
+    [ContextMenu("Clear tilemaps")]
+    public void ClearTileMaps(){
+
+        groundTilemap.ClearAllTiles();
+        wallTilemap.ClearAllTiles();
+        decorationsTilemap.ClearAllTiles();
+        outlineTileMap.ClearAllTiles();
+
+    }
 
 
     private static readonly Vector2Int[] neighborDirections =
@@ -59,6 +84,7 @@ public class LevelGenerator : MonoBehaviour
         generateIslets(levelGrid);
         generateProtrusions(levelGrid);
         OutputLevel(fileName, levelGrid);
+        RenderLevel(levelGrid);
     }
 
     void generateWalls(char[,] levelGrid)
@@ -223,11 +249,31 @@ public class LevelGenerator : MonoBehaviour
         output.Append("protrusionrollThreshold: " + protrusionRollThreshold+ "\n");
         output.Append("maxYProtrusion : " + maxYProtrusion + "\n");
         output.Append("maxXProtrusion : " + maxYProtrusion+ "\n");
-
-
         File.WriteAllText(filePath, output.ToString());
         
-        
+   
+    }
+
+    void RenderLevel(char[,] levelGrid)
+    {
+        ClearTileMaps();
+        for(int y = 0; y < levelHeight; ++y)
+        {
+            for(int x = 0; x < levelWidth; ++x)
+            {
+                Vector3Int cell = new Vector3Int(x, y, 0);
+                if (levelGrid[x,y] == '#')
+                {
+                    wallTilemap.SetTile(cell, wallTile);
+                }
+                else
+                {
+                    groundTilemap.SetTile(cell, groundTile);
+                }
+            }
+        }
+
+
     }
 
 
