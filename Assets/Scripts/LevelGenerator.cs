@@ -65,11 +65,6 @@ maxXProtrusion : 3
     [SerializeField] RuleTile groundTile;
     [SerializeField] RuleTile wallTile;
 
-    [ContextMenu("Test tile")]
-    public void placeTestTile(){
-
-
-    }
 
     [ContextMenu("Clear tilemaps")]
     public void ClearTileMaps(){
@@ -94,6 +89,22 @@ maxXProtrusion : 3
         new Vector2Int(-1, 1),
         };
 
+    private static readonly Vector2Int[] cardinalNeighbors =
+    {
+        new Vector2Int(0, -1),
+        new Vector2Int(-1, 0),
+        new Vector2Int(0, 1),
+        new Vector2Int(1, 0)
+    };
+
+    private static readonly Vector2Int[] diagonalNeighbors =
+    {
+        new Vector2Int(1,1),
+        new Vector2Int(-1, -1),
+        new Vector2Int(1, -1),
+        new Vector2Int(-1, 1),
+    };
+
 
 [ContextMenu("Generate level")]
     public void Generate(){
@@ -112,6 +123,7 @@ maxXProtrusion : 3
         generateWalls(levelGrid);
         generateIslets(levelGrid);
         generateProtrusions(levelGrid);
+        repairWalls(levelGrid);
         OutputLevel(fileName, levelGrid);
         RenderLevel(levelGrid);
     }
@@ -166,7 +178,7 @@ maxXProtrusion : 3
                     if (neighborCount < 2) continue;
                         for (int proty = y; proty < y + protrusionY; ++proty)
                         {
-                            for (int protx = x; protx < protrusionX + 1; ++protx)
+                            for (int protx = x; protx < protrusionX; ++protx)
                             {
                                 levelGrid[protx, proty] = '#';
                             }
@@ -189,6 +201,8 @@ maxXProtrusion : 3
     * generate one random x and y
     * generate additional islets by validating the minimum distance
     * iterate through max iterations or until the islets are placed
+
+    NOTE : The theorycrafing up did not lead to a fruitful resolution, and likely an additional sweep needs to be done to preserve the tilemap constraints.
     */
     void generateIslets(char[,] levelGrid)
     {
@@ -252,6 +266,41 @@ maxXProtrusion : 3
         }
         Debug.Log("Iterations used " + iterations + ", produced :" + isletsPlaced + " islets");
       
+    }
+
+
+    /**
+     * This heuristic was found by looking at the erronous generated maps.
+     */
+    bool isOffending(char[,] levelGrid, int x, int y)
+    {
+
+        if (levelGrid[x, y] != '#')
+            return false;
+
+        int cardinal = 0;
+        int diagonal = 0;
+
+        if (levelGrid[x - 1, y] == '#') cardinal++;
+        if (levelGrid[x + 1, y] == '#') cardinal++;
+        if (levelGrid[x, y - 1] == '#') cardinal++;
+        if (levelGrid[x, y + 1] == '#') cardinal++;
+
+        if (levelGrid[x - 1, y - 1] == '#') diagonal++;
+        if (levelGrid[x + 1, y - 1] == '#') diagonal++;
+        if (levelGrid[x - 1, y + 1] == '#') diagonal++;
+        if (levelGrid[x + 1, y + 1] == '#') diagonal++;
+
+        return cardinal == 3 && diagonal < 3;
+
+    }
+
+
+    void repairWalls(char[,]levelGrid)
+    {
+
+
+
     }
 
     void OutputLevel(string filePath, char[,] levelGrid)
