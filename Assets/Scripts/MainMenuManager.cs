@@ -32,16 +32,7 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.StartGame();
     }
 
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void CanvasGroupSetState(CanvasGroup canvasGroup, bool state)
     {

@@ -535,3 +535,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+Assets/LeanTween
