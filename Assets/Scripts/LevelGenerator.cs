@@ -24,6 +24,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] int maxIterations = 100;
     [SerializeField] int protrusionRollMax = 255;
     [SerializeField] int protrusionRollThreshold = 140;
+    [SerializeField] int maxXProtrusion = 3;
+    [SerializeField] int maxYProtrusion = 3;
 
 
     private static readonly Vector2Int[] neighborDirections =
@@ -82,8 +84,8 @@ public class LevelGenerator : MonoBehaviour
  */
     void generateProtrusions(char[,] levelGrid)
     {
-        int protrusionX = UnityEngine.Random.Range(0, 3);
-        int protrusionY = UnityEngine.Random.Range(0, 3);
+        int protrusionX = UnityEngine.Random.Range(0, maxXProtrusion);
+        int protrusionY = UnityEngine.Random.Range(0, maxYProtrusion);
         protrusionY = 4; // rolling 0 for testing is fun
         int roll = UnityEngine.Random.Range(0, protrusionRollMax);
 
@@ -117,8 +119,8 @@ public class LevelGenerator : MonoBehaviour
                             levelGrid[protx, proty] = '#';
                         }
                     }
-                    protrusionX = UnityEngine.Random.Range(0, 3);
-                    protrusionY = UnityEngine.Random.Range(0, 3);
+                    protrusionX = UnityEngine.Random.Range(0, maxXProtrusion);
+                    protrusionY = UnityEngine.Random.Range(0, maxYProtrusion);
                 }
 
                 roll = UnityEngine.Random.Range(0, protrusionRollMax);
@@ -206,6 +208,21 @@ public class LevelGenerator : MonoBehaviour
         Debug.Log(output);
 
         output.Append("Config : ");
+ 
+
+        output.Append("levelWidth : " + levelWidth + "\n");
+        output.Append("levelHeight : " + levelHeight + "\n");
+        output.Append("seed : " + seed + "\n");
+        output.Append("num of islets : " + numOfIslets+ "\n");
+        output.Append("isletHeight : " + isletHeight + "\n");
+        output.Append("isletWidth : " + isletWidth + "\n");
+
+        output.Append("space between islets : " + spaceBetweenIslets + "\n");
+        output.Append("maxIterations : " + maxIterations + "\n");
+        output.Append("protrusionrollmax : " + protrusionRollMax+ "\n");
+        output.Append("protrusionrollThreshold: " + protrusionRollThreshold+ "\n");
+        output.Append("maxYProtrusion : " + maxYProtrusion + "\n");
+        output.Append("maxXProtrusion : " + maxYProtrusion+ "\n");
 
 
         File.WriteAllText(filePath, output.ToString());
