@@ -33,23 +33,31 @@ public class LevelGenerator : MonoBehaviour
         string fileName = "Assets/Generated/level" + levelNumber + ".txt";
         char[,] levelGrid = new char[levelWidth, levelHeight];
 
-        for(int y = 0; y < levelHeight; ++y)
-        {
-            for(int x = 0; x < levelWidth; ++x)
-            {
-                // size 2 for walls for the ruletilemap to look better
-                if(y == 0 || y == levelHeight -2 ||
-                    x == 0 || x == levelWidth -2){
-                    levelGrid[x, y] = '#';
-                }
-                else {
-                    levelGrid[x, y] = '*';
-                }
-                    
-            }
-        }
+
+        generateWalls(levelGrid);
         generateIslets(levelGrid);
         OutputLevel(fileName, levelGrid);
+    }
+
+    void generateWalls(char[,] levelGrid)
+    {
+        for (int y = 0; y < levelHeight; ++y)
+        {
+            for (int x = 0; x < levelWidth; ++x)
+            {
+                // size 2 for walls for the ruletilemap to look better
+                if (y < 2 || y + 2 >= levelHeight ||
+                   x < 2 || x + 2 >= levelWidth)
+                {
+                    levelGrid[x, y] = '#';
+                }
+                else
+                {
+                    levelGrid[x, y] = '*';
+                }
+
+            }
+        }
     }
 
     void generateIslets(char[,] levelGrid)
@@ -141,7 +149,7 @@ public class LevelGenerator : MonoBehaviour
             }
             output.AppendLine();
         }
-
+        Debug.Log(output);
         File.WriteAllText(filePath, output.ToString());
       
     }
