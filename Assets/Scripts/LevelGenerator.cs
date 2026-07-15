@@ -54,8 +54,8 @@ maxXProtrusion : 3
     [SerializeField] int maxIterations = 100;
     [SerializeField] int protrusionRollMax = 255;
     [SerializeField] int protrusionRollThreshold = 64;
-    [SerializeField] int maxXProtrusion = 3;
-    [SerializeField] int maxYProtrusion = 3;
+    [SerializeField] int maxXProtrusion = 5;
+    [SerializeField] int maxYProtrusion = 5;
 
     [SerializeField] Tilemap groundTilemap;
     [SerializeField] Tilemap wallTilemap;
@@ -139,8 +139,8 @@ maxXProtrusion : 3
  */
     void generateProtrusions(char[,] levelGrid)
     {
-        int protrusionX = UnityEngine.Random.Range(0, maxXProtrusion);
-        int protrusionY = UnityEngine.Random.Range(0, maxYProtrusion);
+        int protrusionX = UnityEngine.Random.Range(2, maxXProtrusion);
+        int protrusionY = UnityEngine.Random.Range(2, maxYProtrusion);
         int roll = UnityEngine.Random.Range(0, protrusionRollMax);
 
         for (int y = 2; y < levelHeight - 2; ++y)
@@ -163,20 +163,18 @@ maxXProtrusion : 3
                         }
                     }
 
-                    if (neighborCount < 5) continue;
-                    // introduce rule here for : if y is protruding and / or x is protruding:
-                    // the protrusion must always happen at neighboring
-                    for (int proty = y; proty < y + protrusionY; ++proty)
-                    {
-                        for (int protx = x; protx < x + protrusionX; ++protx)
+                    if (neighborCount < 2) continue;
+                        for (int proty = y; proty < y + protrusionY; ++proty)
                         {
-                            levelGrid[protx, proty] = '#';
+                            for (int protx = x; protx < protrusionX + 1; ++protx)
+                            {
+                                levelGrid[protx, proty] = '#';
+                            }
                         }
-                    }
 
-                    
-                    protrusionX = UnityEngine.Random.Range(0, maxXProtrusion);
-                    protrusionY = UnityEngine.Random.Range(0, maxYProtrusion);
+
+                    protrusionX = UnityEngine.Random.Range(2, maxXProtrusion);
+                    protrusionY = UnityEngine.Random.Range(2, maxYProtrusion);
                 }
 
                 roll = UnityEngine.Random.Range(0, protrusionRollMax);
