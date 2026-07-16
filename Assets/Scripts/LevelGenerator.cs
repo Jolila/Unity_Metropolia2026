@@ -288,56 +288,61 @@ maxXProtrusion : 3
     {
 @"###
 #C#
-##X",
+##*",
 
 @"###
 #C#
-X##",
+*##",
 
 @"_#_
 #C#
-_X_",
+_*_",
 
 @"_##
-XC#
+*C#
 _##",
 
-@"##X
+@"##*
 #C#
 ###",
 
-@"X##
+@"*##
 #C#
 ###",
 
-@"_X_
+@"_*_
 #C#
 ###",
 
 @"##_
-#CX
+#C*
 ##_",
 
-@"_X_
-XC#
+@"_*_
+*C#
 _##",
 
-@"_X_
-#CX
+@"_*_
+#C*
 ##_",
 
 @"_##
-XC#
-_X_",
+*C#
+_*_",
 
 @"##_
-#CX
-_X_",
+#C*
+_*_",
 
 @"###
 #C#
 ###"
 };
+
+    String[] additionalLegalPatterns =
+    {
+
+    };
 
 
     bool MatchesRule(string pattern, string rule)
@@ -349,7 +354,7 @@ _X_",
                 case '_':
                 case 'C': continue;
                 case '#':
-                case 'X':
+                case '*':
                     if (pattern[i] != rule[i]) return false;
                     break;
             }
@@ -375,7 +380,7 @@ _X_",
         {
             for(int dx = -1; dx <= 1; ++dx)
             {
-                sb.Append(levelGrid[x + dx, y + dy] == '#' ? '#' : 'X');
+                sb.Append(levelGrid[x + dx, y + dy]);
             }
         }
         return sb.ToString();
@@ -385,8 +390,9 @@ _X_",
 
     void repairWalls(char[,]levelGrid)
     {
-        int illegalPatterns = 0;
+        int illegals = 0;
 
+        Dictionary<String, List<Vector2Int>> illegalPatterns = new();
         for(int y = 1; y < levelHeight - 1; ++y)
         {
             for(int x = 1; x < levelWidth - 1; ++x)
@@ -397,13 +403,49 @@ _X_",
 
                 if (!MatchesAnyRule(pattern))
                 {
-                    illegalPatterns++;
+                    if (!illegalPatterns.ContainsKey(pattern))
+                    {
+                        illegalPatterns[pattern] = new List<Vector2Int>();
+                    }
+                    illegalPatterns[pattern].Add(new Vector2Int(x, y));
+                    illegals++;
                 }
             }
         }
 
-        Debug.Log("Encountered " + illegalPatterns + " illegal patterns");
+        Debug.Log("Encountered " + illegals + " illegal pattern instances");
+        outputIllegalPatterns(illegalPatterns);
+
     }
+
+    void outputIllegalPatterns(Dictionary<String,List<Vector2Int>> illegalPatterns)
+    {
+        string fileName = "Assets/Generated/level" + levelNumber + "illegals.txt";
+
+        StringBuilder output = new();
+
+        foreach(var kv in illegalPatterns)
+        {
+            //int occurrences = kv.Value.Count();
+            output.Append($"{kv.Value.Count()} occurences\n{PrettyPattern(kv.Key)}\n");
+            foreach(var v in kv.Value)
+            {
+                output.Append("(" + v.x + "," + v.y + ")\n");
+            }
+            output.AppendLine();
+        }
+        File.WriteAllText(fileName, output.ToString());
+    }
+
+    string PrettyPattern(string p)
+    {
+        return
+    p.Substring(0, 3) + "\n" +
+    p.Substring(3, 3) + "\n" +
+    p.Substring(6, 3);
+    }
+
+    
 
     void OutputLevel(string filePath, char[,] levelGrid)
     {
