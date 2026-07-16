@@ -56,6 +56,7 @@ maxXProtrusion : 3
     [SerializeField] int protrusionRollThreshold = 64;
     [SerializeField] int maxXProtrusion = 5;
     [SerializeField] int maxYProtrusion = 5;
+    [SerializeField] bool protuse = true;
 
     [SerializeField] Tilemap groundTilemap;
     [SerializeField] Tilemap wallTilemap;
@@ -122,7 +123,10 @@ maxXProtrusion : 3
 
         generateWalls(levelGrid);
         generateIslets(levelGrid);
-        generateProtrusions(levelGrid);
+        if (protuse) {
+            generateProtrusions(levelGrid);
+        }
+        
         repairWalls(levelGrid);
         OutputLevel(fileName, levelGrid);
         RenderLevel(levelGrid);
@@ -154,6 +158,7 @@ maxXProtrusion : 3
         int protrusionX = UnityEngine.Random.Range(2, maxXProtrusion);
         int protrusionY = UnityEngine.Random.Range(2, maxYProtrusion);
         int roll = UnityEngine.Random.Range(0, protrusionRollMax);
+        int totalProtrusions = 0;
 
         for (int y = 2; y < levelHeight - 2; ++y)
         {
@@ -167,16 +172,25 @@ maxXProtrusion : 3
                     Vector2Int pos = new Vector2Int(x, y);
 
                     int neighborCount = 0;
+                    List<Vector2Int> non_wall_neighbors = new();
                     foreach (Vector2Int v in neighborDirections)
                     {
                         if (levelGrid[x + v.x, y + v.y] == '#')
                         {
                             neighborCount++;
+                            
+                        }
+                        else
+                        {
+                            non_wall_neighbors.Add(v);
                         }
                     }
 
-                    if (neighborCount < 2) continue;
-                        for (int proty = y; proty < y + protrusionY; ++proty)
+                    if (neighborCount < 1) continue;
+                    // UPDATE : Find suitable direction for protrusion.
+                    
+
+                    for (int proty = y; proty < y + protrusionY; ++proty)
                         {
                             for (int protx = x; protx < protrusionX; ++protx)
                             {
@@ -187,13 +201,15 @@ maxXProtrusion : 3
 
                     protrusionX = UnityEngine.Random.Range(2, maxXProtrusion);
                     protrusionY = UnityEngine.Random.Range(2, maxYProtrusion);
+                    ++totalProtrusions;
                 }
 
                 roll = UnityEngine.Random.Range(0, protrusionRollMax);
-                Debug.Log("Rolled : " + roll);
+                
             }
 
         }
+        Debug.Log("Succesful protrusions: " + totalProtrusions +" times ");
     }
     /*
     * x ranging from 3+islet_width to _width -1 -islet_Width (+3 to disallow non-passable path between wall edge and islet edge)
@@ -250,9 +266,9 @@ maxXProtrusion : 3
                 }
             }
             if(!isClash){
-                for (int j = x; j < x + isletHeight; ++j)
+                for (int j = y; j < y + isletHeight; ++j)
                 {
-                    for (int i = y; i < y + isletWidth; ++i)
+                    for (int i = x; i < x + isletWidth; ++i)
                     {
                         levelGrid[i, j] = '#';
                     }
