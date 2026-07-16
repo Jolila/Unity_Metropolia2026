@@ -340,12 +340,69 @@ _X_",
 };
 
 
+    bool MatchesRule(string pattern, string rule)
+    {
+        for(int i = 0; i < 9; ++i)
+        {
+            switch (rule[i])
+            {
+                case '_':
+                case 'C': continue;
+                case '#':
+                case 'X':
+                    if (pattern[i] != rule[i]) return false;
+                    break;
+            }
+        }
+        return true;
+    }
+
+    bool MatchesAnyRule(string pattern)
+    {
+        foreach(string rule in legalPatterns)
+        {
+            if (MatchesRule(pattern, rule)) return true;
+        }
+
+        return false;
+    }
+
+    string GetPattern(char[,]levelGrid, int x, int y)
+    {
+        StringBuilder sb = new();
+
+        for(int dy = -1; dy <= 1; ++dy)
+        {
+            for(int dx = -1; dx <= 1; ++dx)
+            {
+                sb.Append(levelGrid[x + dx, y + dy] == '#' ? '#' : 'X');
+            }
+        }
+        return sb.ToString();
+    }
+
+
 
     void repairWalls(char[,]levelGrid)
     {
+        int illegalPatterns = 0;
 
-        
+        for(int y = 1; y < levelHeight - 1; ++y)
+        {
+            for(int x = 1; x < levelWidth - 1; ++x)
+            {
+                if (levelGrid[x, y] != '#') continue;
 
+                string pattern = GetPattern(levelGrid, x, y);
+
+                if (!MatchesAnyRule(pattern))
+                {
+                    illegalPatterns++;
+                }
+            }
+        }
+
+        Debug.Log("Encountered " + illegalPatterns + " illegal patterns");
     }
 
     void OutputLevel(string filePath, char[,] levelGrid)
