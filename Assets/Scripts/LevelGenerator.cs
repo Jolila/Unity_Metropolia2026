@@ -66,6 +66,8 @@ maxXProtrusion : 3
     [SerializeField] RuleTile groundTile;
     [SerializeField] RuleTile wallTile;
 
+    public Dictionary<String, List<Vector2Int>> illegalPatterns = new();
+
 
     [ContextMenu("Clear tilemaps")]
     public void ClearTileMaps(){
@@ -286,87 +288,119 @@ maxXProtrusion : 3
 
     string[] legalPatterns =
     {
-@"###
+@"
+###
 #C#
 ##*",
 
-@"###
+@"
+###
 #C#
 *##",
 
-@"_#_
+@"
+_#_
 #C#
 _*_",
 
-@"_##
+@"
+_##
 *C#
 _##",
 
-@"##*
+@"
+##*
 #C#
 ###",
 
-@"*##
+@"
+*##
 #C#
 ###",
 
-@"_*_
+@"
+_*_
 #C#
 ###",
 
-@"##_
+@"
+##_
 #C*
 ##_",
 
-@"_*_
+@"
+_*_
 *C#
 _##",
 
-@"_*_
+@"
+_*_
 #C*
 ##_",
 
-@"_##
+@"
+_##
 *C#
 _*_",
 
-@"##_
+@"
+##_
 #C*
 _*_",
 
-@"###
+@"
+###
 #C#
 ###"
 };
 
     String[] additionalLegalPatterns =
     {
+        @"
+        ##*
+        ##*
+        ###",
+        @"
+        ##*
+        ##*
+        ***",
+        @"
+        *##
+        *##
+        ***"
 
     };
 
 
-    bool MatchesRule(string pattern, string rule)
+    bool MatchesRule(string pattern, string rule, IEnumerable<string> rules)
     {
         for(int i = 0; i < 9; ++i)
         {
-            switch (rule[i])
+            char r = rule[i];
+            if (r == '_' || r == 'C') continue;
+
+            if (pattern[i] != r)
             {
-                case '_':
-                case 'C': continue;
-                case '#':
-                case '*':
-                    if (pattern[i] != rule[i]) return false;
-                    break;
+                //Debug.Log(
+                //$"Mismatch at index {i}\n" +
+                //$"Pattern:\n{PrettyPattern(pattern)}\n\n" +
+                //$"Rule:\n{PrettyPattern(rule)}");
+                return false;
             }
         }
         return true;
     }
 
-    bool MatchesAnyRule(string pattern)
+    bool MatchesAnyRule(string pattern, IEnumerable<string> rules)
     {
-        foreach(string rule in legalPatterns)
+        int i = 0;
+        foreach(string rule in rules)
         {
-            if (MatchesRule(pattern, rule)) return true;
+            if (MatchesRule(pattern, rule, rules))
+            {
+                i += 1;
+                return true;
+            }
         }
 
         return false;
@@ -386,13 +420,31 @@ _*_",
         return sb.ToString();
     }
 
+    string NormalizeRule(string rule)
+    {
+        return rule
+            .Replace("\r", "")
+            .Replace("\n", "")
+            .Replace(" ", "");
+    }
 
 
     void repairWalls(char[,]levelGrid)
     {
         int illegals = 0;
 
-        Dictionary<String, List<Vector2Int>> illegalPatterns = new();
+        string[] rules = legalPatterns.Concat(additionalLegalPatterns)
+            .Select(NormalizeRule).ToArray();
+
+        foreach (var rule in rules)
+        {
+            for (int i = 0; i < rule.Length; i++)
+            {
+                Debug.Log($"{i}: '{rule[i]}' ({(int)rule[i]})");
+            }
+        }
+
+
         for(int y = 1; y < levelHeight - 1; ++y)
         {
             for(int x = 1; x < levelWidth - 1; ++x)
@@ -401,7 +453,7 @@ _*_",
 
                 string pattern = GetPattern(levelGrid, x, y);
 
-                if (!MatchesAnyRule(pattern))
+                if (!MatchesAnyRule(pattern, rules))
                 {
                     if (!illegalPatterns.ContainsKey(pattern))
                     {
@@ -500,6 +552,17 @@ _*_",
                 {
                     groundTilemap.SetTile(cell, groundTile);
                 }
+            }
+        }
+        //         Dictionary<String, List<Vector2Int>> illegalPatterns = new();
+        Tile debugTile = new Tile();
+        debugTile.color = new Color(1, 0, 1);
+        foreach (var kv in illegalPatterns)
+        {
+            foreach(var coordpair in kv.Value)
+            {
+                Vector3Int cell = new Vector3Int(coordpair.x, coordpair.y, 0);
+                //wallTilemap.SetTile(cell, debugTile);
             }
         }
 
