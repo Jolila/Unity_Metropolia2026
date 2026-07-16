@@ -284,38 +284,67 @@ maxXProtrusion : 3
       
     }
 
-
-    /**
-     * This heuristic was found by looking at the erronous generated maps.
-     */
-    bool isOffending(char[,] levelGrid, int x, int y)
+    string[] legalPatterns =
     {
+@"###
+#C#
+##X",
 
-        if (levelGrid[x, y] != '#')
-            return false;
+@"###
+#C#
+X##",
 
-        int cardinal = 0;
-        int diagonal = 0;
+@"_#_
+#C#
+_X_",
 
-        if (levelGrid[x - 1, y] == '#') cardinal++;
-        if (levelGrid[x + 1, y] == '#') cardinal++;
-        if (levelGrid[x, y - 1] == '#') cardinal++;
-        if (levelGrid[x, y + 1] == '#') cardinal++;
+@"_##
+XC#
+_##",
 
-        if (levelGrid[x - 1, y - 1] == '#') diagonal++;
-        if (levelGrid[x + 1, y - 1] == '#') diagonal++;
-        if (levelGrid[x - 1, y + 1] == '#') diagonal++;
-        if (levelGrid[x + 1, y + 1] == '#') diagonal++;
+@"##X
+#C#
+###",
 
-        return cardinal == 3 && diagonal < 3;
+@"X##
+#C#
+###",
 
-    }
+@"_X_
+#C#
+###",
+
+@"##_
+#CX
+##_",
+
+@"_X_
+XC#
+_##",
+
+@"_X_
+#CX
+##_",
+
+@"_##
+XC#
+_X_",
+
+@"##_
+#CX
+_X_",
+
+@"###
+#C#
+###"
+};
+
 
 
     void repairWalls(char[,]levelGrid)
     {
 
-
+        
 
     }
 
