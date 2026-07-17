@@ -96,21 +96,6 @@ maxXProtrusion : 3
         new Vector2Int(1,1),
         };
 
-    private static readonly Vector2Int[] cardinalNeighbors =
-    {
-        new Vector2Int(0, -1),
-        new Vector2Int(-1, 0),
-        new Vector2Int(0, 1),
-        new Vector2Int(1, 0)
-    };
-
-    private static readonly Vector2Int[] diagonalNeighbors =
-    {
-        new Vector2Int(1,1),
-        new Vector2Int(-1, -1),
-        new Vector2Int(1, -1),
-        new Vector2Int(-1, 1),
-    };
 
 
 [ContextMenu("Generate level")]
@@ -144,13 +129,23 @@ maxXProtrusion : 3
             generateProtrusions();
         }
 
+        int broken = 0;
+        for(int r = 0; r < maxIterations; ++r)
+        {
+            illegalPatterns.Clear();
+            FindIllegalWallTiles();
+            outputIllegalPatterns(illegalPatterns);
+            broken = illegalPatterns.Values.Sum(x => x.Count);
+            Debug.Log("Found " + broken + " illegal wall tiles");
+            if (broken == 0) break;
+            ApplyRepairIteration();
+        }
         
-        illegalPatterns.Clear();
 
-        FindIllegalWallTiles();
-        outputIllegalPatterns(illegalPatterns);
-        Debug.Log("Found " + illegalPatterns.Values.Sum(x => x.Count) + " illegal wall tiles");
-        AttemptRepairSweep();
+        
+        
+        
+        
 
 
 
@@ -489,7 +484,6 @@ maxXProtrusion : 3
         List<string> allMatchingCandidates = new();
         int minimimumHammingDistance = 8;
         int currentHammingDistance = 0;
-        string closestMatchingPattern = "";
         for(int i = 0; i < rules.Length; ++i)
         {
             currentHammingDistance = GetHammingDistance(rules[i], invalidPattern);
@@ -538,24 +532,60 @@ maxXProtrusion : 3
 
     struct RepairCandidate
     {
-        public Vector2Int node;
-        public RepairStrategy strategy;
+        public Vector2Int Node;
+        public RepairStrategy Strategy;
         public int RemaininingIllegal;
-        public string closestMatchingPattern;
+        public string ClosestMatchingPattern;
 
         public RepairCandidate( Vector2Int n,
          RepairStrategy strat,
          int remain,
          string closest)
         {
-            node = n;
-            strategy = strat;
+            Node = n;
+            Strategy = strat;
             RemaininingIllegal = remain;
-            closestMatchingPattern = closest;
+            ClosestMatchingPattern = closest;
+        }
+
+        public void ApplyStrategy(char[,] levelGrid)
+        {
+            switch(Strategy)
+            {
+                case RepairStrategy.Delete:
+                    levelGrid[Node.x, Node.y] = '*';
+                    break;
+                case RepairStrategy.CompletePattern:
+                    int i = 0;
+                    foreach (var dir in neighborDirections)
+                    {
+                        Vector2Int pos = Node + dir;
+                        levelGrid[pos.x, pos.y] = ClosestMatchingPattern[i++];
+                    }
+                    break;
+            }
         }
     }
 
-    void AttemptRepairSweep()
+    /**
+     * Completes a single repair iteration.
+     * Iteration is based on invasiveness idea : strategies are ranked on how many of the nodes neighbors become invalid.
+       This idea borrows from medicine : the least invasive way of handling a medical procedure is tried before escalating
+       to the next least invasive.
+
+        Short description of algo:
+     * 1) Iterates through the list of illegal wall tiles (global variable).
+     * 2) For any given wall tile, compares two strategies : 
+       2a) deleting the illegal node, and simulating its effect to the neighbors
+       2b) comparing the pattern on the node for existing legal patterns and finds all with the lowest Hamming distance
+       - If multiple fit, returns a random one of these with again the least invasive change gets priority
+       
+        3) on a tie case ( both strategies are equally good/bad), one gets picked based on the seed state ie next random number
+
+       3) Compares the this way found best strategies with each other and applies the strategy.
+        - on tie, filters all that have the lowest count and then chooses one, once again randomly.
+     */
+    void ApplyRepairIteration()
     {
         List<RepairCandidate> candidates = new();
         int initialIllegalPatterns = illegalPatterns.Values.Sum(x => x.Count);
@@ -588,11 +618,39 @@ maxXProtrusion : 3
                         additionResult.closestMatchingPattern
                         ));
                 }
-                // edge case : result is same, this could be a pathological or a trivial case ? 
+                // tie breaker - this should be rather rare case.
+                else
+                {
+                    int roll = UnityEngine.Random.Range(0, 2);
+                    if(roll == 0)
+                    {
+                        candidates.Add(
+                      new RepairCandidate(
+                          node,
+                          RepairStrategy.Delete,
+                          onDelete,
+                          ""
+                      ));
+                    }
+                    else
+                    {
+                        candidates.Add(new RepairCandidate(
+                        node,
+                        RepairStrategy.CompletePattern,
+                        onAddToNext,
+                        additionResult.closestMatchingPattern
+                        ));
+                    }
+                }
 
             }
         }
-        
+
+        int best = candidates.Min(c => c.RemaininingIllegal);
+        var bestCandidates = candidates.Where(c => c.RemaininingIllegal == best).ToList();
+        RepairCandidate winner = bestCandidates[UnityEngine.Random.Range(0, bestCandidates.Count)];
+        winner.ApplyStrategy(levelGrid);
+
     }
 
 
