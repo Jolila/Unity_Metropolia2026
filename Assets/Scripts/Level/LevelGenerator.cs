@@ -238,7 +238,11 @@ maxXProtrusion : 3
                         {
                             for (int protx = x; protx < protrusionX; ++protx)
                             {
+                                if(proty < levelHeight && protx < levelWidth)
+                            {
                                 levelGrid[protx, proty] = '#';
+                            }
+                                
                             }
                         }
 
@@ -598,7 +602,21 @@ maxXProtrusion : 3
                     {
                         Vector2Int pos = Node + dir;
                         if (i == 4) levelGrid[pos.x, pos.y] = '#';
-                        else levelGrid[pos.x, pos.y] = ClosestMatchingPattern[i++];
+                        else
+                        {
+                            if (ClosestMatchingPattern[i] == '_')
+                            {
+                                int roll = UnityEngine.Random.Range(0, 2);
+                                if (roll == 1) levelGrid[pos.x, pos.y] = '*';
+                                else levelGrid[pos.x, pos.y] = '#';
+                            }
+                            else
+                            {
+                                levelGrid[pos.x, pos.y] = ClosestMatchingPattern[i++];
+                            }
+                                
+                        }
+                            
                     }
                     break;
             }
