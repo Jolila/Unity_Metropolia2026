@@ -6,35 +6,55 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-
+/**
+ * A simple helper class which enables semi-automatic conversion from a unity ruletile set into something that the level generator
+ * can use in validating the generated tilemap.
+ * 
+ */
 public class RuleTileExporter : MonoBehaviour
 {
 
     [SerializeField] RuleTile Rules;
 
-
+    /**
+     * 
+     * EDIT : Due to previous work,
+     * Now that we know we can access all the members quite easily since they are public, the method becomes quite straightforward.
+     */
     [ContextMenu("Export Rule Tileset")]
     public void ExportRuleset()
     {
-        RuleTile tile = Selection.activeObject as RuleTile;
+       
 
-        StringBuilder sb = new();
-
-  
-        FieldInfo field = typeof(RuleTile).GetField(
-            "m_TilingRules",
+        const BindingFlags flags =
             BindingFlags.Instance |
             BindingFlags.NonPublic |
-            BindingFlags.Public);
+            BindingFlags.Public;
 
-        var list = (List<RuleTile.TilingRule>)field.GetValue(Rules);
 
-        Debug.Log($"Rules: {list.Count}");
 
-        foreach (var ruleOf in list)
+        Debug.Log($"Rules :  {Rules.m_TilingRules.Count}");
+
+        foreach (var rule in Rules.m_TilingRules)
+        {
+            var neighbors = (List<int>)
+                typeof(RuleTile.TilingRule)
+                .GetField("m_Neighbors", flags)
+                .GetValue(rule);
+
+            var positions = (List<Vector3Int>)
+                typeof(RuleTile.TilingRule)
+                .GetField("m_NeighborPositions", flags)
+                .GetValue(rule);
+
+            Debug.Log($"Rule {rule.m_Id}");
+
+            for (int i = 0; i < neighbors.Count; i++)
             {
-                Debug.Log(InspectObject(ruleOf));
+                Debug.Log($"{positions[i]} -> {neighbors[i]}");
             }
+
+        }
 
 
         
