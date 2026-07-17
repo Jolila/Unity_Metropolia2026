@@ -68,6 +68,7 @@ maxXProtrusion : 3
     [SerializeField] RuleTile wallTile;
 
     string[] rules;
+    char[,] levelGrid;
 
     public Dictionary<String, List<Vector2Int>> illegalPatterns = new();
 
@@ -85,14 +86,14 @@ maxXProtrusion : 3
 
     private static readonly Vector2Int[] neighborDirections =
     {
-        new Vector2Int(0, -1),
+        new Vector2Int(-1, -1),
         new Vector2Int(-1, 0),
+        new Vector2Int(-1, 1),
+        new Vector2Int(0, -1),
         new Vector2Int(0, 1),
+        new Vector2Int(1, -1),
         new Vector2Int(1, 0),
         new Vector2Int(1,1),
-        new Vector2Int(-1, -1),
-        new Vector2Int(1, -1),
-        new Vector2Int(-1, 1),
         };
 
     private static readonly Vector2Int[] cardinalNeighbors =
@@ -117,7 +118,7 @@ maxXProtrusion : 3
 
         UnityEngine.Random.InitState(seed);
         string fileName = "Assets/Generated/level" + levelNumber + ".txt";
-        char[,] levelGrid = new char[levelWidth, levelHeight];
+        levelGrid = new char[levelWidth, levelHeight];
 
         // Initialize all stars for starters
         for(int y = 0; y < levelHeight; ++y){
@@ -137,19 +138,19 @@ maxXProtrusion : 3
 
         rules = mRules.Select(NormalizeRule).ToArray();
 
-        generateWalls(levelGrid);
-        generateIslets(levelGrid);
+        generateWalls();
+        generateIslets();
         if (protuse) {
-            generateProtrusions(levelGrid);
+            generateProtrusions();
         }
 
         
-         illegalPatterns.Clear();
+        illegalPatterns.Clear();
 
-        FindIllegalWallTiles(levelGrid);
+        FindIllegalWallTiles();
         outputIllegalPatterns(illegalPatterns);
         Debug.Log("Found " + illegalPatterns.Values.Sum(x => x.Count) + " illegal wall tiles");
-        //AttemptRepairSweep(levelGrid);
+        AttemptRepairSweep();
 
 
 
@@ -158,7 +159,7 @@ maxXProtrusion : 3
         RenderLevel(levelGrid);
     }
 
-    void generateWalls(char[,] levelGrid)
+    void generateWalls()
     {
         // default walls : length and witdh of two encompassing the level
         for (int y = 0; y < levelHeight; ++y)
@@ -179,7 +180,7 @@ maxXProtrusion : 3
  * roll again for the type of protrusion, then roll and loop for how much protrusion there is
  * (alternatively, create protrusion in both direction once the core loop works?)
  */
-    void generateProtrusions(char[,] levelGrid)
+    void generateProtrusions()
     {
         int protrusionX = UnityEngine.Random.Range(2, maxXProtrusion);
         int protrusionY = UnityEngine.Random.Range(2, maxYProtrusion);
@@ -246,7 +247,7 @@ maxXProtrusion : 3
 
     NOTE : The theorycrafing up did not lead to a fruitful resolution, and likely an additional sweep needs to be done to preserve the tilemap constraints.
     */
-    void generateIslets(char[,] levelGrid)
+    void generateIslets()
     {
 
         int isletsPlaced = 0;
@@ -312,7 +313,7 @@ maxXProtrusion : 3
 
 
 
-    bool MatchesRule(string pattern, string rule, IEnumerable<string> rules)
+    bool MatchesRule(string pattern, string rule)
     {
         for(int i = 0; i < 9; ++i)
         {
@@ -327,14 +328,14 @@ maxXProtrusion : 3
         return true;
     }
 
-    bool MatchesAnyRule(string pattern, IEnumerable<string> rules)
+    bool MatchesAnyRule(string pattern)
     {
        
         foreach(string rule in rules)
         {
-            if (MatchesRule(pattern, rule, rules))
+            if (MatchesRule(pattern, rule))
             {
-                if (rule == "____C____") return false;
+                if (rule == "____C____") return false; // the catch all pattern , that the ruleset does not know how to render
                 return true;
             }
         }
@@ -342,17 +343,15 @@ maxXProtrusion : 3
         return false;
     }
 
-    string GetPattern(char[,]levelGrid, int x, int y)
+    string GetPattern(int x, int y)
     {
         StringBuilder sb = new();
 
-        for(int dy = -1; dy <= 1; ++dy)
+        foreach (var d in neighborDirections)
         {
-            for(int dx = -1; dx <= 1; ++dx)
-            {
-                sb.Append(levelGrid[x + dx, y + dy]);
-            }
+            sb.Append(levelGrid[x + d.x, y + d.y]);
         }
+        sb.Insert(4, 'C');
         return sb.ToString();
     }
 
@@ -365,11 +364,9 @@ maxXProtrusion : 3
     }
 
 
-    void FindIllegalWallTiles(char[,]levelGrid)
+    void FindIllegalWallTiles()
     {
         int illegals = 0;
-
-        
 
         foreach (var rule in rules)
         {
@@ -386,9 +383,9 @@ maxXProtrusion : 3
             {
                 if (levelGrid[x, y] != '#') continue;
 
-                string pattern = GetPattern(levelGrid, x, y);
+                string pattern = GetPattern(x, y);
 
-                if (!MatchesAnyRule(pattern, rules))
+                if (!MatchesAnyRule(pattern))
                 {
                     if (!illegalPatterns.ContainsKey(pattern))
                     {
@@ -431,22 +428,136 @@ maxXProtrusion : 3
     p.Substring(6, 3);
     }
 
-    void AttemptRepairSweep(char[,] levelGrid)
+
+
+    bool IsIllegalNeighborhood(Vector2Int v)
     {
-        int removedWalls = 0;
-        foreach(var kv in illegalPatterns)
+
+        string s = "";
+        foreach(Vector2Int n in neighborDirections)
         {
-            foreach(var coordpair in kv.Value)
+            s += levelGrid[v.x +n.x, v.y + n.y];
+        }
+        return MatchesAnyRule(s);
+    }
+
+
+
+    int CountIllegalNeighborhoods(Vector2Int node)
+    {
+        int illegalCount = 0;
+        foreach(Vector2Int v in neighborDirections)
+        {
+            Vector2Int neighorLocation = new Vector2Int(node.x + v.x, node.y + v.y);
+            if (IsIllegalNeighborhood(neighorLocation)) illegalCount++;
+        }
+        return illegalCount;
+    }
+
+
+    int SimulateDeletion(Vector2Int node)
+    {
+        int initialIllegalNeighborhoods = CountIllegalNeighborhoods(node);
+        levelGrid[node.x, node.y] = '*';
+
+        int resultingIllegalNeighborhoods = CountIllegalNeighborhoods(node);
+        
+        levelGrid[node.x, node.y] = '#';
+        return initialIllegalNeighborhoods - resultingIllegalNeighborhoods;
+
+    }
+
+    int GetHammingDistance(string a, string b)
+    {
+        int d = 0;
+        for(int i = 0; i < a.Length; ++i)
+        {
+            if (a[i] != b[i]) ++d;
+        }
+        return d;
+    }
+
+
+
+    (int score, string closestMatchingPattern) SimulateAddition(Vector2Int node)
+    {
+        int initialIllegalNeighborhoods = CountIllegalNeighborhoods(node);
+        String invalidPattern = GetPattern(node.x, node.y);
+        int minimimumHammingDistance = 8;
+        int currentHammingDistance = 0;
+        string closestMatchingPattern = "";
+        for(int i = 0; i < rules.Length; ++i)
+        {
+            currentHammingDistance = GetHammingDistance(rules[i], invalidPattern);
+            if (currentHammingDistance < minimimumHammingDistance)
             {
-                levelGrid[coordpair.x, coordpair.y] = '*';
-                removedWalls++;
+                minimimumHammingDistance = currentHammingDistance;
+                closestMatchingPattern = rules[i];
             }
         }
-        Debug.Log("Removed " + removedWalls + " illegal walls");
+
+        int iter = 0;
+        foreach(Vector2Int v in neighborDirections)
+        {
+            Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
+            levelGrid[pos.x, pos.y] = closestMatchingPattern[iter];
+            ++iter;
+        }
+        int resultingIllegalNeighborhoods = CountIllegalNeighborhoods(node);
+
+        // put the correct pattern on the map
+        // get the illegals count again
+
+        iter = 0;
+        foreach (Vector2Int v in neighborDirections)
+        {
+            Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
+            levelGrid[pos.x, pos.y] = invalidPattern[iter];
+            ++iter;
+        }
+
+
+        return (initialIllegalNeighborhoods - resultingIllegalNeighborhoods, closestMatchingPattern);
     }
 
     
 
+
+    void AttemptRepairSweep()
+    {
+
+        int initialIllegalPatterns = illegalPatterns.Values.Sum(x => x.Count);
+        Debug.Log("Attempting to remove : " + initialIllegalPatterns + "illegal nodes");
+
+        foreach (var kv in illegalPatterns)
+        {
+            foreach(var node in kv.Value)
+            {
+                int onDelete = SimulateDeletion(node);
+                var tuple = SimulateAddition(node);
+                int onAddToNext = tuple.score;
+                if(onDelete < onAddToNext)
+                {
+                    levelGrid[node.x, node.y] = '*';
+                }
+                else if(onAddToNext > onDelete)
+                {
+                    int iter = 0;
+                    foreach (Vector2Int v in neighborDirections)
+                    {
+                        Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
+                        levelGrid[pos.x, pos.y] = tuple.closestMatchingPattern[iter];
+                        ++iter;
+                    }
+                }
+
+            }
+        }
+        
+    }
+
+
+   
     void OutputLevel(string filePath, char[,] levelGrid)
     {
         StringBuilder output = new StringBuilder();
