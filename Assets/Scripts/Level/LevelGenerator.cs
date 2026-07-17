@@ -129,6 +129,8 @@ maxXProtrusion : 3
             generateProtrusions();
         }
 
+        char[,] previous = (char[,])levelGrid.Clone();
+        int consecutiveIterationResults = 0;
         int broken = 0;
         for(int r = 0; r < maxIterations; ++r)
         {
@@ -139,20 +141,40 @@ maxXProtrusion : 3
             Debug.Log("Found " + broken + " illegal wall tiles");
             if (broken == 0) break;
             ApplyRepairIteration();
+            if (GridsAreEqual(previous, levelGrid)){
+                consecutiveIterationResults++;
+            }
+            if(consecutiveIterationResults > 3)
+            {
+                Debug.Log("Abort : " + consecutiveIterationResults + " consecutive results - algorithm needs to introduce suboptimal changes");
+                break;
+            }
+
         }
         
-
-        
-        
-        
-        
-
-
-
 
         OutputLevel(fileName, levelGrid);
         RenderLevel(levelGrid);
     }
+
+    bool GridsAreEqual(char[,] a, char[,] b)
+    {
+       if (a.GetLength(0) != b.GetLength(0) ||
+       a.GetLength(1) != b.GetLength(1))
+            return false;
+
+        for (int y = 0; y < a.GetLength(1); ++y)
+        {
+            for (int x = 0; x < a.GetLength(0); ++x)
+            {
+                if (a[x, y] != b[x, y])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+
 
     void generateWalls()
     {
@@ -310,7 +332,7 @@ maxXProtrusion : 3
 
     bool MatchesRule(string pattern, string rule)
     {
-        for(int i = 0; i < 9; ++i)
+        for(int i = 0; i < 8; ++i)
         {
             char r = rule[i];
             if (r == '_' || r == 'C') continue;
@@ -346,7 +368,6 @@ maxXProtrusion : 3
         {
             sb.Append(levelGrid[x + d.x, y + d.y]);
         }
-        sb.Insert(4, 'C');
         return sb.ToString();
     }
 
@@ -417,16 +438,30 @@ maxXProtrusion : 3
 
     string PrettyPattern(string p)
     {
+        if (p.Length != 8)
+            return $"Invalid pattern ({p.Length}): {p}";
+
         return
-    p.Substring(0, 3) + "\n" +
-    p.Substring(3, 3) + "\n" +
-    p.Substring(6, 3);
+            $"{p[0]}{p[1]}{p[2]}\n" +
+            $"{p[3]}C{p[4]}\n" +
+            $"{p[5]}{p[6]}{p[7]}";
     }
 
 
 
     bool IsIllegalNeighborhood(Vector2Int v)
     {
+
+
+        foreach (Vector2Int n in neighborDirections)
+        {
+            int x = v.x + n.x;
+            int y = v.y + n.y;
+
+            if (x < 0 || x >= levelWidth ||
+                y < 0 || y >= levelHeight)
+                return false;
+        }
 
         string s = "";
         foreach(Vector2Int n in neighborDirections)
@@ -465,7 +500,7 @@ maxXProtrusion : 3
     int GetHammingDistance(string a, string b)
     {
         int d = 0;
-        for(int i = 0; i < a.Length; ++i)
+        for(int i = 0; i < a.Length - 1; ++i)
         {
             if (a[i] != b[i]) ++d;
         }
@@ -475,7 +510,7 @@ maxXProtrusion : 3
 
 
     /**
-    * Edited the algorithm to choose randomly between all suitable candidates - or on a tie case.
+    * Edited the algorithm to choose randomly between all suitable candidates and solve the tie randomly.
     */
     (int score, string closestMatchingPattern) SimulateAddition(Vector2Int node)
     {
@@ -503,7 +538,8 @@ maxXProtrusion : 3
             foreach (Vector2Int v in neighborDirections)
             {
                 Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-                levelGrid[pos.x, pos.y] = patternCandidate[iter];
+                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
+                else levelGrid[pos.x, pos.y] = patternCandidate[iter];
                 ++iter;
             }
             candidateIntrusions.Add((patternCandidate, CountIllegalNeighborhoods(node)));
@@ -513,7 +549,8 @@ maxXProtrusion : 3
             foreach (Vector2Int v in neighborDirections)
             {
                 Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-                levelGrid[pos.x, pos.y] = invalidPattern[iter];
+                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
+                else levelGrid[pos.x, pos.y] = invalidPattern[iter];
                 ++iter;
             }
         }
@@ -560,7 +597,8 @@ maxXProtrusion : 3
                     foreach (var dir in neighborDirections)
                     {
                         Vector2Int pos = Node + dir;
-                        levelGrid[pos.x, pos.y] = ClosestMatchingPattern[i++];
+                        if (i == 4) levelGrid[pos.x, pos.y] = '#';
+                        else levelGrid[pos.x, pos.y] = ClosestMatchingPattern[i++];
                     }
                     break;
             }
