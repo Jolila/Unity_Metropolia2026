@@ -132,8 +132,8 @@ maxXProtrusion : 3
         string text = File.ReadAllText(WallRuleTilePath);
 
         string[] mRules = text.Split(
-     new[] { "\r\n\r\n", "\n\n" },
-     StringSplitOptions.RemoveEmptyEntries);
+            new[] { "\r\n\r\n", "\n\n" },
+            StringSplitOptions.RemoveEmptyEntries);
 
         rules = mRules.Select(NormalizeRule).ToArray();
 
@@ -143,14 +143,17 @@ maxXProtrusion : 3
             generateProtrusions(levelGrid);
         }
 
-        for(int i = 0; i < 1; ++i)
-        {
-            illegalPatterns.Clear();
-            repairWalls(levelGrid);
-            Debug.Log("Repair iteration : " + i + " repaired " + illegalPatterns.Values.Sum(x => x.Count));
-        }
         
-       
+         illegalPatterns.Clear();
+
+        FindIllegalWallTiles(levelGrid);
+        outputIllegalPatterns(illegalPatterns);
+        Debug.Log("Found " + illegalPatterns.Values.Sum(x => x.Count) + " illegal wall tiles");
+        //AttemptRepairSweep(levelGrid);
+
+
+
+
         OutputLevel(fileName, levelGrid);
         RenderLevel(levelGrid);
     }
@@ -307,75 +310,6 @@ maxXProtrusion : 3
       
     }
 
-    string[] legalPatterns =
-    {
-@"
-###
-#C#
-##*", // 1
-
-@"
-###
-#C#
-*##", // 2
-
-@"
-###
-#C#
-_*_", // 3
-
-@"
-_##
-*C#
-_##", // 4
-
-@"
-##*
-#C#
-###", // 5
-
-@"
-*##
-#C#
-###", // 6
-
-@"
-_*_
-#C#
-###", // 7
-
-@"
-##_
-#C*
-##_", // 8
-
-@"
-_*_
-*C#
-_##", // 9
-
-@"
-_*_
-#C*
-##_", // 10
-
-@"
-_##
-*C#
-_*_", // 11
-
-@"
-##_
-#C*
-_*_", // 12
-
-@"
-###
-#C#
-###" // 13
-};
-
-
 
 
     bool MatchesRule(string pattern, string rule, IEnumerable<string> rules)
@@ -395,12 +329,12 @@ _*_", // 12
 
     bool MatchesAnyRule(string pattern, IEnumerable<string> rules)
     {
-        int i = 0;
+       
         foreach(string rule in rules)
         {
             if (MatchesRule(pattern, rule, rules))
             {
-                i += 1;
+                if (rule == "____C____") return false;
                 return true;
             }
         }
@@ -431,7 +365,7 @@ _*_", // 12
     }
 
 
-    void repairWalls(char[,]levelGrid)
+    void FindIllegalWallTiles(char[,]levelGrid)
     {
         int illegals = 0;
 
@@ -467,9 +401,7 @@ _*_", // 12
         }
 
         Debug.Log("Encountered " + illegals + " illegal pattern instances");
-        outputIllegalPatterns(illegalPatterns);
 
-        AttemptRepairSweep(levelGrid);
     }
 
     void outputIllegalPatterns(Dictionary<String,List<Vector2Int>> illegalPatterns)
