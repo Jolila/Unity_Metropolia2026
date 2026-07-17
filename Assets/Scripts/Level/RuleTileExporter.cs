@@ -31,8 +31,6 @@ public class RuleTileExporter : MonoBehaviour
             BindingFlags.NonPublic |
             BindingFlags.Public;
 
-
-
         Debug.Log($"Rules :  {Rules.m_TilingRules.Count}");
 
         foreach (var rule in Rules.m_TilingRules)
@@ -49,34 +47,84 @@ public class RuleTileExporter : MonoBehaviour
 
             Debug.Log($"Rule {rule.m_Id}");
 
-            for (int i = 0; i < neighbors.Count; i++)
+            Dictionary<Vector3Int, int> numbermap = new();
+
+            for (int i = 0; i < neighbors.Count; ++i)
             {
                 Debug.Log($"{positions[i]} -> {neighbors[i]}");
+                numbermap.Add(positions[i], neighbors[i]);
             }
 
+            Debug.Log(generatePattern(numbermap));
+
+           
+
         }
-
-
         
         
     }
 
-
-
-
-    string InspectObject(object o)
+    string generatePattern(Dictionary<Vector3Int, int> numbermap)
     {
-        StringBuilder sb = new();
-        foreach (var field in o.GetType().GetFields(
-            BindingFlags.Instance |
-               BindingFlags.Public |
-               BindingFlags.NonPublic))
-        {
 
-            object value = field.GetValue(o);
-            sb.Append($"{field.Name} = {field.GetValue(o)}");
+
+        // Debug.Log($"{positions[i]} -> {neighbors[i]}");
+        // (1,0,0) -> 1
+
+        // 1 for wall -> produce #
+        // 2 for no wall -> produce * 
+        // important : rest of the time no entry so neighbors is not uniform length!
+       
+        
+        for(int y = 1; y >= -1; --y)
+        {
+            for(int x = 1; x >= -1; --x)
+            {
+                if(y == 0 && x == 0)
+                {
+                    numbermap.Add(new Vector3Int(0, 0, 0), 3);
+                }
+                Vector3Int cellCoord = new Vector3Int(x, y, 0);
+                int dummy = 0;
+                if (!numbermap.TryGetValue(cellCoord, out dummy)) numbermap.Add(cellCoord, 0);
+            }
         }
 
-        return sb.ToString();
+        // initialize stringbuilder
+        // query the hashmap for the integer and convert that into the character, then append
+        // for now lets return the pattern
+
+        // center is 5
+        StringBuilder sb = new();
+      
+        for (int y = 1; y >= -1; --y)
+        {
+            for(int x = 1; x >= -1; --x)
+            {
+                Vector3Int key = new Vector3Int(y, x, 0);
+                int v = numbermap[key];
+
+                if (v == 0) sb.Append('_');
+                if (v == 2) sb.Append('*');
+                if (v == 1) sb.Append("#");
+                if (v == 3) sb.Append('C');
+            }
+        }
+
+
+
+        return PrettyPattern(sb.ToString());
     }
+
+
+    string PrettyPattern(string p)
+    {
+        return
+    p.Substring(0, 3) + "\n" +
+    p.Substring(3, 3) + "\n" +
+    p.Substring(6, 3);
+    }
+
+
+
 }
