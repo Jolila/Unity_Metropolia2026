@@ -577,6 +577,7 @@ maxXProtrusion : 3
         public RepairStrategy Strategy;
         public int RemaininingIllegal;
         public string ClosestMatchingPattern;
+        // Idea : compare the edit distances as well as the remaining illegal neighborhoods for a more conservative approach
 
         public RepairCandidate( Vector2Int n,
          RepairStrategy strat,
