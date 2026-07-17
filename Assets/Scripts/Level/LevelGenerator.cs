@@ -479,77 +479,116 @@ maxXProtrusion : 3
 
 
 
+    /**
+    * Edited the algorithm to choose randomly between all suitable candidates - or on a tie case.
+    */
     (int score, string closestMatchingPattern) SimulateAddition(Vector2Int node)
     {
         int initialIllegalNeighborhoods = CountIllegalNeighborhoods(node);
         String invalidPattern = GetPattern(node.x, node.y);
+        List<string> allMatchingCandidates = new();
         int minimimumHammingDistance = 8;
         int currentHammingDistance = 0;
         string closestMatchingPattern = "";
         for(int i = 0; i < rules.Length; ++i)
         {
             currentHammingDistance = GetHammingDistance(rules[i], invalidPattern);
-            if (currentHammingDistance < minimimumHammingDistance)
+            if (currentHammingDistance <= minimimumHammingDistance)
             {
                 minimimumHammingDistance = currentHammingDistance;
-                closestMatchingPattern = rules[i];
+                allMatchingCandidates.Add(rules[i]);
             }
         }
 
-        int iter = 0;
-        foreach(Vector2Int v in neighborDirections)
+        List<(string pattern, int illegalCount)> candidateIntrusions = new();
+        // On a tie case, this iterates more than once
+        foreach (string patternCandidate in allMatchingCandidates)
         {
-            Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-            levelGrid[pos.x, pos.y] = closestMatchingPattern[iter];
-            ++iter;
+            // Apply changes to grid
+            int iter = 0;
+            foreach (Vector2Int v in neighborDirections)
+            {
+                Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
+                levelGrid[pos.x, pos.y] = patternCandidate[iter];
+                ++iter;
+            }
+            candidateIntrusions.Add((patternCandidate, CountIllegalNeighborhoods(node)));
+
+            //restore the grid to compare it to next pattern candidate if any
+            iter = 0;
+            foreach (Vector2Int v in neighborDirections)
+            {
+                Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
+                levelGrid[pos.x, pos.y] = invalidPattern[iter];
+                ++iter;
+            }
         }
-        int resultingIllegalNeighborhoods = CountIllegalNeighborhoods(node);
 
-        // put the correct pattern on the map
-        // get the illegals count again
-
-        iter = 0;
-        foreach (Vector2Int v in neighborDirections)
-        {
-            Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-            levelGrid[pos.x, pos.y] = invalidPattern[iter];
-            ++iter;
-        }
-
-
-        return (initialIllegalNeighborhoods - resultingIllegalNeighborhoods, closestMatchingPattern);
+        int best = candidateIntrusions.Min(c => c.illegalCount);
+        var bestCandidates = candidateIntrusions.Where(c => c.illegalCount == best).ToList();
+        var winner = bestCandidates[UnityEngine.Random.Range(0, bestCandidates.Count)];
+        return (winner.illegalCount, winner.pattern);
     }
 
     
+    enum RepairStrategy
+    {
+        Delete,CompletePattern
+    }
 
+    struct RepairCandidate
+    {
+        public Vector2Int node;
+        public RepairStrategy strategy;
+        public int RemaininingIllegal;
+        public string closestMatchingPattern;
+
+        public RepairCandidate( Vector2Int n,
+         RepairStrategy strat,
+         int remain,
+         string closest)
+        {
+            node = n;
+            strategy = strat;
+            RemaininingIllegal = remain;
+            closestMatchingPattern = closest;
+        }
+    }
 
     void AttemptRepairSweep()
     {
-
+        List<RepairCandidate> candidates = new();
         int initialIllegalPatterns = illegalPatterns.Values.Sum(x => x.Count);
         Debug.Log("Attempting to remove : " + initialIllegalPatterns + "illegal nodes");
+        
 
         foreach (var kv in illegalPatterns)
         {
             foreach(var node in kv.Value)
             {
                 int onDelete = SimulateDeletion(node);
-                var tuple = SimulateAddition(node);
-                int onAddToNext = tuple.score;
-                if(onDelete < onAddToNext)
+                var additionResult = SimulateAddition(node);
+                int onAddToNext = additionResult.score;
+                if (onDelete < onAddToNext)
                 {
-                    levelGrid[node.x, node.y] = '*';
+                    candidates.Add(
+                        new RepairCandidate(
+                            node,
+                            RepairStrategy.Delete,
+                            onDelete,
+                            ""
+                        ));
                 }
-                else if(onAddToNext > onDelete)
+                else if (onAddToNext > onDelete)
                 {
-                    int iter = 0;
-                    foreach (Vector2Int v in neighborDirections)
-                    {
-                        Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-                        levelGrid[pos.x, pos.y] = tuple.closestMatchingPattern[iter];
-                        ++iter;
-                    }
+                    candidates.Add(new RepairCandidate(
+                        node,
+                        RepairStrategy.CompletePattern,
+                        onAddToNext,
+                        additionResult.closestMatchingPattern
+                        ));
                 }
+                // edge case : result is same, this could be a pathological or a trivial case ? 
 
             }
         }
