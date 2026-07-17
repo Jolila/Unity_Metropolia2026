@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 using NUnit.Framework;
 using System.Linq;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -128,8 +129,15 @@ maxXProtrusion : 3
         if (protuse) {
             generateProtrusions(levelGrid);
         }
+
+        for(int i = 0; i < 1; ++i)
+        {
+            illegalPatterns.Clear();
+            repairWalls(levelGrid);
+            Debug.Log("Repair iteration : " + i + " repaired " + illegalPatterns.Values.Sum(x => x.Count));
+        }
         
-        repairWalls(levelGrid);
+       
         OutputLevel(fileName, levelGrid);
         RenderLevel(levelGrid);
     }
@@ -189,7 +197,7 @@ maxXProtrusion : 3
                     }
 
                     if (neighborCount < 1) continue;
-                    // UPDATE : Find suitable direction for protrusion.
+                    // UPDATE : Find suitable direction for protrusion?
                     
 
                     for (int proty = y; proty < y + protrusionY; ++proty)
@@ -291,83 +299,83 @@ maxXProtrusion : 3
 @"
 ###
 #C#
-##*",
+##*", // 1
 
 @"
 ###
 #C#
-*##",
+*##", // 2
 
 @"
-_#_
+###
 #C#
-_*_",
+_*_", // 3
 
 @"
 _##
 *C#
-_##",
+_##", // 4
 
 @"
 ##*
 #C#
-###",
+###", // 5
 
 @"
 *##
 #C#
-###",
+###", // 6
 
 @"
 _*_
 #C#
-###",
+###", // 7
 
 @"
 ##_
 #C*
-##_",
+##_", // 8
 
 @"
 _*_
 *C#
-_##",
+_##", // 9
 
 @"
 _*_
 #C*
-##_",
+##_", // 10
 
 @"
 _##
 *C#
-_*_",
+_*_", // 11
 
 @"
 ##_
 #C*
-_*_",
+_*_", // 12
 
 @"
 ###
 #C#
-###"
+###" // 13
 };
 
     String[] additionalLegalPatterns =
     {
-        @"
-        ##*
-        ##*
-        ###",
-        @"
-        ##*
-        ##*
-        ***",
-        @"
-        *##
-        *##
-        ***"
+        //@"
+        //##*
+        //##*
+        //###",
+        //@"
+        //##*
+        //##*
+        //***",
+        //@"
+        //*##
+        //*##
+        //***"
 
     };
 
@@ -381,10 +389,6 @@ _*_",
 
             if (pattern[i] != r)
             {
-                //Debug.Log(
-                //$"Mismatch at index {i}\n" +
-                //$"Pattern:\n{PrettyPattern(pattern)}\n\n" +
-                //$"Rule:\n{PrettyPattern(rule)}");
                 return false;
             }
         }
@@ -468,6 +472,7 @@ _*_",
         Debug.Log("Encountered " + illegals + " illegal pattern instances");
         outputIllegalPatterns(illegalPatterns);
 
+        AttemptRepairSweep(levelGrid);
     }
 
     void outputIllegalPatterns(Dictionary<String,List<Vector2Int>> illegalPatterns)
@@ -495,6 +500,20 @@ _*_",
     p.Substring(0, 3) + "\n" +
     p.Substring(3, 3) + "\n" +
     p.Substring(6, 3);
+    }
+
+    void AttemptRepairSweep(char[,] levelGrid)
+    {
+        int removedWalls = 0;
+        foreach(var kv in illegalPatterns)
+        {
+            foreach(var coordpair in kv.Value)
+            {
+                levelGrid[coordpair.x, coordpair.y] = '*';
+                removedWalls++;
+            }
+        }
+        Debug.Log("Removed " + removedWalls + " illegal walls");
     }
 
     
@@ -554,7 +573,7 @@ _*_",
                 }
             }
         }
-        //         Dictionary<String, List<Vector2Int>> illegalPatterns = new();
+       
         Tile debugTile = new Tile();
         debugTile.color = new Color(1, 0, 1);
         foreach (var kv in illegalPatterns)
