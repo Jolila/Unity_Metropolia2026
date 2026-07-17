@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -24,8 +25,8 @@ public class RuleTileExporter : MonoBehaviour
     [ContextMenu("Export Rule Tileset")]
     public void ExportRuleset()
     {
-       
-
+        string filepath = "Assets/Generated/" + Rules.name + ".txt";
+        List<string> rules = new();
         const BindingFlags flags =
             BindingFlags.Instance |
             BindingFlags.NonPublic |
@@ -55,13 +56,14 @@ public class RuleTileExporter : MonoBehaviour
                 numbermap.Add(positions[i], neighbors[i]);
             }
 
-            Debug.Log(generatePattern(numbermap));
+           rules.Add(generatePattern(numbermap));
 
            
-
         }
-        
-        
+
+        File.WriteAllText(filepath, string.Join("\n\n", rules)); // extra newline between patterns for inspecting the file
+
+
     }
 
     string generatePattern(Dictionary<Vector3Int, int> numbermap)
@@ -110,7 +112,6 @@ public class RuleTileExporter : MonoBehaviour
                 if (v == 3) sb.Append('C');
             }
         }
-
 
 
         return PrettyPattern(sb.ToString());

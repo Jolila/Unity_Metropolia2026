@@ -67,6 +67,8 @@ maxXProtrusion : 3
     [SerializeField] RuleTile groundTile;
     [SerializeField] RuleTile wallTile;
 
+    string[] rules;
+
     public Dictionary<String, List<Vector2Int>> illegalPatterns = new();
 
 
@@ -123,6 +125,17 @@ maxXProtrusion : 3
                 levelGrid[x, y] = '*';
             }
         }
+
+        // Fetch walls ruletile:
+
+        string WallRuleTilePath = "Assets/Generated/WallRuleTile.txt";
+        string text = File.ReadAllText(WallRuleTilePath);
+
+        string[] mRules = text.Split(
+     new[] { "\r\n\r\n", "\n\n" },
+     StringSplitOptions.RemoveEmptyEntries);
+
+        rules = mRules.Select(NormalizeRule).ToArray();
 
         generateWalls(levelGrid);
         generateIslets(levelGrid);
@@ -362,22 +375,7 @@ _*_", // 12
 ###" // 13
 };
 
-    String[] additionalLegalPatterns =
-    {
-        //@"
-        //##*
-        //##*
-        //###",
-        //@"
-        //##*
-        //##*
-        //***",
-        //@"
-        //*##
-        //*##
-        //***"
 
-    };
 
 
     bool MatchesRule(string pattern, string rule, IEnumerable<string> rules)
@@ -437,8 +435,7 @@ _*_", // 12
     {
         int illegals = 0;
 
-        string[] rules = legalPatterns.Concat(additionalLegalPatterns)
-            .Select(NormalizeRule).ToArray();
+        
 
         foreach (var rule in rules)
         {
