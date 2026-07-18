@@ -384,7 +384,7 @@ maxXProtrusion : 3
     {
         StringBuilder sb = new();
 
-        foreach (var d in neighborDirections)
+        foreach (var d in patternCoordinates)
         {
             sb.Append(levelGrid[x + d.x, y + d.y]);
         }
@@ -770,7 +770,7 @@ maxXProtrusion : 3
     {
         int i = 0;
 
-        foreach (var dir in neighborDirections)
+        foreach (var dir in patternCoordinates)
         {
             Vector2Int pos = candidate.Node + dir;
             if (candidate.ClosestMatchingPattern[i] == '_')
