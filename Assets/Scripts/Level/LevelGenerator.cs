@@ -9,6 +9,7 @@ using NUnit.Framework;
 using System.Linq;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
+using System.Net.Http.Headers;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -489,24 +490,88 @@ maxXProtrusion : 3
     }
 
 
-    int SimulateDeletion(Vector2Int node)
+
+
+
+    (int score, string closestMatchingPattern) SimulateDeletion(Vector2Int node)
     {
         int initialIllegalNeighborhoods = CountIllegalNeighborhoods(node);
-        levelGrid[node.x, node.y] = '*';
+        String invalidPattern = GetPattern(node.x, node.y);
+        List<string> allMatchingCandidates = new();
+        int minimimumHammingDistance = 8;
+        int currentHammingDistance = 0;
+        for (int i = 0; i < rules.Length; ++i)
+        {
+            currentHammingDistance = GetRemovalDistance(rules[i], invalidPattern);
+            if (currentHammingDistance <= minimimumHammingDistance)
+            {
+                minimimumHammingDistance = currentHammingDistance;
+                allMatchingCandidates.Add(rules[i]);
+            }
+        }
 
-        int resultingIllegalNeighborhoods = CountIllegalNeighborhoods(node);
-        
-        levelGrid[node.x, node.y] = '#';
-        return initialIllegalNeighborhoods - resultingIllegalNeighborhoods;
+        List<(string pattern, int illegalCount)> candidateIntrusions = new();
+
+        foreach (string patternCandidate in allMatchingCandidates)
+        {
+            // Apply changes to grid
+            int iter = 0;
+            foreach (Vector2Int v in neighborDirections)
+            {
+                Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
+                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
+                else levelGrid[pos.x, pos.y] = patternCandidate[iter];
+                ++iter;
+            }
+            candidateIntrusions.Add((patternCandidate, CountIllegalNeighborhoods(node)));
+
+            //restore the grid to compare it to next pattern candidate if any
+            iter = 0;
+            foreach (Vector2Int v in neighborDirections)
+            {
+                Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
+                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
+                else levelGrid[pos.x, pos.y] = invalidPattern[iter];
+                ++iter;
+            }
+        }
+
+        int best = candidateIntrusions.Min(c => c.illegalCount);
+        var bestCandidates = candidateIntrusions.Where(c => c.illegalCount == best).ToList();
+        var winner = bestCandidates[UnityEngine.Random.Range(0, bestCandidates.Count)];
+        return (winner.illegalCount, winner.pattern);
 
     }
 
     int GetHammingDistance(string a, string b)
     {
         int d = 0;
-        for(int i = 0; i < a.Length - 1; ++i)
+        for(int i = 0; i < a.Length; ++i)
         {
             if (a[i] != b[i]) ++d;
+        }
+        return d;
+    }
+
+    int GetRemovalDistance(string a, string b)
+    {
+        int d = 0;
+        for(int i = 0; i < a.Length -1 ; ++i)
+        {
+            if (i == 4) continue;
+            if (a[i] == '#' && b[i] == '#') ++d;
+        }
+        return d;
+    }
+  
+
+    int GetAdditionDistance(string a, string b)
+    {
+        int d = 0;
+        for (int i = 0; i < a.Length -1; ++i)
+        {
+            if (i == 4) continue;
+            if (a[i] == '*' && b[i] == '#') ++d;
         }
         return d;
     }
@@ -525,7 +590,7 @@ maxXProtrusion : 3
         int currentHammingDistance = 0;
         for(int i = 0; i < rules.Length; ++i)
         {
-            currentHammingDistance = GetHammingDistance(rules[i], invalidPattern);
+            currentHammingDistance = GetAdditionDistance(rules[i], invalidPattern);
             if (currentHammingDistance <= minimimumHammingDistance)
             {
                 minimimumHammingDistance = currentHammingDistance;
@@ -565,6 +630,18 @@ maxXProtrusion : 3
         return (winner.illegalCount, winner.pattern);
     }
 
+    public char GetBestWildCardOption(Vector2Int pos)
+    {
+        levelGrid[pos.x, pos.y] = '#';
+        int wallScore = CountIllegalNeighborhoods(pos);
+
+        levelGrid[pos.x, pos.y] = '#';
+        int floorScore = CountIllegalNeighborhoods(pos);
+
+        return wallScore <= floorScore ? '#' : '*';
+
+    }
+
     
     enum RepairStrategy
     {
@@ -590,38 +667,6 @@ maxXProtrusion : 3
             ClosestMatchingPattern = closest;
         }
 
-        public void ApplyStrategy(char[,] levelGrid)
-        {
-            switch(Strategy)
-            {
-                case RepairStrategy.Delete:
-                    levelGrid[Node.x, Node.y] = '*';
-                    break;
-                case RepairStrategy.CompletePattern:
-                    int i = 0;
-                    foreach (var dir in neighborDirections)
-                    {
-                        Vector2Int pos = Node + dir;
-                        if (i == 4) levelGrid[pos.x, pos.y] = '#';
-                        else
-                        {
-                            if (ClosestMatchingPattern[i] == '_')
-                            {
-                                int roll = UnityEngine.Random.Range(0, 2);
-                                if (roll == 1) levelGrid[pos.x, pos.y] = '*';
-                                else levelGrid[pos.x, pos.y] = '#';
-                            }
-                            else
-                            {
-                                levelGrid[pos.x, pos.y] = ClosestMatchingPattern[i++];
-                            }
-                                
-                        }
-                            
-                    }
-                    break;
-            }
-        }
     }
 
     /**
@@ -653,7 +698,8 @@ maxXProtrusion : 3
         {
             foreach(var node in kv.Value)
             {
-                int onDelete = SimulateDeletion(node);
+                var deletionResult = SimulateDeletion(node);
+                int onDelete = deletionResult.score;
                 var additionResult = SimulateAddition(node);
                 int onAddToNext = additionResult.score;
                 if (onDelete < onAddToNext)
@@ -663,7 +709,7 @@ maxXProtrusion : 3
                             node,
                             RepairStrategy.Delete,
                             onDelete,
-                            ""
+                            deletionResult.closestMatchingPattern
                         ));
                 }
                 else if (onAddToNext > onDelete)
@@ -706,12 +752,37 @@ maxXProtrusion : 3
         int best = candidates.Min(c => c.RemaininingIllegal);
         var bestCandidates = candidates.Where(c => c.RemaininingIllegal == best).ToList();
         RepairCandidate winner = bestCandidates[UnityEngine.Random.Range(0, bestCandidates.Count)];
-        winner.ApplyStrategy(levelGrid);
+        ApplyRepairCandidateStrategy(winner);
 
     }
 
+    void ApplyRepairCandidateStrategy(RepairCandidate candidate)
+    {
+        int i = 0;
 
-   
+        foreach (var dir in neighborDirections)
+        {
+            Vector2Int pos = candidate.Node + dir;
+
+            if (i == 4)
+            {
+                levelGrid[pos.x, pos.y] = '#';
+            }
+            else if (candidate.ClosestMatchingPattern[i] == '_')
+            {
+                levelGrid[pos.x, pos.y] = GetBestWildCardOption(pos);
+            }
+            else
+            {
+                levelGrid[pos.x, pos.y] = candidate.ClosestMatchingPattern[i];
+            }
+
+            ++i;
+        }
+    }
+
+
+
     void OutputLevel(string filePath, char[,] levelGrid)
     {
         StringBuilder output = new StringBuilder();
