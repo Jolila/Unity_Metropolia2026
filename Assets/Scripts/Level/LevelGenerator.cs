@@ -405,13 +405,13 @@ maxXProtrusion : 3
     {
         int illegals = 0;
 
-        foreach (var rule in rules)
-        {
-            for (int i = 0; i < rule.Length; i++)
-            {
-                Debug.Log($"{i}: '{rule[i]}' ({(int)rule[i]})");
-            }
-        }
+        //foreach (var rule in rules)
+        //{
+        //    for (int i = 0; i < rule.Length; i++)
+        //    {
+        //        Debug.Log($"{i}: '{rule[i]}' ({(int)rule[i]})");
+        //    }
+        //}
 
 
         for(int y = 1; y < levelHeight - 1; ++y)
@@ -742,7 +742,7 @@ maxXProtrusion : 3
                           node,
                           RepairStrategy.Delete,
                           onDelete,
-                          ""
+                          deletionResult.closestMatchingPattern
                       ));
                     }
                     else
@@ -768,11 +768,12 @@ maxXProtrusion : 3
 
     void ApplyRepairCandidateStrategy(RepairCandidate candidate)
     {
-        int i = 0;
 
+        int i = 0;
         foreach (var dir in patternCoordinates)
         {
             Vector2Int pos = candidate.Node + dir;
+            Debug.Log("Winning pattern : " + candidate.ClosestMatchingPattern);
             if (candidate.ClosestMatchingPattern[i] == '_')
             {
                 levelGrid[pos.x, pos.y] = GetBestWildCardOption(pos);
