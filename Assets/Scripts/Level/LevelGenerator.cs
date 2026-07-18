@@ -58,7 +58,8 @@ maxXProtrusion : 3
     [SerializeField] int protrusionRollThreshold = 64;
     [SerializeField] int maxXProtrusion = 5;
     [SerializeField] int maxYProtrusion = 5;
-    [SerializeField] bool protuse = true;
+    [SerializeField] bool protrudeIslets = true;
+    [SerializeField] bool protrudeOuterWalls = true;
 
     [SerializeField] Tilemap groundTilemap;
     [SerializeField] Tilemap wallTilemap;
@@ -72,6 +73,7 @@ maxXProtrusion : 3
     char[,] levelGrid;
 
     public Dictionary<String, List<Vector2Int>> illegalPatterns = new();
+    List<Islet> islets = new();
 
 
     [ContextMenu("Clear tilemaps")]
@@ -141,9 +143,9 @@ maxXProtrusion : 3
 
         generateWalls();
         generateIslets();
-        if (protuse) {
-            generateProtrusions();
-        }
+        if (protrudeIslets) ProtrudeIslets();
+        
+        
 
         char[,] previous = (char[,])levelGrid.Clone();
         int consecutiveIterationResults = 0;
@@ -213,66 +215,95 @@ maxXProtrusion : 3
  * roll again for the type of protrusion, then roll and loop for how much protrusion there is
  * (alternatively, create protrusion in both direction once the core loop works?)
  */
-    void generateProtrusions()
+    void ProtrudeIslets()
     {
-        int protrusionX = UnityEngine.Random.Range(2, maxXProtrusion);
-        int protrusionY = UnityEngine.Random.Range(2, maxYProtrusion);
-        int roll = UnityEngine.Random.Range(0, protrusionRollMax);
+        int protrusionX;
+        int protrusionY;
+        
         int totalProtrusions = 0;
 
-        for (int y = 2; y < levelHeight - 2; ++y)
+
+        foreach (Islet i in islets)
         {
-            for (int x = 2; x < levelWidth - 2; ++x)
+            int roll = UnityEngine.Random.Range(0, protrusionRollMax);
+            if (roll > protrusionRollThreshold)
             {
 
-                if (roll > protrusionRollThreshold)
+                protrusionX = UnityEngine.Random.Range(1, maxXProtrusion);
+                protrusionY = UnityEngine.Random.Range(1, maxYProtrusion);
+
+                // Maybe this will save some headache, don't know.
+                if (i.pos.x + i.width + protrusionX > levelWidth
+                    || i.pos.x - i.width - protrusionX < 0
+                    || i.pos.y + i.height + protrusionY > levelHeight
+                    || i.pos.y - i.height - protrusionY < 0) Debug.Log("This shoudl not print");
+
+
+                int rollX_Or_Y = UnityEngine.Random.Range(0, 2);
+                if (rollX_Or_Y == 1)
                 {
-
-                    // check for neighboring '#' tiles
-                    Vector2Int pos = new Vector2Int(x, y);
-
-                    int neighborCount = 0;
-                    List<Vector2Int> non_wall_neighbors = new();
-                    foreach (Vector2Int v in neighborDirections)
+                    int rollXDirection = UnityEngine.Random.Range(0, 2);
+                    int y = i.pos.y - UnityEngine.Random.Range(1, i.height);
+                    int whichAdjacentY = UnityEngine.Random.Range(0, 2);
+                    int adjacentY = whichAdjacentY == 0 ? 1 : -1;
+                    if (rollXDirection == 1)
                     {
-                        if (levelGrid[x + v.x, y + v.y] == '#')
+                        // protrude right
+                        int x = i.pos.x + i.width;
+
+                        for (int iter = 0; iter < protrusionX; ++iter)
                         {
-                            neighborCount++;
-                            
-                        }
-                        else
-                        {
-                            non_wall_neighbors.Add(v);
+                            levelGrid[x + iter, y] = '#';
+                            levelGrid[x + iter, y + adjacentY] = '#';
                         }
                     }
-
-                    if (neighborCount < 1) continue;
-                    // UPDATE : Find suitable direction for protrusion?
-                    
-
-                    for (int proty = y; proty < y + protrusionY; ++proty)
+                    else
+                    {
+                        int x = i.pos.x;
+                        //protrude left
+                        for (int iter = 0; iter > protrusionX; ++iter)
                         {
-                            for (int protx = x; protx < protrusionX; ++protx)
-                            {
-                                if(proty < levelHeight && protx < levelWidth)
-                            {
-                                levelGrid[protx, proty] = '#';
-                            }
-                                
-                            }
+                            levelGrid[x - iter, y] = '#';
+                            levelGrid[x - iter, y + adjacentY] = '#';
                         }
+                    }
+                }
+                else
+                {
+                    int rollYDirection = UnityEngine.Random.Range(0, 2);
+                    int x = i.pos.x + UnityEngine.Random.Range(1, i.width);
+                    int whichAdjacentX = UnityEngine.Random.Range(0, 2);
+                    int adjacentX = whichAdjacentX == 0 ? 1 : -1;
+                    if (rollYDirection == 1)
+                    {
+                        //protrude up
+                        int y = i.pos.y;
+                        for(int iter = 0; iter < protrusionY; ++iter)
+                        {
+                            levelGrid[x, y+iter] = '#';
+                            levelGrid[x + adjacentX, y+iter] = '#';
+                        }
+                    }
+                    else
+                    {
+                        //protrude down
+                        int y = i.pos.y - i.height;
+                        for(int iter = 0; iter < protrusionY; ++iter)
+                        {
+                            levelGrid[x, y-iter] = '#';
+                            levelGrid[x + adjacentX, y - iter] = '#';
+                        }
+                        
+                    }
 
-
-                    protrusionX = UnityEngine.Random.Range(2, maxXProtrusion);
-                    protrusionY = UnityEngine.Random.Range(2, maxYProtrusion);
-                    ++totalProtrusions;
                 }
 
-                roll = UnityEngine.Random.Range(0, protrusionRollMax);
-                
-            }
 
+            }
         }
+
+
+
         Debug.Log("Succesful protrusions: " + totalProtrusions +" times ");
     }
     /*
@@ -289,7 +320,7 @@ maxXProtrusion : 3
 
         int isletsPlaced = 0;
         int iterations = 0;
-        List<Islet> islets = new List<Islet>();
+ 
 
         int x, y;
         float epsi = 0.01f;
@@ -301,8 +332,8 @@ maxXProtrusion : 3
 
             // generate new x, new y
             // loop through the existing islet locations, and try to get a non-clashing x and y
-            int isletHeight = UnityEngine.Random.Range(minIsletHeight, maxIsletHeight);
-            int isletWidth = UnityEngine.Random.Range(minIsletWidth, maxIsletWidth);
+            int isletHeight = UnityEngine.Random.Range(minIsletHeight, maxIsletHeight +1);
+            int isletWidth = UnityEngine.Random.Range(minIsletWidth, maxIsletWidth +1);
 
             x = UnityEngine.Random.Range(3 + isletHeight, levelWidth - 1 - isletWidth);
             y = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
@@ -692,14 +723,14 @@ maxXProtrusion : 3
         Short description of algo:
      * 1) Iterates through the list of illegal wall tiles (global variable).
      * 2) For any given wall tile, compares two strategies : 
-       2a) deleting the illegal node, and simulating its effect to the neighbors
-       2b) comparing the pattern on the node for existing legal patterns and finds all with the lowest Hamming distance
-       - If multiple fit, returns a random one of these with again the least invasive change gets priority
+       2a) deleting wall nodes to reach a valid pattern
+       2b) adding wall nodes to reach a valid pattern
+       The least amount of additions or deletions are all collected, and on the case that additiondistance is same for multiple, a random one of those is returned. Deletions vice versa.
        
         3) on a tie case ( both strategies are equally good/bad), one gets picked based on the seed state ie next random number
 
        3) Compares the this way found best strategies with each other and applies the strategy.
-        - on tie, filters all that have the lowest count and then chooses one, once again randomly.
+        - If a wildcard is present in a pattern ('_') , the algoritm simulates both options and chooses the one that produces the least amount of illegal neighbors, observed from the wildcard node.
      */
     void ApplyRepairIteration()
     {
