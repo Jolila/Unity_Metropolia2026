@@ -43,21 +43,32 @@ maxXProtrusion : 3
      * 
      * */
 
-    [SerializeField] int levelWidth = 64;
-    [SerializeField] int levelHeight = 64;
+    [SerializeField] int MinLevelWidth = 24;
+    [SerializeField] int MaxLevelWidth = 100;
+    [SerializeField] int MinLevelHeight = 24;
+    [SerializeField] int MaxLevelHeight = 136;
+
     [SerializeField] int seed = 42;
     [SerializeField] int levelNumber = 0;
-    [SerializeField] int numOfIslets = 2;
+
+    [SerializeField] int MinIsletCount = 1;
+    [SerializeField] int MaxIsletCount = 2;
     [SerializeField] int minIsletHeight = 2;
     [SerializeField] int maxIsletHeight = 9;
     [SerializeField] int minIsletWidth = 2;
     [SerializeField] int maxIsletWidth = 9;
-    [SerializeField] int spaceBetweenIslets = 3;
+    [SerializeField] int MinSpaceBetweenIslets = 3;
+
+
     [SerializeField] int maxIterations = 100;
     [SerializeField] int protrusionRollMax = 255;
     [SerializeField] int protrusionRollThreshold = 64;
-    [SerializeField] int maxXProtrusion = 5;
-    [SerializeField] int maxYProtrusion = 5;
+    [SerializeField] int MinXProtrusion = 1;
+    [SerializeField] int MinYProtrusion = 1;
+
+    [SerializeField] int MaxXProtrusion = 5;
+    [SerializeField] int MaxYProtrusion = 5;
+
     [SerializeField] bool protrudeIslets = true;
     [SerializeField] bool protrudeOuterWalls = true;
 
@@ -68,6 +79,8 @@ maxXProtrusion : 3
 
     [SerializeField] RuleTile groundTile;
     [SerializeField] RuleTile wallTile;
+
+    int levelWidth, levelHeight, numOfIslets;
 
     string[] rules;
     char[,] levelGrid;
@@ -121,6 +134,11 @@ maxXProtrusion : 3
 
         UnityEngine.Random.InitState(seed);
         string fileName = "Assets/Generated/level" + levelNumber + ".txt";
+
+        levelWidth = UnityEngine.Random.Range(MinLevelWidth,MaxLevelWidth);
+        levelHeight = UnityEngine.Random.Range(MinLevelHeight, MaxLevelHeight);
+
+        numOfIslets = UnityEngine.Random.Range(MinIsletCount, MaxIsletCount);
         levelGrid = new char[levelWidth, levelHeight];
 
         // Initialize all stars for starters
@@ -144,6 +162,7 @@ maxXProtrusion : 3
         generateWalls();
         generateIslets();
         if (protrudeIslets) ProtrudeIslets();
+        if (protrudeOuterWalls) ProtrudeOuterWalls();
         
         
 
@@ -210,6 +229,70 @@ maxXProtrusion : 3
         }
 
     }
+
+ 
+    void ProtrudeOuterWalls()
+    {
+        int protrusionX, protrusionY;
+        // protrude top wall down
+        for(int x = 2; x < levelWidth -2; ++x)
+        {
+            int roll = UnityEngine.Random.Range(0, protrusionRollMax);
+            if(roll > protrusionRollThreshold)
+            {
+                protrusionY = UnityEngine.Random.Range(MinYProtrusion, MaxYProtrusion);
+                int startingY = levelHeight - 3;
+                for(int y = startingY; y > startingY - protrusionY; --y)
+                {
+                    levelGrid[x, y] = '#';
+                }
+            }
+        }
+
+        // protrude left wall to right
+        for(int y = 2; y < levelHeight - 2; ++y)
+        {
+            int roll = UnityEngine.Random.Range(0, protrusionRollMax);
+            if(roll > protrusionRollThreshold)
+            {
+                protrusionX = UnityEngine.Random.Range(MinXProtrusion, MaxXProtrusion);
+                for(int x = 2; x < protrusionX + 2; ++x)
+                {
+                    levelGrid[x, y] = '#';
+                }
+            }
+        }
+
+        // protrude right wall to left
+        for (int y = 2; y < levelHeight - 2; ++y)
+        {
+            int roll = UnityEngine.Random.Range(0, protrusionRollMax);
+            if (roll > protrusionRollThreshold)
+            {
+                protrusionX = UnityEngine.Random.Range(MinXProtrusion, MaxXProtrusion);
+                int startingX = levelWidth - 2;
+                for(int x = startingX; x > startingX - protrusionX; --x)
+                {
+                    levelGrid[x, y] = '#';
+                }
+            }
+        }
+
+        // protrude bottom wall up
+        for (int x = 2; x < levelWidth - 2; ++x)
+        {
+            int roll = UnityEngine.Random.Range(0, protrusionRollMax);
+            if (roll > protrusionRollThreshold)
+            {
+                protrusionY = UnityEngine.Random.Range(MinYProtrusion, MaxYProtrusion);
+                for (int y = 2; y < protrusionY + 2; ++y)
+                {
+                    levelGrid[x, y] = '#';
+                }
+            }
+        }
+
+    }
     /* Iterate through the array
  * roll for a chance to create protrusion on a tile that has a neighboring #
  * roll again for the type of protrusion, then roll and loop for how much protrusion there is
@@ -229,8 +312,8 @@ maxXProtrusion : 3
             if (roll > protrusionRollThreshold)
             {
 
-                protrusionX = UnityEngine.Random.Range(1, maxXProtrusion);
-                protrusionY = UnityEngine.Random.Range(1, maxYProtrusion);
+                protrusionX = UnityEngine.Random.Range(MinXProtrusion, MaxXProtrusion);
+                protrusionY = UnityEngine.Random.Range(MinYProtrusion, MaxYProtrusion);
 
                 // Maybe this will save some headache, don't know.
                 if (i.pos.x + i.width + protrusionX > levelWidth
@@ -346,7 +429,7 @@ maxXProtrusion : 3
                 int x2 = other.pos.x + other.width;
                 double dx = (x1 - x2) * (x1 - x2);
                 double distx = Math.Sqrt(dx);
-                if (Math.Abs(distx - spaceBetweenIslets) <= epsi){
+                if (Math.Abs(distx - MinSpaceBetweenIslets) <= epsi){
                     isClash = true;
                     break;
                 }
@@ -355,7 +438,7 @@ maxXProtrusion : 3
                 int y2 = other.pos.y + other.height;
                 double dy = (y1 - y2) * (y1 - y2);
                 double disty = Math.Sqrt(dy);
-                if (Math.Abs(disty - spaceBetweenIslets) <= epsi){
+                if (Math.Abs(disty - MinSpaceBetweenIslets) <= epsi){
                     isClash = true;
                     break;
                 }
@@ -439,15 +522,6 @@ maxXProtrusion : 3
     void GetIllegalPatterns()
     {
         int illegals = 0;
-
-        //foreach (var rule in rules)
-        //{
-        //    for (int i = 0; i < rule.Length; i++)
-        //    {
-        //        Debug.Log($"{i}: '{rule[i]}' ({(int)rule[i]})");
-        //    }
-        //}
-
 
         for(int y = 1; y < levelHeight - 1; ++y)
         {
@@ -851,12 +925,14 @@ maxXProtrusion : 3
         output.Append("minIsletWidth : " + minIsletWidth + "\n");
         output.Append("minIsletWidth : " + maxIsletWidth + "\n");
 
-        output.Append("space between islets : " + spaceBetweenIslets + "\n");
+        output.Append("space between islets : " + MinSpaceBetweenIslets + "\n");
         output.Append("maxIterations : " + maxIterations + "\n");
         output.Append("protrusionrollmax : " + protrusionRollMax+ "\n");
         output.Append("protrusionrollThreshold: " + protrusionRollThreshold+ "\n");
-        output.Append("maxYProtrusion : " + maxYProtrusion + "\n");
-        output.Append("maxXProtrusion : " + maxYProtrusion+ "\n");
+        output.Append("minXProtrusion : " + MinXProtrusion + "\n");
+        output.Append("minYProtrusion : " + MinYProtrusion + "\n");
+        output.Append("maxYProtrusion : " + MaxYProtrusion + "\n");
+        output.Append("maxXProtrusion : " + MaxYProtrusion+ "\n");
         File.WriteAllText(filePath, output.ToString());
         
    
