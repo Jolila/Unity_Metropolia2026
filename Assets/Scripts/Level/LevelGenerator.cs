@@ -84,6 +84,21 @@ maxXProtrusion : 3
 
     }
 
+    private static readonly Vector2Int[] patternCoordinates =
+{
+    new(-1,  1),
+    new( 0,  1),
+    new( 1,  1),
+
+    new(-1,  0),
+    new( 0,  0),
+    new( 1,  0),
+
+    new(-1, -1),
+    new( 0, -1),
+    new( 1, -1)
+};
+
 
     private static readonly Vector2Int[] neighborDirections =
     {
@@ -136,7 +151,7 @@ maxXProtrusion : 3
         for(int r = 0; r < maxIterations; ++r)
         {
             illegalPatterns.Clear();
-            FindIllegalWallTiles();
+            GetIllegalPatterns();
             outputIllegalPatterns(illegalPatterns);
             broken = illegalPatterns.Values.Sum(x => x.Count);
             Debug.Log("Found " + broken + " illegal wall tiles");
@@ -340,7 +355,7 @@ maxXProtrusion : 3
         for(int i = 0; i < 8; ++i)
         {
             char r = rule[i];
-            if (r == '_' || r == 'C') continue;
+            if (r == '_') continue;
 
             if (pattern[i] != r)
             {
@@ -357,7 +372,7 @@ maxXProtrusion : 3
         {
             if (MatchesRule(pattern, rule))
             {
-                if (rule == "____C____") return false; // the catch all pattern , that the ruleset does not know how to render
+                if (rule == "____#____") return false; // the catch all pattern , that the ruleset does not know how to render
                 return true;
             }
         }
@@ -381,11 +396,12 @@ maxXProtrusion : 3
         return rule
             .Replace("\r", "")
             .Replace("\n", "")
-            .Replace(" ", "");
+            .Replace(" ", "")
+            .Replace('C', '#');
     }
 
 
-    void FindIllegalWallTiles()
+    void GetIllegalPatterns()
     {
         int illegals = 0;
 
@@ -516,22 +532,20 @@ maxXProtrusion : 3
         {
             // Apply changes to grid
             int iter = 0;
-            foreach (Vector2Int v in neighborDirections)
+            foreach (Vector2Int v in patternCoordinates)
             {
                 Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
-                else levelGrid[pos.x, pos.y] = patternCandidate[iter];
+                levelGrid[pos.x, pos.y] = patternCandidate[iter];
                 ++iter;
             }
             candidateIntrusions.Add((patternCandidate, CountIllegalNeighborhoods(node)));
 
             //restore the grid to compare it to next pattern candidate if any
             iter = 0;
-            foreach (Vector2Int v in neighborDirections)
+            foreach (Vector2Int v in patternCoordinates)
             {
                 Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
-                else levelGrid[pos.x, pos.y] = invalidPattern[iter];
+                levelGrid[pos.x, pos.y] = invalidPattern[iter];
                 ++iter;
             }
         }
@@ -558,7 +572,6 @@ maxXProtrusion : 3
         int d = 0;
         for(int i = 0; i < a.Length -1 ; ++i)
         {
-            if (i == 4) continue;
             if (a[i] == '#' && b[i] == '#') ++d;
         }
         return d;
@@ -570,7 +583,6 @@ maxXProtrusion : 3
         int d = 0;
         for (int i = 0; i < a.Length -1; ++i)
         {
-            if (i == 4) continue;
             if (a[i] == '*' && b[i] == '#') ++d;
         }
         return d;
@@ -604,22 +616,20 @@ maxXProtrusion : 3
         {
             // Apply changes to grid
             int iter = 0;
-            foreach (Vector2Int v in neighborDirections)
+            foreach (Vector2Int v in patternCoordinates)
             {
                 Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
-                else levelGrid[pos.x, pos.y] = patternCandidate[iter];
+                levelGrid[pos.x, pos.y] = patternCandidate[iter];
                 ++iter;
             }
             candidateIntrusions.Add((patternCandidate, CountIllegalNeighborhoods(node)));
 
             //restore the grid to compare it to next pattern candidate if any
             iter = 0;
-            foreach (Vector2Int v in neighborDirections)
+            foreach (Vector2Int v in patternCoordinates)
             {
                 Vector2Int pos = new Vector2Int(node.x + v.x, node.y + v.y);
-                if (iter == 4) levelGrid[pos.x, pos.y] = '#';
-                else levelGrid[pos.x, pos.y] = invalidPattern[iter];
+                levelGrid[pos.x, pos.y] = invalidPattern[iter];
                 ++iter;
             }
         }
@@ -763,12 +773,7 @@ maxXProtrusion : 3
         foreach (var dir in neighborDirections)
         {
             Vector2Int pos = candidate.Node + dir;
-
-            if (i == 4)
-            {
-                levelGrid[pos.x, pos.y] = '#';
-            }
-            else if (candidate.ClosestMatchingPattern[i] == '_')
+            if (candidate.ClosestMatchingPattern[i] == '_')
             {
                 levelGrid[pos.x, pos.y] = GetBestWildCardOption(pos);
             }
@@ -776,7 +781,6 @@ maxXProtrusion : 3
             {
                 levelGrid[pos.x, pos.y] = candidate.ClosestMatchingPattern[i];
             }
-
             ++i;
         }
     }
