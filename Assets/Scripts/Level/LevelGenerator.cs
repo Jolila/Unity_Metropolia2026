@@ -296,7 +296,7 @@ maxXProtrusion : 3
         List<Vector2Int> isletPositions = new List<Vector2Int>();
 
 
-        while (isletsPlaced <= numOfIslets && iterations < maxIterations)
+        while (isletsPlaced < numOfIslets && iterations < maxIterations)
         {
 
             // generate new x, new y
@@ -304,8 +304,8 @@ maxXProtrusion : 3
             int isletHeight = UnityEngine.Random.Range(minIsletHeight, maxIsletHeight);
             int isletWidth = UnityEngine.Random.Range(minIsletWidth, maxIsletWidth);
 
-            x = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
-            y = UnityEngine.Random.Range(3 + isletWidth, levelWidth - 1 - isletWidth);
+            x = UnityEngine.Random.Range(3 + isletHeight, levelWidth - 1 - isletWidth);
+            y = UnityEngine.Random.Range(3 + isletHeight, levelHeight - 1 - isletHeight);
 
             // if the distance between x + width and pos.x - width is less than space between, reroll for new x
             // repeat for y
@@ -330,10 +330,14 @@ maxXProtrusion : 3
                 }
             }
             if(!isClash){
+                if (y < 0 || y + isletHeight >= levelHeight) continue;
+                if (x < 0 || x + isletWidth >= levelWidth) continue;
                 for (int j = y; j < y + isletHeight; ++j)
                 {
+                    
                     for (int i = x; i < x + isletWidth; ++i)
                     {
+                        
                         levelGrid[i, j] = '#';
                     }
                 }
@@ -791,10 +795,12 @@ maxXProtrusion : 3
     void OutputLevel(string filePath, char[,] levelGrid)
     {
         StringBuilder output = new StringBuilder();
+
+
         
-        for (int y = 0; y < levelWidth; ++y)
+        for (int y = 0; y < levelHeight; ++y)
         {
-            for (int x = 0; x < levelHeight; ++x)
+            for (int x = 0; x < levelWidth; ++x)
             {
                 output.Append(levelGrid[x, y]);
             }
