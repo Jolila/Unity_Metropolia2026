@@ -25,23 +25,6 @@ public class LevelGenerator : MonoBehaviour
             pos = position;
         }
     }
-    /*
-     * levelWidth : 64
-levelHeight : 64
-seed : 42
-num of islets : 15
-minIsletHeight : 2
-maxIsletHeight : 9
-minIsletWidth : 2
-minIsletWidth : 9
-space between islets : 3
-maxIterations : 100
-protrusionrollmax : 255
-protrusionrollThreshold: 140
-maxYProtrusion : 3
-maxXProtrusion : 3
-     * 
-     * */
 
     [SerializeField] int MinLevelWidth = 24;
     [SerializeField] int MaxLevelWidth = 100;
@@ -72,10 +55,6 @@ maxXProtrusion : 3
     [SerializeField] bool protrudeIslets = true;
     [SerializeField] bool protrudeOuterWalls = true;
 
-    [SerializeField] Tilemap groundTilemap;
-    [SerializeField] Tilemap wallTilemap;
-    [SerializeField] Tilemap outlineTileMap;
-
     [SerializeField] RuleTile groundTile;
     [SerializeField] RuleTile wallTile;
 
@@ -87,15 +66,6 @@ maxXProtrusion : 3
     public Dictionary<String, List<Vector2Int>> illegalPatterns = new();
     List<Islet> islets = new();
 
-
-    [ContextMenu("Clear tilemaps")]
-    public void ClearTileMaps(){
-
-        groundTilemap.ClearAllTiles();
-        wallTilemap.ClearAllTiles();
-        outlineTileMap.ClearAllTiles();
-
-    }
 
     private static readonly Vector2Int[] patternCoordinates =
 {
@@ -187,9 +157,8 @@ maxXProtrusion : 3
 
         }
         
-
         OutputLevel(fileName, levelGrid);
-        FillWallAndGroundTilemaps(levelGrid);
+
     }
 
     bool GridsAreEqual(char[,] a, char[,] b)
@@ -383,31 +352,17 @@ maxXProtrusion : 3
             }
         }
 
-
-
         Debug.Log("Succesful protrusions: " + totalProtrusions +" times ");
     }
-    /*
-    * x ranging from 3+islet_width to _width -1 -islet_Width (+3 to disallow non-passable path between wall edge and islet edge)
-    * y ranging from 3+islet_height to height -1 -isletHeight (+3 can be made to a serializable if desired)
-    * generate one random x and y
-    * generate additional islets by validating the minimum distance
-    * iterate through max iterations or until the islets are placed
 
-    NOTE : The theorycrafing up did not lead to a fruitful resolution, and likely an additional sweep needs to be done to preserve the tilemap constraints.
-    */
     void generateIslets()
     {
 
         int isletsPlaced = 0;
         int iterations = 0;
- 
-
         int x, y;
         float epsi = 0.01f;
         List<Vector2Int> isletPositions = new List<Vector2Int>();
-
-
         while (isletsPlaced < numOfIslets && iterations < maxIterations)
         {
 
@@ -580,12 +535,10 @@ maxXProtrusion : 3
     bool IsIllegalNeighborhood(Vector2Int v)
     {
 
-
         foreach (Vector2Int n in neighborDirections)
         {
             int x = v.x + n.x;
             int y = v.y + n.y;
-
             if (x < 0 || x >= levelWidth ||
                 y < 0 || y >= levelHeight)
                 return false;
@@ -664,15 +617,6 @@ maxXProtrusion : 3
 
     }
 
-    int GetHammingDistance(string a, string b)
-    {
-        int d = 0;
-        for(int i = 0; i < a.Length; ++i)
-        {
-            if (a[i] != b[i]) ++d;
-        }
-        return d;
-    }
 
     int GetRemovalDistance(string a, string b)
     {
@@ -912,8 +856,6 @@ maxXProtrusion : 3
         Debug.Log(output);
 
         output.Append("Config : ");
- 
-
         output.Append("levelWidth : " + levelWidth + "\n");
         output.Append("levelHeight : " + levelHeight + "\n");
         output.Append("seed : " + seed + "\n");
@@ -933,30 +875,9 @@ maxXProtrusion : 3
         output.Append("maxXProtrusion : " + MaxYProtrusion+ "\n");
         File.WriteAllText(filePath, output.ToString());
         
-   
     }
 
-    void FillWallAndGroundTilemaps(char[,] levelGrid)
-    {
-        ClearTileMaps();
-        for(int y = 0; y < levelHeight; ++y)
-        {
-            for(int x = 0; x < levelWidth; ++x)
-            {
-                Vector3Int cell = new Vector3Int(x, y, 0);
 
-                if (levelGrid[x,y] == '#')
-                {
-                    wallTilemap.SetTile(cell, wallTile);
-                }
-                else
-                {
-                    groundTilemap.SetTile(cell, groundTile);   
-                }
-            }
-        }
-
-    }
 
 
 
