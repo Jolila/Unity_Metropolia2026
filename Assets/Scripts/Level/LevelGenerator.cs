@@ -74,10 +74,7 @@ maxXProtrusion : 3
 
     [SerializeField] Tilemap groundTilemap;
     [SerializeField] Tilemap wallTilemap;
-    [SerializeField] Tilemap decorationsTilemap;
     [SerializeField] Tilemap outlineTileMap;
-    [SerializeField] TileBase skullTile;
-    [SerializeField] TileBase fossilTile;
 
     [SerializeField] RuleTile groundTile;
     [SerializeField] RuleTile wallTile;
@@ -96,7 +93,6 @@ maxXProtrusion : 3
 
         groundTilemap.ClearAllTiles();
         wallTilemap.ClearAllTiles();
-        decorationsTilemap.ClearAllTiles();
         outlineTileMap.ClearAllTiles();
 
     }
@@ -193,7 +189,7 @@ maxXProtrusion : 3
         
 
         OutputLevel(fileName, levelGrid);
-        RenderLevel(levelGrid);
+        FillWallAndGroundTilemaps(levelGrid);
     }
 
     bool GridsAreEqual(char[,] a, char[,] b)
@@ -940,7 +936,7 @@ maxXProtrusion : 3
    
     }
 
-    void RenderLevel(char[,] levelGrid)
+    void FillWallAndGroundTilemaps(char[,] levelGrid)
     {
         ClearTileMaps();
         for(int y = 0; y < levelHeight; ++y)
@@ -948,40 +944,17 @@ maxXProtrusion : 3
             for(int x = 0; x < levelWidth; ++x)
             {
                 Vector3Int cell = new Vector3Int(x, y, 0);
+
                 if (levelGrid[x,y] == '#')
                 {
                     wallTilemap.SetTile(cell, wallTile);
-                    if (UnityEngine.Random.Range(0, protrusionRollMax) > protrusionRollMax - 5)
-                    {
-                        decorationsTilemap.SetTile(cell, fossilTile);
-                    }
-
                 }
                 else
                 {
-
-                    groundTilemap.SetTile(cell, groundTile);
-                    if (UnityEngine.Random.Range(0, protrusionRollMax) > protrusionRollMax - 5)
-                    {
-                        decorationsTilemap.SetTile(cell, skullTile);
-                    }
-
-                    
+                    groundTilemap.SetTile(cell, groundTile);   
                 }
             }
         }
-       
-        Tile debugTile = new Tile();
-        debugTile.color = new Color(1, 0, 1);
-        foreach (var kv in illegalPatterns)
-        {
-            foreach(var coordpair in kv.Value)
-            {
-                Vector3Int cell = new Vector3Int(coordpair.x, coordpair.y, 0);
-                //wallTilemap.SetTile(cell, debugTile);
-            }
-        }
-
 
     }
 
