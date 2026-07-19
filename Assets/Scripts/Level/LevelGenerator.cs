@@ -55,9 +55,6 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] bool protrudeIslets = true;
     [SerializeField] bool protrudeOuterWalls = true;
 
-    [SerializeField] RuleTile groundTile;
-    [SerializeField] RuleTile wallTile;
-
     int levelWidth, levelHeight, numOfIslets;
 
     string[] rules;
@@ -97,6 +94,10 @@ public class LevelGenerator : MonoBehaviour
 
 
 
+    /**
+     * Generator operates on the assumption, that the ruletile patterns are already exported.
+     * For future versions it would be nice to find a less hardcoded solution
+     */
 [ContextMenu("Generate level")]
     public void Generate(){
 
@@ -116,8 +117,7 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        // Fetch walls ruletile:
-
+        // Fetch walls ruletile from the default hardcoded path where the pattern extractor tries to place it
         string WallRuleTilePath = "Assets/Generated/WallRuleTile.txt";
         string text = File.ReadAllText(WallRuleTilePath);
 

@@ -5834,6 +5834,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &697598622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 697598623}
+  m_Layer: 0
+  m_Name: LevelSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &697598623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697598622}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 23.67306, y: 16.19055, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1615726120}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &902001949
 GameObject:
   m_ObjectHideFlags: 0
@@ -13778,12 +13810,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615726118}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.42833, y: -1.58209, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.24473, y: -17.77264, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 697598623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1615726121
 MonoBehaviour:
@@ -13819,14 +13851,6 @@ MonoBehaviour:
   MaxYProtrusion: 3
   protrudeIslets: 1
   protrudeOuterWalls: 1
-  groundTilemap: {fileID: 1144036773}
-  wallTilemap: {fileID: 145939524}
-  decorationsTilemap: {fileID: 2030628096}
-  outlineTileMap: {fileID: 902001952}
-  skullTile: {fileID: 11400000, guid: b9a1f11c82a89824cb98ee62946dd32e, type: 2}
-  fossilTile: {fileID: 11400000, guid: 0096ec57175317b42b12a87009087fb0, type: 2}
-  groundTile: {fileID: 11400000, guid: 9960be546838f31488a60ce6fba86b3c, type: 2}
-  wallTile: {fileID: 11400000, guid: ba63d890360c68144b43a1a22fbac6b7, type: 2}
 --- !u!1 &2002344854
 GameObject:
   m_ObjectHideFlags: 0
@@ -14007,6 +14031,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 977541026}
-  - {fileID: 1615726120}
   - {fileID: 2002344856}
   - {fileID: 293437944}
+  - {fileID: 697598623}

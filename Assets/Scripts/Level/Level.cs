@@ -8,5 +8,5 @@ struct Level
 
     public char[,] Walls;
 
-    public TileBase[,] Decorations;
+
 }

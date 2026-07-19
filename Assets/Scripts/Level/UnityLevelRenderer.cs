@@ -1,16 +1,15 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class UnityLevelRenderer : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] Tilemap LevelOutlineTilemap;
+    [SerializeField] Tilemap GroundsTilemap;
+    [SerializeField] Tilemap WallsTilemap;
+    [SerializeField] Tilemap DecorationsTilemap;
+
+    // at this point, the textual data exists
+
+
 }
