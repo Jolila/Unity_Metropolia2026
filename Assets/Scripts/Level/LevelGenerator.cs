@@ -76,6 +76,8 @@ maxXProtrusion : 3
     [SerializeField] Tilemap wallTilemap;
     [SerializeField] Tilemap decorationsTilemap;
     [SerializeField] Tilemap outlineTileMap;
+    [SerializeField] TileBase skullTile;
+    [SerializeField] TileBase fossilTile;
 
     [SerializeField] RuleTile groundTile;
     [SerializeField] RuleTile wallTile;
@@ -949,10 +951,22 @@ maxXProtrusion : 3
                 if (levelGrid[x,y] == '#')
                 {
                     wallTilemap.SetTile(cell, wallTile);
+                    if (UnityEngine.Random.Range(0, protrusionRollMax) > protrusionRollMax - 5)
+                    {
+                        decorationsTilemap.SetTile(cell, fossilTile);
+                    }
+
                 }
                 else
                 {
+
                     groundTilemap.SetTile(cell, groundTile);
+                    if (UnityEngine.Random.Range(0, protrusionRollMax) > protrusionRollMax - 5)
+                    {
+                        decorationsTilemap.SetTile(cell, skullTile);
+                    }
+
+                    
                 }
             }
         }

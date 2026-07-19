@@ -1,8 +1,20 @@
 
-Font: Pizel(2021) by CopheeMoth:
+Font: 
+Pizel(2021) by CopheeMoth:
 https://opengameart.org/content/pizel-font
-- used throughout the game UI
+- used throughout the game UI & In-game HUD
 
 
-- 
+Additional visual elements:
+
+The following assets were used in level embellishments:
+Skull Pixel Art(2024) by Cal McEachern
+https://opengameart.org/content/skull-pixel-art
+
+
+A modification on Fossil (Undead) RPG Enemy Sprites(2011) by Redhsrike:
+https://opengameart.org/content/fossil-undead-rpg-enemy-sprites
+Modification done by Flying Tiger Comics(2016):
+https://opengameart.org/content/fossil-undead-rpg-enemy-mod-therapsid-charset
+- Only one of the textures were used in embellishments of walls.
 
