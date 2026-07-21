@@ -96,6 +96,7 @@ public class UnityLevelRenderer : MonoBehaviour
 
         GetAttributes();
         GeometryGrid = new char[levelWidth, levelHeight];
+        DecorationGrid = new char[levelWidth, levelHeight];
         LoadGeometryGrid();
         LoadDecorationGrid();
         
@@ -129,7 +130,7 @@ public class UnityLevelRenderer : MonoBehaviour
                 }
                 else if (GeometryGrid[x, y] == '#')
                 {
-                    GroundsTilemap.SetTile(cell, WallTile);
+                    WallsTilemap.SetTile(cell, WallTile);
                 }
 
             }
@@ -139,26 +140,26 @@ public class UnityLevelRenderer : MonoBehaviour
     void RenderDecorations()
     {
 
-        //for (int y = 0; y < levelHeight; ++y)
-        //{
-        //    for (int x = 0; x < levelWidth; ++x)
-        //    {
-        //        Vector3Int cell = new Vector3Int(x, y, 0);
-        //        if (GeometryGrid[x, y] == '*')
-        //        {
-        //            GroundsTilemap.SetTile(cell, GroundTile);
-        //        }
-        //        else if (GeometryGrid[x, y] == '#')
-        //        {
-        //            GroundsTilemap.SetTile(cell, WallTile);
-        //        }
+        for (int y = 0; y < levelHeight; ++y)
+        {
+            for (int x = 0; x < levelWidth; ++x)
+            {
+                Vector3Int cell = new Vector3Int(x, y, 0);
+                if (DecorationGrid[x, y] == 'd')
+                {
+                    DecorationsTilemap.SetTile(cell, RandomDinoBoneRuleTile);
+                }
+                //else if (GeometryGrid[x, y] == 'S')
+                //{
+                //    DecorationsTilemap.SetTile(cell, WallTile);
+                //}
 
-        //    }
-        //}
+            }
+        }
     }
 
 
-    
+
 
     [ContextMenu("Clear tilemaps")]
     public void Clear()

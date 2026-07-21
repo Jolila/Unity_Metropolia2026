@@ -28,14 +28,10 @@ public class LevelDecorator : MonoBehaviour
     new( 1, -1)
 };
 
-    char[,] GeometryGrid; // Take in only the grid data since the decoration generation is not based on the rules
+    // Take in only the grid data since the decoration generation is not based on the rules
     // alternatively for placing the dino tiles a sweep for tiles that can house the dino full skeleton needs to happen
-
+    char[,] GeometryGrid; 
     char[,] DecorationsGrid;
-
-
-    [SerializeField] int level_No = 0;
-
     [SerializeField] int minDinoBones = 0;
     [SerializeField] int maxDinoBones = 3;
     [SerializeField] int ModifiedSeed = 0;
@@ -88,13 +84,15 @@ public class LevelDecorator : MonoBehaviour
 
        
         string[] geo = Directory.GetFiles(
-      "Assets/Generated/Working",
+      "Assets/Generated/Working/",
       "*_geometry.txt");
         GeometryFilePath = geo[0];
 
 
         string levelPart = GeometryFilePath.Split("_")[0];
-        int n = int.Parse(levelPart.Substring(5));
+        int id = GeometryFilePath.IndexOf("_");
+        int n = int.Parse(levelPart.Substring(id -3, 3));
+       
         string levelString = $"level{n:D3}";
         DecorationsFilePath = "Assets/Generated/Working/" + levelString + "_decorations.txt";
 
@@ -108,6 +106,7 @@ public class LevelDecorator : MonoBehaviour
 
         GetAttributes();
         UnityEngine.Random.InitState(seed);
+        GeometryGrid = new char[levelWidth, levelHeight];
         DecorationsGrid = new char[levelWidth, levelHeight];
         SetUpLevelGrid();
 
@@ -152,7 +151,6 @@ public class LevelDecorator : MonoBehaviour
         var shuffledLoc = Fisher_Yates(locations);
 
         int max = shuffledLoc.Count < maxDinoBones ? shuffledLoc.Count : maxDinoBones;
-        string dinostring = "ijklmnopqr"; // 10 as in 10 total more common dino bone fragments
         for(int i = 0; i < max; ++i)
         {
             // roll for the full skeleton spawn, h
@@ -163,8 +161,6 @@ public class LevelDecorator : MonoBehaviour
             }
             else
             {
-                int p = UnityEngine.Random.Range(0, dinostring.Length);
-                char c = dinostring[p];
                 DecorationsGrid[shuffledLoc[i].x, shuffledLoc[i].y] = 'd';
             }
         }
