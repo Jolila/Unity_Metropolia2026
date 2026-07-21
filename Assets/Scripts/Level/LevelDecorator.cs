@@ -96,7 +96,7 @@ public class LevelDecorator : MonoBehaviour
         string levelPart = GeometryFilePath.Split("_")[0];
         int n = int.Parse(levelPart.Substring(5));
         string levelString = $"level{n:D3}";
-        DecorationsFilePath = "Assets/Generated/Working/level" + levelString + "_decorations.txt";
+        DecorationsFilePath = "Assets/Generated/Working/" + levelString + "_decorations.txt";
 
 
 

@@ -140,9 +140,9 @@ public class LevelGenerator : MonoBehaviour
         levelString = $"level{levelNumber:D3}";
 
         UnityEngine.Random.InitState(seed);
-        levelOutputFilename = "Assets/Generated/Working/level" + levelString + "_geometry.txt";
-        levelConfigOutputFilename = "Assets/Generated/Working/level" + levelString + "_config.txt";
-        levelInfoOutputFilename = "Assets/Generated/Working/level" + levelString + "_info.txt";
+        levelOutputFilename = "Assets/Generated/Working/" + levelString + "_geometry.txt";
+        levelConfigOutputFilename = "Assets/Generated/Working/" + levelString + "_config.txt";
+        levelInfoOutputFilename = "Assets/Generated/Working/" + levelString + "_info.txt";
 
         levelWidth = UnityEngine.Random.Range(MinLevelWidth,MaxLevelWidth);
         levelHeight = UnityEngine.Random.Range(MinLevelHeight, MaxLevelHeight);

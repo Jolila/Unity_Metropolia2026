@@ -12,6 +12,9 @@ public class UnityLevelRenderer : MonoBehaviour
 
     [SerializeField] RuleTile RandomDinoBoneRuleTile;
 
+    [SerializeField] RuleTile GroundTile;
+    [SerializeField] RuleTile WallTile;
+
 
 
 
@@ -28,9 +31,10 @@ public class UnityLevelRenderer : MonoBehaviour
 
     // This is kinda silly and kinda hardcoded to work on the "working" level in that if there is none it will not render anything
 
-    public string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath;
+    private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath;
     int levelWidth, levelHeight;
-    char[,] levelGeometryGrid;
+    char[,] GeometryGrid;
+    char[,] DecorationGrid;
 
     void GetAttributes()
     {
@@ -43,6 +47,32 @@ public class UnityLevelRenderer : MonoBehaviour
             else if (line.StartsWith("height"))
             {
                 levelHeight = int.Parse(line.Split(':')[1].Trim());
+            }
+        }
+    }
+
+    void LoadGeometryGrid()
+    {
+        string[] lines = File.ReadAllLines(GeometryFilePath);
+        for (int y = 0; y < levelHeight; ++y)
+        {
+            for (int x = 0; x < levelWidth; ++x)
+            {
+                GeometryGrid[x, y] = lines[y][x];
+            }
+        }
+    }
+
+
+
+    void LoadDecorationGrid()
+    {
+        string[] lines = File.ReadAllLines(DecorationsFilePath);
+        for (int y = 0; y < levelHeight; ++y)
+        {
+            for (int x = 0; x < levelWidth; ++x)
+            {
+                DecorationGrid[x, y] = lines[y][x];
             }
         }
     }
@@ -65,9 +95,13 @@ public class UnityLevelRenderer : MonoBehaviour
         DecorationsFilePath = decor[0];
 
         GetAttributes();
-
+        GeometryGrid = new char[levelWidth, levelHeight];
+        LoadGeometryGrid();
+        LoadDecorationGrid();
         
     }
+
+
 
 
     [ContextMenu("Render")]
@@ -76,10 +110,55 @@ public class UnityLevelRenderer : MonoBehaviour
 
         PreRenderTasks(); // Fix infinite recursion by removing from prerendertasks...
 
-
-
-
+        RenderGeometry();
+        RenderDecorations();
+ 
+        
     }
+
+    void RenderGeometry()
+    {
+        for (int y = 0; y < levelHeight; ++y)
+        {
+            for (int x = 0; x < levelWidth; ++x)
+            {
+                Vector3Int cell = new Vector3Int(x, y, 0);
+                if (GeometryGrid[x, y] == '*')
+                {
+                    GroundsTilemap.SetTile(cell, GroundTile);
+                }
+                else if (GeometryGrid[x, y] == '#')
+                {
+                    GroundsTilemap.SetTile(cell, WallTile);
+                }
+
+            }
+        }
+    }
+
+    void RenderDecorations()
+    {
+
+        //for (int y = 0; y < levelHeight; ++y)
+        //{
+        //    for (int x = 0; x < levelWidth; ++x)
+        //    {
+        //        Vector3Int cell = new Vector3Int(x, y, 0);
+        //        if (GeometryGrid[x, y] == '*')
+        //        {
+        //            GroundsTilemap.SetTile(cell, GroundTile);
+        //        }
+        //        else if (GeometryGrid[x, y] == '#')
+        //        {
+        //            GroundsTilemap.SetTile(cell, WallTile);
+        //        }
+
+        //    }
+        //}
+    }
+
+
+    
 
     [ContextMenu("Clear tilemaps")]
     public void Clear()
