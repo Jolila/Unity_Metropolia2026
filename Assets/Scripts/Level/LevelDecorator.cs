@@ -178,6 +178,9 @@ public class LevelDecorator : MonoBehaviour
     public void PlaceShrooms()
     {
         // TO DO : try to evaluate shroom densities by using a propability based approach? (:
+
+        // Idea : for example choose 10% of the good locations, then on success have a 50% chance to spawn a neighboring cluster
+        // If fails, spawn single shroom
         foreach(Vector2Int pos in shroomSporeLocations)
         {
             DecorationsGrid[pos.x, pos.y] = 'C';
