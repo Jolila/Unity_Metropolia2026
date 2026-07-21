@@ -206,6 +206,10 @@ public class LevelGenerator : MonoBehaviour
                 return;
             }
         }
+
+        // Lastly do a sweep for legal single tiles which look stupid and might cause enemies to spawn in unreachable locations
+
+        FixRemainingSingleFloorTiles();
         
 
         OutputLevel();
@@ -228,6 +232,21 @@ public class LevelGenerator : MonoBehaviour
             }
         }
         return true;
+    }
+
+    private void FixRemainingSingleFloorTiles()
+    {
+        string singleFloorTileMiddleOfWallsPattern = "####*####";
+        for (int y = 2; y < levelHeight-2; ++y)
+        {
+            for (int x = 2; x < levelWidth-2; ++x)
+            {
+               if(GetPattern(x,y) == singleFloorTileMiddleOfWallsPattern)
+                {
+                    levelGrid[x, y] = '#';
+                }
+            }
+        }
     }
 
 

@@ -178,6 +178,10 @@ public class LevelDecorator : MonoBehaviour
     public void PlaceShrooms()
     {
         // TO DO : try to evaluate shroom densities by using a propability based approach? (:
+        foreach(Vector2Int pos in shroomSporeLocations)
+        {
+            DecorationsGrid[pos.x, pos.y] = 'C';
+        }
     }
 
 

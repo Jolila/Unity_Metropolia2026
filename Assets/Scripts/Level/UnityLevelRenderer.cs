@@ -9,8 +9,11 @@ public class UnityLevelRenderer : MonoBehaviour
     [SerializeField] Tilemap GroundsTilemap;
     [SerializeField] Tilemap WallsTilemap;
     [SerializeField] Tilemap DecorationsTilemap;
+    [SerializeField] TileBase dinoSingularTile;
 
     [SerializeField] RuleTile RandomDinoBoneRuleTile;
+    [SerializeField] RuleTile RandomShroomClusterRuleTile;
+    [SerializeField] RuleTile RandomSingleShroomRuleTile;
 
     [SerializeField] RuleTile GroundTile;
     [SerializeField] RuleTile WallTile;
@@ -149,10 +152,14 @@ public class UnityLevelRenderer : MonoBehaviour
                 {
                     DecorationsTilemap.SetTile(cell, RandomDinoBoneRuleTile);
                 }
-                //else if (GeometryGrid[x, y] == 'S')
-                //{
-                //    DecorationsTilemap.SetTile(cell, WallTile);
-                //}
+                else if (DecorationGrid[x, y] == 'h')
+                {
+                    DecorationsTilemap.SetTile(cell, dinoSingularTile);
+                }
+                else if (DecorationGrid[x,y] == 'C')
+                {
+                    DecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
+                }
 
             }
         }
