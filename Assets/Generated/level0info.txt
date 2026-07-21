@@ -1,0 +1,3 @@
+width : 39
+height : 33
+Islet count 3

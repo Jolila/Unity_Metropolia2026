@@ -100,13 +100,17 @@ public class LevelGenerator : MonoBehaviour
      * For future versions it would be nice to find a less hardcoded solution
      */
 
-    string levelOutputFilename, levelConfigOutputFilename, levelRemainingIllegalPatternsFilename;
+    string levelOutputFilename,
+        levelConfigOutputFilename,
+        levelRemainingIllegalPatternsFilename,
+        levelInfoOutputFilename;
 [ContextMenu("Generate level")]
     public void Generate(){
 
         UnityEngine.Random.InitState(seed);
         levelOutputFilename = "Assets/Generated/level" + levelNumber + ".txt";
         levelConfigOutputFilename = "Assets/Generated/level" + levelNumber + "config.txt";
+        levelInfoOutputFilename = "Assets/Generated/level" + levelNumber + "info.txt";
 
         levelWidth = UnityEngine.Random.Range(MinLevelWidth,MaxLevelWidth);
         levelHeight = UnityEngine.Random.Range(MinLevelHeight, MaxLevelHeight);
@@ -174,6 +178,7 @@ public class LevelGenerator : MonoBehaviour
 
         OutputLevel();
         OutputLevelConfig();
+        OutputLevelInfo();
     }
 
     bool GridsAreEqual(char[,] a, char[,] b)
@@ -883,6 +888,16 @@ public class LevelGenerator : MonoBehaviour
         configOutput.Append("protrude islets : " + protrudeIslets + "\n");
         configOutput.Append("protrude outer walls : " + protrudeOuterWalls + "\n");
         File.WriteAllText(levelConfigOutputFilename, configOutput.ToString());
+    }
+
+    void OutputLevelInfo()
+    {
+        StringBuilder infoOutput = new();
+        infoOutput.Append("width : " + levelWidth +"\n");
+        infoOutput.Append("height : " + levelHeight + "\n");
+        infoOutput.Append("seed:" + seed + "\n");
+        infoOutput.Append("Islet count " + numOfIslets + "\n");
+        File.WriteAllText(levelInfoOutputFilename, infoOutput.ToString());
     }
 
 
