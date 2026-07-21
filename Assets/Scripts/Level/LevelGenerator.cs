@@ -43,7 +43,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] int MinSpaceBetweenIslets = 3;
 
 
-    [SerializeField] int maxIterations = 100;
+    [SerializeField] int MaxRepairIterations = 100;
+    [SerializeField] int MaxIsletGenerationIterations = 100;
     [SerializeField] int protrusionRollMax = 255;
     [SerializeField] int protrusionRollThreshold = 64;
     [SerializeField] int MinXProtrusion = 1;
@@ -55,7 +56,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] bool protrudeIslets = true;
     [SerializeField] bool protrudeOuterWalls = true;
 
-    int levelWidth, levelHeight, numOfIslets;
+    int levelWidth, levelHeight, numOfIslets, IsletGenerationIterationsUsed, RepairIterationsUsed;
 
     string[] rules;
     char[,] levelGrid;
@@ -98,11 +99,14 @@ public class LevelGenerator : MonoBehaviour
      * Generator operates on the assumption, that the ruletile patterns are already exported.
      * For future versions it would be nice to find a less hardcoded solution
      */
+
+    string levelOutputFilename, levelConfigOutputFilename, levelRemainingIllegalPatternsFilename;
 [ContextMenu("Generate level")]
     public void Generate(){
 
         UnityEngine.Random.InitState(seed);
-        string fileName = "Assets/Generated/level" + levelNumber + ".txt";
+        levelOutputFilename = "Assets/Generated/level" + levelNumber + ".txt";
+        levelConfigOutputFilename = "Assets/Generated/level" + levelNumber + "config.txt";
 
         levelWidth = UnityEngine.Random.Range(MinLevelWidth,MaxLevelWidth);
         levelHeight = UnityEngine.Random.Range(MinLevelHeight, MaxLevelHeight);
@@ -128,7 +132,9 @@ public class LevelGenerator : MonoBehaviour
         rules = mRules.Select(NormalizeRule).ToArray();
 
         generateWalls();
+        IsletGenerationIterationsUsed = 0;
         generateIslets();
+
         if (protrudeIslets) ProtrudeIslets();
         if (protrudeOuterWalls) ProtrudeOuterWalls();
         
@@ -137,13 +143,12 @@ public class LevelGenerator : MonoBehaviour
         char[,] previous = (char[,])levelGrid.Clone();
         int consecutiveIterationResults = 0;
         int broken = 0;
-        for(int r = 0; r < maxIterations; ++r)
+        RepairIterationsUsed = 0;
+        while(RepairIterationsUsed < MaxRepairIterations)
         {
             illegalPatterns.Clear();
             GetIllegalPatterns();
-            outputIllegalPatterns(illegalPatterns);
             broken = illegalPatterns.Values.Sum(x => x.Count);
-            Debug.Log("Found " + broken + " illegal wall tiles");
             if (broken == 0) break;
             ApplyRepairIteration();
             if (GridsAreEqual(previous, levelGrid)){
@@ -151,14 +156,24 @@ public class LevelGenerator : MonoBehaviour
             }
             if(consecutiveIterationResults > 3)
             {
-                Debug.Log("Abort : " + consecutiveIterationResults + " consecutive results - algorithm needs to introduce suboptimal changes");
                 break;
             }
+            RepairIterationsUsed++;
+        }
 
+        if(consecutiveIterationResults > 3)
+        {
+            if(illegalPatterns.Count > 0)
+            {
+                OutputIllegalPatterns();
+                // algorithm did not converge with this amount of repair iterations - check generated illegal patterns file for deeper analysis
+                return;
+            }
         }
         
-        OutputLevel(fileName, levelGrid);
 
+        OutputLevel();
+        OutputLevelConfig();
     }
 
     bool GridsAreEqual(char[,] a, char[,] b)
@@ -269,8 +284,7 @@ public class LevelGenerator : MonoBehaviour
     {
         int protrusionX;
         int protrusionY;
-        
-        int totalProtrusions = 0;
+      
 
 
         foreach (Islet i in islets)
@@ -286,7 +300,7 @@ public class LevelGenerator : MonoBehaviour
                 if (i.pos.x + i.width + protrusionX > levelWidth
                     || i.pos.x - i.width - protrusionX < 0
                     || i.pos.y + i.height + protrusionY > levelHeight
-                    || i.pos.y - i.height - protrusionY < 0) Debug.Log("This shoudl not print");
+                    || i.pos.y - i.height - protrusionY < 0) continue;
 
 
                 int rollX_Or_Y = UnityEngine.Random.Range(0, 2);
@@ -352,18 +366,16 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log("Succesful protrusions: " + totalProtrusions +" times ");
     }
 
     void generateIslets()
     {
 
         int isletsPlaced = 0;
-        int iterations = 0;
         int x, y;
         float epsi = 0.01f;
         List<Vector2Int> isletPositions = new List<Vector2Int>();
-        while (isletsPlaced < numOfIslets && iterations < maxIterations)
+        while (isletsPlaced < numOfIslets && IsletGenerationIterationsUsed < MaxIsletGenerationIterations)
         {
 
             // generate new x, new y
@@ -410,13 +422,10 @@ public class LevelGenerator : MonoBehaviour
                 }
                 islets.Add(new Islet(isletHeight, isletWidth, new Vector2Int(x, y)));
                 ++isletsPlaced;
-                ++iterations;
+                ++IsletGenerationIterationsUsed;
             }
-            
-
         }
-        Debug.Log("Iterations used " + iterations + ", produced :" + isletsPlaced + " islets");
-      
+
     }
 
 
@@ -496,19 +505,15 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log("Encountered " + illegals + " illegal pattern instances");
-
     }
 
-    void outputIllegalPatterns(Dictionary<String,List<Vector2Int>> illegalPatterns)
+    void OutputIllegalPatterns()
     {
-        string fileName = "Assets/Generated/level" + levelNumber + "illegals.txt";
-
+      
         StringBuilder output = new();
-
+        output.Append("After " + RepairIterationsUsed + " repair iterations, the following list of illegal patterns remain \n");
         foreach(var kv in illegalPatterns)
         {
-            //int occurrences = kv.Value.Count();
             output.Append($"{kv.Value.Count()} occurences\n{PrettyPattern(kv.Key)}\n");
             foreach(var v in kv.Value)
             {
@@ -516,7 +521,7 @@ public class LevelGenerator : MonoBehaviour
             }
             output.AppendLine();
         }
-        File.WriteAllText(fileName, output.ToString());
+        File.WriteAllText(levelRemainingIllegalPatternsFilename, output.ToString());
     }
 
     string PrettyPattern(string p)
@@ -752,9 +757,6 @@ public class LevelGenerator : MonoBehaviour
     {
         List<RepairCandidate> candidates = new();
         int initialIllegalPatterns = illegalPatterns.Values.Sum(x => x.Count);
-        Debug.Log("Attempting to remove : " + initialIllegalPatterns + "illegal nodes");
-        
-
         foreach (var kv in illegalPatterns)
         {
             foreach(var node in kv.Value)
@@ -824,7 +826,6 @@ public class LevelGenerator : MonoBehaviour
         foreach (var dir in patternCoordinates)
         {
             Vector2Int pos = candidate.Node + dir;
-            Debug.Log("Winning pattern : " + candidate.ClosestMatchingPattern);
             if (candidate.ClosestMatchingPattern[i] == '_')
             {
                 levelGrid[pos.x, pos.y] = GetBestWildCardOption(pos);
@@ -839,12 +840,9 @@ public class LevelGenerator : MonoBehaviour
 
 
 
-    void OutputLevel(string filePath, char[,] levelGrid)
+    void OutputLevel()
     {
-        StringBuilder output = new StringBuilder();
-
-
-        
+        StringBuilder output = new ();
         for (int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)
@@ -853,28 +851,38 @@ public class LevelGenerator : MonoBehaviour
             }
             output.AppendLine();
         }
-        Debug.Log(output);
-
-        output.Append("Config : ");
-        output.Append("levelWidth : " + levelWidth + "\n");
-        output.Append("levelHeight : " + levelHeight + "\n");
-        output.Append("seed : " + seed + "\n");
-        output.Append("num of islets : " + numOfIslets+ "\n");
-        output.Append("minIsletHeight : " + minIsletHeight + "\n");
-        output.Append("maxIsletHeight : " + maxIsletHeight + "\n");
-        output.Append("minIsletWidth : " + minIsletWidth + "\n");
-        output.Append("minIsletWidth : " + maxIsletWidth + "\n");
-
-        output.Append("space between islets : " + MinSpaceBetweenIslets + "\n");
-        output.Append("maxIterations : " + maxIterations + "\n");
-        output.Append("protrusionrollmax : " + protrusionRollMax+ "\n");
-        output.Append("protrusionrollThreshold: " + protrusionRollThreshold+ "\n");
-        output.Append("minXProtrusion : " + MinXProtrusion + "\n");
-        output.Append("minYProtrusion : " + MinYProtrusion + "\n");
-        output.Append("maxYProtrusion : " + MaxYProtrusion + "\n");
-        output.Append("maxXProtrusion : " + MaxYProtrusion+ "\n");
-        File.WriteAllText(filePath, output.ToString());
+        File.WriteAllText(levelOutputFilename, output.ToString());
         
+    }
+
+    void OutputLevelConfig()
+    {
+        StringBuilder configOutput = new();
+
+
+        configOutput.Append("Config : \n");
+        configOutput.Append("seed : " + seed + "\n");
+        configOutput.Append("min level width :" + MinLevelWidth + "\n");
+        configOutput.Append("max level width :" + MaxLevelWidth + "\n");
+        configOutput.Append("min level height :" + MinLevelHeight + "\n");
+        configOutput.Append("max level height :" + MaxLevelHeight + "\n");
+        configOutput.Append("min number of islets : " + MinIsletCount + "\n");
+        configOutput.Append("max number of islets : " + MaxIsletCount + "\n");
+        configOutput.Append("minIsletHeight : " + minIsletHeight + "\n");
+        configOutput.Append("maxIsletHeight : " + maxIsletHeight + "\n");
+        configOutput.Append("minIsletWidth : " + minIsletWidth + "\n");
+        configOutput.Append("maxIsletWidth : " + maxIsletWidth + "\n");
+        configOutput.Append("space between islets : " + MinSpaceBetweenIslets + "\n");
+        configOutput.Append("maxIterations : " + MaxRepairIterations + "\n");
+        configOutput.Append("protrusionrollmax : " + protrusionRollMax + "\n");
+        configOutput.Append("protrusionrollThreshold: " + protrusionRollThreshold + "\n");
+        configOutput.Append("minXProtrusion : " + MinXProtrusion + "\n");
+        configOutput.Append("minYProtrusion : " + MinYProtrusion + "\n");
+        configOutput.Append("maxYProtrusion : " + MaxYProtrusion + "\n");
+        configOutput.Append("maxXProtrusion : " + MaxYProtrusion + "\n");
+        configOutput.Append("protrude islets : " + protrudeIslets + "\n");
+        configOutput.Append("protrude outer walls : " + protrudeOuterWalls + "\n");
+        File.WriteAllText(levelConfigOutputFilename, configOutput.ToString());
     }
 
 

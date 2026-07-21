@@ -13,32 +13,19 @@ public class LevelDecorator : MonoBehaviour
     [SerializeField] Tilemap DecorationTilemap;
 
 
-    // Fetch walls ruletile:
+    char[,] levelGrid; // Take in only the grid data since the decoration generation is not based on the rules
 
-    string WallRuleTilePath = "Assets/Generated/WallRuleTile.txt";
-    string[] rules; // for filtering wall rule decorations
 
-    string NormalizeRule(string rule)
-    {
-        return rule
-            .Replace("\r", "")
-            .Replace("\n", "")
-            .Replace(" ", "")
-            .Replace('C', '#');
-    }
+
+
 
     [ContextMenu("Decorate level")]
     public void Decorate()
     {
 
-        string text = File.ReadAllText(WallRuleTilePath);
-        string[] mRules = text.Split(
-     new[] { "\r\n\r\n", "\n\n" },
-     StringSplitOptions.RemoveEmptyEntries);
+        
 
-        rules = mRules.Select(NormalizeRule).ToArray();
-
-
+        AddWallDecorations();
         AddDecorativeGroundTiles();
     }
 
@@ -48,5 +35,26 @@ public class LevelDecorator : MonoBehaviour
 
     }
 
+    void AddWallDecorations()
+    {
+
+    }
+
+
+
 
 }
+
+
+/**
+ * ENCODINGS:
+    0-a shroom cluster
+    b-e single shroom
+    f for embellishment tile
+    g for skull in ground (rare)
+    h for dino bones in walls (also rare)
+    and as previously # marks wall tile, * marks ground tile
+ * 
+ * 
+ * 
+ */

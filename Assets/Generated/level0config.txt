@@ -1,0 +1,22 @@
+Config : 
+seed : 111
+min level width :24
+max level width :64
+min level height :11
+max level height :100
+min number of islets : 1
+max number of islets : 11
+minIsletHeight : 4
+maxIsletHeight : 11
+minIsletWidth : 3
+maxIsletWidth : 6
+space between islets : 1
+maxIterations : 100
+protrusionrollmax : 255
+protrusionrollThreshold: 70
+minXProtrusion : 1
+minYProtrusion : 1
+maxYProtrusion : 3
+maxXProtrusion : 3
+protrude islets : True
+protrude outer walls : True
