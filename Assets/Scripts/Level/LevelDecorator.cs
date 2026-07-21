@@ -33,7 +33,11 @@ public class LevelDecorator : MonoBehaviour
 
 
     [SerializeField] int level_No = 0;
+
+    [SerializeField] int minDinoBones = 0;
+    [SerializeField] int maxDinoBones = 3;
     int levelWidth, levelHeight, seed;
+    List<Vector2Int> shroomSporeLocations;
 
     void GetAttributes()
     {
@@ -73,8 +77,8 @@ public class LevelDecorator : MonoBehaviour
     {
         
         levelNumber = level_No;
-        levelInputFilePath = "Assets/Generated/level" + levelNumber + ".txt";
-        levelInfoFilePath = "Assets/Generated/level" + levelNumber + "info.txt";
+        levelInputFilePath = "Assets/Generated/Working/level" + levelNumber + ".txt";
+        levelInfoFilePath = "Assets/Generated/Working/level" + levelNumber + "info.txt";
         GetAttributes();
         UnityEngine.Random.InitState(seed);
         levelGrid = new char[levelWidth, levelHeight];
@@ -82,6 +86,7 @@ public class LevelDecorator : MonoBehaviour
 
         List<Vector2Int> dinobones = FindDinoBoneLocations();
         PlaceDinoBones(dinobones);
+        PlaceShrooms();
     }
 
     public List<Vector2Int> FindDinoBoneLocations()
@@ -118,6 +123,36 @@ public class LevelDecorator : MonoBehaviour
     {
         var shuffledLoc = Fisher_Yates(locations);
 
+        int max = shuffledLoc.Count < maxDinoBones ? shuffledLoc.Count : maxDinoBones;
+        string dinostring = "ijklmnopqr"; // 10 as in 10 total more common dino bone fragments
+        for(int i = 0; i < max; ++i)
+        {
+            // roll for the full skeleton spawn, h
+            // else : output i-q
+            if(UnityEngine.Random.Range(0.0f, 1.0f) > 0.95)
+            {
+                levelGrid[shuffledLoc[i].x, shuffledLoc[i].y] = 'h';
+            }
+            else
+            {
+                int p = UnityEngine.Random.Range(0, dinostring.Length);
+                char c = dinostring[p];
+                levelGrid[shuffledLoc[i].x, shuffledLoc[i].y] = 'd';
+            }
+        }
+
+        int remaining = shuffledLoc.Count - maxDinoBones;
+        if (remaining < 0) return;
+
+        for(int i = max; i < max + remaining; ++i)
+        {
+            shroomSporeLocations.Add(shuffledLoc[i]);
+        }
+
+    }
+
+    public void PlaceShrooms()
+    {
 
     }
 
@@ -142,14 +177,11 @@ public class LevelDecorator : MonoBehaviour
 
 /**
  * ENCODINGS:
-    0-a shroom cluster
-    b-e single shroom
-    f for embellishment tile
-    g for skull in ground (rare)
-    h for full dinosaur skeleton (big)
-    i-q other dino bone elements in pallette
+    C shroom cluster
+    S single shroom
+    E for embellishment tile
+    D other dino bone elements in pallette, lets try this for now
+    X for skull in ground (rare)
+    Y for full dinosaur skeleton (big)
     and as previously # marks wall tile, * marks ground tile
- * 
- * 
- * 
  */

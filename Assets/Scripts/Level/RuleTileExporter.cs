@@ -25,7 +25,7 @@ public class RuleTileExporter : MonoBehaviour
     [ContextMenu("Export Rule Tileset")]
     public void ExportRuleset()
     {
-        string filepath = "Assets/Generated/" + Rules.name + ".txt";
+        string filepath = "Assets/Scripts/Level" + Rules.name + ".txt";
         List<string> rules = new();
         const BindingFlags flags =
             BindingFlags.Instance |
