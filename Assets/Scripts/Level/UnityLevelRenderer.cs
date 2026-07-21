@@ -49,19 +49,16 @@ public class UnityLevelRenderer : MonoBehaviour
 
     void PreRenderTasks()
     {
-        PreRenderTasks();
+        
         // get the level number I am working on now. Suppose only one level only exists in working folder.
         string[] geo = Directory.GetFiles(
         "Assets/Generated/Working",
         "*_geometry.txt");
-
-
         GeometryFilePath = geo[0];
 
         string[] info = Directory.GetFiles(
         "Assets/Generated/Working",
         "*_info.txt");
-
         LevelInfoFilePath = info[0];
 
         string[] decor = Directory.GetFiles("Assets/Generated/Working", "*_decorations.txt");
@@ -69,7 +66,7 @@ public class UnityLevelRenderer : MonoBehaviour
 
         GetAttributes();
 
-        levelGri
+        
     }
 
 
@@ -77,7 +74,7 @@ public class UnityLevelRenderer : MonoBehaviour
     public void RenderTilemaps()
     {
 
-
+        PreRenderTasks(); // Fix infinite recursion by removing from prerendertasks...
 
 
 

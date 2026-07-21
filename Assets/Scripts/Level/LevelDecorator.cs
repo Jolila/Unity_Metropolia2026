@@ -38,12 +38,13 @@ public class LevelDecorator : MonoBehaviour
 
     [SerializeField] int minDinoBones = 0;
     [SerializeField] int maxDinoBones = 3;
+    [SerializeField] int ModifiedSeed = 0;
     int levelWidth, levelHeight, seed;
     List<Vector2Int> shroomSporeLocations;
 
     void GetAttributes()
     {
-        foreach (string line in File.ReadLines(levelInfoFilePath))
+        foreach (string line in File.ReadLines(LevelInfoFilePath))
         {
             if (line.StartsWith("width"))
             {
@@ -53,8 +54,15 @@ public class LevelDecorator : MonoBehaviour
             {
                 levelHeight = int.Parse(line.Split(':')[1].Trim());
             }
+
+
             else if (line.StartsWith("seed"))
             {
+                if (ModifiedSeed != 0)
+                {
+                    seed = ModifiedSeed;
+                    return;
+                }
                 seed = int.Parse(line.Split(':')[1].Trim());
             }
         }
@@ -62,7 +70,7 @@ public class LevelDecorator : MonoBehaviour
 
     void SetUpLevelGrid()
     {
-        string[] lines = File.ReadAllLines(levelInputFilePath);
+        string[] lines = File.ReadAllLines(GeometryFilePath);
         for(int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)
@@ -72,16 +80,32 @@ public class LevelDecorator : MonoBehaviour
         }
     }
 
-    private int levelNumber;
-    private string levelInputFilePath, levelInfoFilePath, outputFilePath;
+
+    private string GeometryFilePath, LevelInfoFilePath, DecorationsFilePath;
     [ContextMenu("Decorate level")]
     public void Decorate()
     {
-        
-        levelNumber = level_No;
-        levelInputFilePath = "Assets/Generated/Working/level" + levelNumber + "_geometry.txt";
-        levelInfoFilePath = "Assets/Generated/Working/level" + levelNumber + "_info.txt";
-        outputFilePath = "Assets/Generated/Working/level" + levelNumber + "_decorations.txt";
+
+       
+        string[] geo = Directory.GetFiles(
+      "Assets/Generated/Working",
+      "*_geometry.txt");
+        GeometryFilePath = geo[0];
+
+
+        string levelPart = GeometryFilePath.Split("_")[0];
+        int n = int.Parse(levelPart.Substring(5));
+        string levelString = $"level{n:D3}";
+        DecorationsFilePath = "Assets/Generated/Working/level" + levelString + "_decorations.txt";
+
+
+
+        string[] info = Directory.GetFiles(
+        "Assets/Generated/Working",
+        "*_info.txt");
+        LevelInfoFilePath = info[0];
+
+
         GetAttributes();
         UnityEngine.Random.InitState(seed);
         DecorationsGrid = new char[levelWidth, levelHeight];
@@ -186,7 +210,7 @@ public class LevelDecorator : MonoBehaviour
             }
             output.AppendLine();
         }
-        File.WriteAllText(outputFilePath, output.ToString());
+        File.WriteAllText(DecorationsFilePath, output.ToString());
     }
 
 

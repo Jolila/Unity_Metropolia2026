@@ -158,7 +158,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         // Fetch walls ruletile from the default hardcoded path where the pattern extractor tries to place it
-        string WallRuleTilePath = "Assets/Generated/WallRuleTile.txt";
+        string WallRuleTilePath = "Assets/Scripts/Level/WallRuleTile.txt";
         string text = File.ReadAllText(WallRuleTilePath);
 
         string[] mRules = text.Split(
