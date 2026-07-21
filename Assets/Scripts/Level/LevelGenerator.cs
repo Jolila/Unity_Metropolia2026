@@ -14,6 +14,31 @@ using System.Net.Http.Headers;
 public class LevelGenerator : MonoBehaviour
 {
 
+
+
+    /*
+     * 
+     * Since the naming convention can stay simple to avoid having to write regex, and the folder structure is predictable,
+     * this helper should in theory take care of the rewriting accidentally existing files problem
+     */
+
+
+    public static int GetNextAvailableLevelNumber(string folder)
+    {
+        int next = -1;
+
+        foreach (string path in Directory.GetFiles(folder, "_decorations.txt")) // or, can also use geometry since they both should be there when the level is ready
+        {
+
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            string levelPart = fileName.Split("_")[0];
+            int n = int.Parse(levelPart.Substring(5));
+            if (n > next) next = n;
+
+        }
+        return next + 1;
+    }
+
     struct Islet
     {
         public int height, width;
@@ -32,7 +57,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] int MaxLevelHeight = 136;
 
     [SerializeField] int seed = 42;
-    [SerializeField] int levelNumber = 0;
+    
 
     [SerializeField] int MinIsletCount = 1;
     [SerializeField] int MaxIsletCount = 2;
@@ -104,13 +129,20 @@ public class LevelGenerator : MonoBehaviour
         levelConfigOutputFilename,
         levelRemainingIllegalPatternsFilename,
         levelInfoOutputFilename;
-[ContextMenu("Generate level")]
+
+    int levelNumber = 0;
+    string levelString;
+    [ContextMenu("Generate level")]
     public void Generate(){
 
+
+        levelNumber = GetNextAvailableLevelNumber("Assets/Generated/Working");
+        levelString = $"level{levelNumber:D3}";
+
         UnityEngine.Random.InitState(seed);
-        levelOutputFilename = "Assets/Generated/Working/level" + levelNumber + ".txt";
-        levelConfigOutputFilename = "Assets/Generated/Working/level" + levelNumber + "config.txt";
-        levelInfoOutputFilename = "Assets/Generated/Working/level" + levelNumber + "info.txt";
+        levelOutputFilename = "Assets/Generated/Working/level" + levelString + "_geometry.txt";
+        levelConfigOutputFilename = "Assets/Generated/Working/level" + levelString + "_config.txt";
+        levelInfoOutputFilename = "Assets/Generated/Working/level" + levelString + "_info.txt";
 
         levelWidth = UnityEngine.Random.Range(MinLevelWidth,MaxLevelWidth);
         levelHeight = UnityEngine.Random.Range(MinLevelHeight, MaxLevelHeight);
