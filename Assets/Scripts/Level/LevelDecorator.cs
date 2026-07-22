@@ -33,7 +33,8 @@ public class LevelDecorator : MonoBehaviour
     char[,] GeometryGrid; 
     char[,] DecorationsGrid;
     [SerializeField] int minDinoBones = 0;
-    [SerializeField] int maxDinoBones = 3;
+    [SerializeField] int maxDinoBones = 5;
+    [SerializeField] int MinimumDistanceBetweenDinoBones = 3;
     [SerializeField] int ModifiedSeed = 0;
     int levelWidth, levelHeight, seed;
     List<Vector2Int> shroomSporeLocations;
@@ -146,19 +147,52 @@ public class LevelDecorator : MonoBehaviour
         return orig;
     }
 
+    private bool IsTooClose(Vector2Int a, Vector2Int b, int minimumDistance)
+    {
+        float epsi = 0.001f;
+        int x1 = a.x;
+        int x2 = b.x;
+        double dx = (x1 - x2) * (x1 - x2);
+        double distx = Math.Sqrt(dx);
+        if (Math.Abs(distx - minimumDistance) <= epsi) return true;
+        
+
+        int y1 = a.y;
+        int y2 = b.y;
+        double dy = (y1 - y2) * (y1 - y2);
+        double disty = Math.Sqrt(dy);
+        if (Math.Abs(disty - minimumDistance) <= epsi) return true;
+        return false;
+        
+    }
+
     public void PlaceDinoBones(List<Vector2Int> locations)
     {
-        var shuffledLoc = Fisher_Yates(locations);
 
-        int max = shuffledLoc.Count < maxDinoBones ? shuffledLoc.Count : maxDinoBones;
+        int n = UnityEngine.Random.Range(0, maxDinoBones + 1);
+        var shuffledLoc = Fisher_Yates(locations);
+        var used = new List<Vector2Int>();
+        int max = shuffledLoc.Count < n ? shuffledLoc.Count : n;
+
         for(int i = 0; i < max; ++i)
         {
+
+            //check if too close
+            foreach(Vector2Int other in used)
+            {
+                if (IsTooClose(shuffledLoc[i], other, MinimumDistanceBetweenDinoBones))
+                {
+                    ++max;
+                    continue;
+                }
+            }
+
             // roll for the full skeleton spawn, h
-            // else : output i-q
-            if(UnityEngine.Random.Range(0.0f, 1.0f) > 0.95)
+            if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.95)
             {
                 DecorationsGrid[shuffledLoc[i].x, shuffledLoc[i].y] = 'h';
             }
+            // else : output d for random dino bone tile
             else
             {
                 DecorationsGrid[shuffledLoc[i].x, shuffledLoc[i].y] = 'd';
