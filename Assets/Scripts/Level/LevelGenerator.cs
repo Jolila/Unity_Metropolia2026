@@ -1,15 +1,16 @@
+using JetBrains.Annotations;
+using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System;
-using UnityEngine;
-using System.Text;
-using UnityEngine.Tilemaps;
-using NUnit.Framework;
 using System.Linq;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using System.Net.Http.Headers;
+using System.Text;
+using Unity.VisualScripting;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -27,15 +28,15 @@ public class LevelGenerator : MonoBehaviour
     {
         int next = -1;
 
-        foreach (string path in Directory.GetFiles(folder, "_decorations.txt")) // or, can also use geometry since they both should be there when the level is ready
+        foreach (string path in Directory.GetDirectories(folder)) // or, can also use geometry since they both should be there when the level is ready
         {
 
-            string fileName = Path.GetFileNameWithoutExtension(path);
-            string levelPart = fileName.Split("_")[0];
-            int n = int.Parse(levelPart.Substring(5));
+            string folderName = Path.GetFileName(path);
+            int n = int.Parse(folderName.Substring(5));
             if (n > next) next = n;
 
         }
+        Debug.Log("Parsed next level to be number : " + next + 1);
         return next + 1;
     }
 
@@ -136,7 +137,7 @@ public class LevelGenerator : MonoBehaviour
     public void Generate(){
 
 
-        levelNumber = GetNextAvailableLevelNumber("Assets/Generated/Working");
+        levelNumber = GetNextAvailableLevelNumber("Assets/Generated/Ready");
         levelString = $"level{levelNumber:D3}";
 
         UnityEngine.Random.InitState(seed);
@@ -215,6 +216,7 @@ public class LevelGenerator : MonoBehaviour
         OutputLevel();
         OutputLevelConfig();
         OutputLevelInfo();
+        AssetDatabase.Refresh();
     }
 
     bool GridsAreEqual(char[,] a, char[,] b)

@@ -1,0 +1,4 @@
+width : 82
+height : 45
+seed:1115
+Islet count 8

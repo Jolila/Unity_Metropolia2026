@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System;
-using System.Text;
 using System.Linq;
+using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -141,6 +142,7 @@ public class LevelDecorator : MonoBehaviour
         PlaceShrooms();
         PlaceSkull();
         OutputLevelDecorations();
+        AssetDatabase.Refresh();
     }
 
     public List<Vector2Int> FindDinoBoneLocations()
