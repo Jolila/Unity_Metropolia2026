@@ -139,6 +139,7 @@ public class LevelDecorator : MonoBehaviour
         List<Vector2Int> dinobones = FindDinoBoneLocations();
         PlaceDinoBones(dinobones);
         PlaceShrooms();
+        PlaceSkull();
         OutputLevelDecorations();
     }
 
@@ -314,6 +315,34 @@ public class LevelDecorator : MonoBehaviour
         return sb.ToString();
     }
 
+    void PlaceSkull()
+    {
+
+        bool skullPlaced = false;
+        while(!skullPlaced)
+        {
+
+        
+        for(int y = 2; y < levelHeight - 2; ++y)
+        {
+            for(int x = 2; x < levelWidth -2; ++x)
+            {
+                    if (GeometryGrid[x,y] == '*')
+                    {
+                        float f = UnityEngine.Random.Range(0.0f, 1.0f);
+                        if (f > 0.99)
+                        {
+                            DecorationsGrid[x, y] = 'X';
+                            skullPlaced = true;
+                            return;
+                        }
+                    }
+            }
+        }
+
+        }
+    }
+
 
 
     void OutputLevelDecorations()
@@ -338,9 +367,8 @@ public class LevelDecorator : MonoBehaviour
  * ENCODINGS:
     C shroom cluster
     S single shroom
-    E for embellishment tile
-    D other dino bone elements in pallette, lets try this for now
+    d other dino bone elements in pallette, lets try this for now
     X for skull in ground (rare)
-    Y for full dinosaur skeleton (big)
+    h for full dinosaur skeleton (big)
     and as previously # marks wall tile, * marks ground tile
  */

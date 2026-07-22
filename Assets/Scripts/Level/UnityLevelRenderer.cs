@@ -10,6 +10,7 @@ public class UnityLevelRenderer : MonoBehaviour
     [SerializeField] Tilemap WallsTilemap;
     [SerializeField] Tilemap DecorationsTilemap;
     [SerializeField] TileBase dinoSingularTile;
+    [SerializeField] TileBase SkullTile;
 
     [SerializeField] RuleTile RandomDinoBoneRuleTile;
     [SerializeField] RuleTile RandomShroomClusterRuleTile;
@@ -163,6 +164,10 @@ public class UnityLevelRenderer : MonoBehaviour
                 else if (DecorationGrid[x,y] == 'S')
                 {
                     DecorationsTilemap.SetTile(cell, RandomSingleShroomRuleTile);
+                }
+                else if (DecorationGrid[x,y] == 'X')
+                {
+                    DecorationsTilemap.SetTile(cell, SkullTile);
                 }
 
             }
