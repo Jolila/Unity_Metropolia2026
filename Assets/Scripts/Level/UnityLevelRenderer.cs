@@ -160,6 +160,10 @@ public class UnityLevelRenderer : MonoBehaviour
                 {
                     DecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
                 }
+                else if (DecorationGrid[x,y] == 'S')
+                {
+                    DecorationsTilemap.SetTile(cell, RandomSingleShroomRuleTile);
+                }
 
             }
         }

@@ -28,6 +28,18 @@ public class LevelDecorator : MonoBehaviour
     new( 1, -1)
 };
 
+    private static readonly Vector2Int[] neighborDirections =
+{
+        new Vector2Int(-1, -1),
+        new Vector2Int(-1, 0),
+        new Vector2Int(-1, 1),
+        new Vector2Int(0, -1),
+        new Vector2Int(0, 1),
+        new Vector2Int(1, -1),
+        new Vector2Int(1, 0),
+        new Vector2Int(1,1),
+        };
+
     // Take in only the grid data since the decoration generation is not based on the rules
     // alternatively for placing the dino tiles a sweep for tiles that can house the dino full skeleton needs to happen
     char[,] GeometryGrid; 
@@ -36,6 +48,19 @@ public class LevelDecorator : MonoBehaviour
     [SerializeField] int maxDinoBones = 5;
     [SerializeField] int MinimumDistanceBetweenDinoBones = 3;
     [SerializeField] int ModifiedSeed = 0;
+    [SerializeField] int MaxShroomPlacementIterations = 4;
+    [SerializeField] float ShroomClusterDensityWeight = 0.8f;
+    [SerializeField] float SingleShroomDensityWeight = 0.1f;
+
+
+    
+
+    [SerializeField] float MinimumShroomSpawnPropability = 0.0f;
+    [SerializeField] float MaximumShroomSpawnPropability = 0.7f;
+
+    [SerializeField] float InitialShroomSporeSpawnChance = 0.2f;
+
+    [SerializeField] float ShroomClusterDensityThreshhold = 0.6f;
     int levelWidth, levelHeight, seed;
     List<Vector2Int> shroomSporeLocations;
 
@@ -211,14 +236,69 @@ public class LevelDecorator : MonoBehaviour
 
     public void PlaceShrooms()
     {
-        // TO DO : try to evaluate shroom densities by using a propability based approach? (:
+        
 
-        // Idea : for example choose 10% of the good locations, then on success have a 50% chance to spawn a neighboring cluster
-        // If fails, spawn single shroom
+        // place seed shrooms
         foreach(Vector2Int pos in shroomSporeLocations)
         {
-            DecorationsGrid[pos.x, pos.y] = 'C';
+            float roll = UnityEngine.Random.Range(0.0f, 1.0f);
+            if(roll > 1.0f - InitialShroomSporeSpawnChance) DecorationsGrid[pos.x, pos.y] = 'C';
         }
+
+        // place additional clusters and single shrooms based on densities and cluster spawning threshold
+        int shroomIteration = 0;
+        while(shroomIteration <= MaxShroomPlacementIterations)
+        {
+            
+            for (int y = 1; y < levelHeight - 1; ++y)
+            {
+                for (int x = 1; x < levelWidth - 1; ++x)
+                {
+                    if (DecorationsGrid[x, y] == 'C' || DecorationsGrid[x,y] == 'S')
+                    {
+                        float density = EvaluateShroomDensity(new Vector2Int(x, y));
+                        float p = Mathf.Lerp(MinimumShroomSpawnPropability, MaximumShroomSpawnPropability, density);
+                        float seededPropability = UnityEngine.Random.Range(0.0f, 1.0f);
+                        if (seededPropability > p)
+                        {
+                            if (density > ShroomClusterDensityThreshhold)
+                            {
+
+                                DecorationsGrid[x, y] = 'C';
+                            }
+                            else
+                            {
+                                DecorationsGrid[x, y] = 'S';
+                            }
+                        }
+
+                    }
+                }
+            }
+            ++shroomIteration;
+        }
+
+        
+    }
+
+
+  
+    // remember to normalize the density by making the returned local density to correspond exaclty 1/8 portion of the host shrooms density.
+    // ie this makes this density a 
+    private float EvaluateShroomDensity(Vector2Int pos)
+    {
+        int clustercount = 0, singlescount = 0;
+
+        foreach (Vector2Int v in neighborDirections)
+        {
+            Vector2Int neighbor = new Vector2Int(pos.x + v.x, pos.y + v.y);
+            if (DecorationsGrid[pos.x + v.x, pos.y + v.y] == 'C') clustercount++;
+            else if (DecorationsGrid[((Vector3Int)pos).x, pos.y + v.y] == 'S') singlescount++;
+        }
+     
+        return (clustercount * ShroomClusterDensityWeight 
+            + singlescount * SingleShroomDensityWeight) / 8.0f;
+
     }
 
 
