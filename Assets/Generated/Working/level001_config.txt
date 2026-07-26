@@ -1,5 +1,5 @@
 Config : 
-seed : 1115
+seed : 17
 min level width :44
 max level width :90
 min level height :44

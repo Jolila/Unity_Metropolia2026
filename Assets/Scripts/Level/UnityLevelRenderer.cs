@@ -123,6 +123,9 @@ public class UnityLevelRenderer : MonoBehaviour
 
     void RenderGeometry()
     {
+        Tile debugTile = ScriptableObject.CreateInstance<Tile>();
+       
+        debugTile.color = Color.red;
         for (int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)
@@ -135,6 +138,10 @@ public class UnityLevelRenderer : MonoBehaviour
                 else if (GeometryGrid[x, y] == '#')
                 {
                     WallsTilemap.SetTile(cell, WallTile);
+                }
+                else if (GeometryGrid[x,y] == 'N')
+                {
+                    GroundsTilemap.SetTile(cell, debugTile);
                 }
 
             }
@@ -169,6 +176,7 @@ public class UnityLevelRenderer : MonoBehaviour
                 {
                     DecorationsTilemap.SetTile(cell, SkullTile);
                 }
+               
 
             }
         }
