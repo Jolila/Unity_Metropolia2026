@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -72,10 +73,12 @@ public class LevelDecorator : MonoBehaviour
             if (line.StartsWith("width"))
             {
                 levelWidth = int.Parse(line.Split(':')[1].Trim());
+                Debug.Log("Parsed width : " + levelWidth); 
             }
             else if (line.StartsWith("height"))
             {
                 levelHeight = int.Parse(line.Split(':')[1].Trim());
+                Debug.Log("Parsed height : " + levelHeight);
             }
 
 
@@ -94,6 +97,8 @@ public class LevelDecorator : MonoBehaviour
     void SetUpLevelGrid()
     {
         string[] lines = File.ReadAllLines(GeometryFilePath);
+        Debug.Log("how many lines in lines when reading file : " + lines.Count());
+        Debug.Log("Line width when reading file : " + lines[0].Length);
         for(int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)
@@ -136,6 +141,8 @@ public class LevelDecorator : MonoBehaviour
         GeometryGrid = new char[levelWidth, levelHeight];
         DecorationsGrid = new char[levelWidth, levelHeight];
         SetUpLevelGrid();
+        //Debug.Log("Decorations width " + DecorationsGrid.Length / levelHeight);
+        //Debug.Log("Decorations height " + DecorationsGrid.Length / levelWidth);
 
         List<Vector2Int> dinobones = FindDinoBoneLocations();
         PlaceDinoBones(dinobones);
@@ -193,7 +200,7 @@ public class LevelDecorator : MonoBehaviour
         return false;
         
     }
-
+    // This might be too greedy ? 
     public void PlaceDinoBones(List<Vector2Int> locations)
     {
 
@@ -210,7 +217,7 @@ public class LevelDecorator : MonoBehaviour
             {
                 if (IsTooClose(shuffledLoc[i], other, MinimumDistanceBetweenDinoBones))
                 {
-                    ++max;
+                    --i;
                     continue;
                 }
             }
@@ -227,7 +234,7 @@ public class LevelDecorator : MonoBehaviour
             }
         }
 
-        int remaining = shuffledLoc.Count - maxDinoBones;
+        int remaining = shuffledLoc.Count - max;
         if (remaining < 0) return;
 
         for(int i = max; i < max + remaining; ++i)
@@ -239,13 +246,17 @@ public class LevelDecorator : MonoBehaviour
 
     public void PlaceShrooms()
     {
-        
+
 
         // place seed shrooms
+        int debugCounter = 0;
         foreach(Vector2Int pos in shroomSporeLocations)
         {
+            ++debugCounter;
+            //Debug.Log("Shroom spore location : " + debugCounter + " : (" + pos.x + "," + pos.y + ")");
             float roll = UnityEngine.Random.Range(0.0f, 1.0f);
-            if(roll > 1.0f - InitialShroomSporeSpawnChance) DecorationsGrid[pos.x, pos.y] = 'C';
+            // is the dino bone search simply too greedy for trying to place the bones far enough from each other?
+            if(roll > 1.0f - InitialShroomSporeSpawnChance) DecorationsGrid[pos.x, pos.y] = 'C'; // why is there a crash here, the grid is initialized properly?
         }
 
         // place additional clusters and single shrooms based on densities and cluster spawning threshold
