@@ -58,7 +58,12 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] int MaxLevelHeight = 136;
 
     [SerializeField] int seed = 42;
-    
+
+    [SerializeField] int minPlayerXOffsetFromCenter = 1;
+    [SerializeField] int maxPlayerXOffsetFromCenter = 11;
+    [SerializeField] int minPlayerYOffsetFromCenter = 3;
+    [SerializeField] int maxPlayerYOffsetFromCenter = 5;
+
 
     [SerializeField] int MinIsletCount = 1;
     [SerializeField] int MaxIsletCount = 2;
@@ -211,11 +216,30 @@ public class LevelGenerator : MonoBehaviour
         // Lastly do a sweep for legal single tiles which look stupid and might cause enemies to spawn in unreachable locations
 
         FixRemainingSingleFloorTiles();
-        
+
+        // put the player position on the info map
+        int playerXOffsetSign = UnityEngine.Random.Range(0.0f, 1.0f) > 0.5 ? 1 : -1;
+        int playerYOffsetSign = UnityEngine.Random.Range(0.0f, 1.0f) > 0.5 ? 1 : -1;
+
+        int playerXPosOffset = UnityEngine.Random.Range(minPlayerXOffsetFromCenter, maxPlayerXOffsetFromCenter) * playerXOffsetSign;
+        int playerYPosOffset = UnityEngine.Random.Range(minPlayerYOffsetFromCenter, maxPlayerYOffsetFromCenter) * playerYOffsetSign;
+
+        if(playerXPosOffset + levelWidth / 2 > levelWidth - 2 || playerXPosOffset + levelWidth / 2 < 0)
+        {
+            Debug.LogError("Cannot place player on map : check player X position parameters or try a different seed");
+        }
+
+        if(playerYPosOffset + levelHeight / 2 > levelHeight - 2 || playerYPosOffset + levelWidth / 2 < 0)
+        {
+            Debug.LogError("Cannot place player on map : check player Y position parameters or try a different seed");
+        }
+
+        int playerXPos = levelWidth / 2 + playerXPosOffset;
+        int playerYPos = levelHeight / 2 + playerYPosOffset;
 
         OutputLevel();
         OutputLevelConfig();
-        OutputLevelInfo();
+        OutputLevelInfo(new Vector2Int(playerXPos, playerYPos));
         AssetDatabase.Refresh();
     }
 
@@ -238,17 +262,20 @@ public class LevelGenerator : MonoBehaviour
 
     private void FixRemainingSingleFloorTiles()
     {
+        int fixedIllegals = 0;
         string singleFloorTileMiddleOfWallsPattern = "####*####";
-        for (int y = 2; y < levelHeight-2; ++y)
+        for (int y = 1; y < levelHeight-1; ++y)
         {
-            for (int x = 2; x < levelWidth-2; ++x)
+            for (int x = 1; x < levelWidth-1; ++x)
             {
                if(GetPattern(x,y) == singleFloorTileMiddleOfWallsPattern)
                 {
+                    ++fixedIllegals;
                     levelGrid[x, y] = '#';
                 }
             }
         }
+        Debug.Log("Fixed illegals : " + fixedIllegals);
     }
 
 
@@ -943,13 +970,15 @@ public class LevelGenerator : MonoBehaviour
         File.WriteAllText(levelConfigOutputFilename, configOutput.ToString());
     }
 
-    void OutputLevelInfo()
+    void OutputLevelInfo(Vector2Int playerPos)
     {
         StringBuilder infoOutput = new();
         infoOutput.Append("width : " + levelWidth +"\n");
         infoOutput.Append("height : " + levelHeight + "\n");
         infoOutput.Append("seed:" + seed + "\n");
         infoOutput.Append("Islet count " + numOfIslets + "\n");
+        infoOutput.Append("playerX : " + playerPos.x+ "\n");
+        infoOutput.Append("playerY : " + playerPos.y + "\n");
         File.WriteAllText(levelInfoOutputFilename, infoOutput.ToString());
     }
 
