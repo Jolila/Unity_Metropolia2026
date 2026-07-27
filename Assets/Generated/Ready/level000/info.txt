@@ -1,4 +1,0 @@
-width : 47
-height : 26
-seed:11
-Islet count 1
