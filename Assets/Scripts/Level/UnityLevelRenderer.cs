@@ -139,11 +139,7 @@ public class UnityLevelRenderer : MonoBehaviour
                 {
                     WallsTilemap.SetTile(cell, WallTile);
                 }
-                else if (GeometryGrid[x,y] == 'N')
-                {
-                    GroundsTilemap.SetTile(cell, debugTile);
-                }
-
+   
             }
         }
     }

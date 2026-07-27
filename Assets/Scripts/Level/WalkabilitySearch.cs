@@ -156,7 +156,7 @@ public class WalkabilitySearch : MonoBehaviour
         foreach (Vector2Int v in nonWalkables)
         {
             
-            GeometryGrid[v.x, v.y] = 'N';
+            GeometryGrid[v.x, v.y] = '#';
             Debug.Log("Found non-walkable tile: ("+  v.x + "," + v.y + ")");
         }
     }

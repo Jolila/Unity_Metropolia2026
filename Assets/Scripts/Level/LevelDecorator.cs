@@ -143,6 +143,7 @@ public class LevelDecorator : MonoBehaviour
         SetUpLevelGrid();
         //Debug.Log("Decorations width " + DecorationsGrid.Length / levelHeight);
         //Debug.Log("Decorations height " + DecorationsGrid.Length / levelWidth);
+        shroomSporeLocations = new();
 
         List<Vector2Int> dinobones = FindDinoBoneLocations();
         PlaceDinoBones(dinobones);
