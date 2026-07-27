@@ -1,3 +1,5 @@
+using NavMeshPlus.Components;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -14,6 +16,9 @@ public class LevelRenderer : MonoBehaviour
     [SerializeField] Tilemap LevelOutlineTilemap;
     [SerializeField] Tilemap GroundsTilemap;
     [SerializeField] Tilemap WallsTilemap;
+    [SerializeField] TilemapCollider2D WallsTilemapCollider;
+    [SerializeField] NavMeshSurface surface;
+    [SerializeField] EnemySpawner spawner;
     [SerializeField] Tilemap DecorationsTilemap;
     [SerializeField] TileBase dinoSingularTile;
     [SerializeField] TileBase SkullTile;
@@ -30,9 +35,20 @@ public class LevelRenderer : MonoBehaviour
     private int width;
     private int height;
 
-    private void Start()
+    private void Awake()
+    {
+        StartCoroutine(LoadRoutine());
+    }
+
+    private IEnumerator LoadRoutine()
     {
         LoadLevel();
+        yield return null;
+
+        RebuildColliders();
+        surface.BuildNavMesh();
+        spawner = FindAnyObjectByType<EnemySpawner>();
+        spawner.Initialize();
     }
 
     private void LoadLevel()
@@ -47,19 +63,32 @@ public class LevelRenderer : MonoBehaviour
         GeometryFilePath = Path.Combine(levelFolder, "geometry.txt");
         DecorationsFilePath = Path.Combine(levelFolder, "decorations.txt");
         LevelInfoFilePath = Path.Combine(levelFolder, "info.txt");
-
+     
         GroundsTilemap.ClearAllTiles();
         WallsTilemap.ClearAllTiles();
         DecorationsTilemap.ClearAllTiles();
+        LevelOutlineTilemap.ClearAllTiles();
         ReadInfo();
+        GeometryGrid = new char[levelWidth, levelHeight];
+        DecorationGrid = new char[levelWidth, levelHeight];
         LoadGeometryGrid();
         LoadDecorationGrid();
         RenderGeometry();
         RenderDecorations();
         player.transform.position = new Vector3(playerX, playerY, 0);
-
+        
+       
 
     }
+
+    void RebuildColliders()
+    {
+        // this should force cache refresh
+        WallsTilemapCollider.enabled = false;
+        WallsTilemapCollider.enabled = true;
+    }
+
+    
 
     void ReadInfo()
     {
@@ -67,6 +96,9 @@ public class LevelRenderer : MonoBehaviour
         foreach(string line in File.ReadLines(LevelInfoFilePath))
         {
             string[] parts = line.Split(':');
+
+            if (parts.Length != 2)
+                continue; // islet count line, I dunno if its needed but lets keep it in file
 
             string key = parts[0].Trim();
             string value = parts[1].Trim();
