@@ -97,8 +97,6 @@ public class LevelDecorator : MonoBehaviour
     void SetUpLevelGrid()
     {
         string[] lines = File.ReadAllLines(GeometryFilePath);
-        Debug.Log("how many lines in lines when reading file : " + lines.Count());
-        Debug.Log("Line width when reading file : " + lines[0].Length);
         for(int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)

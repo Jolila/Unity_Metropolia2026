@@ -1,9 +1,15 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class UnityLevelRenderer : MonoBehaviour
+public class LevelRenderer : MonoBehaviour
 {
+
+    private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath;
+    int levelWidth, levelHeight, playerX, playerY;
+    char[,] GeometryGrid;
+    char[,] DecorationGrid;
 
     [SerializeField] Tilemap LevelOutlineTilemap;
     [SerializeField] Tilemap GroundsTilemap;
@@ -18,56 +24,87 @@ public class UnityLevelRenderer : MonoBehaviour
 
     [SerializeField] RuleTile GroundTile;
     [SerializeField] RuleTile WallTile;
+    [SerializeField] GameObject player;
 
 
+    private int width;
+    private int height;
 
-
-    /**
-   * ENCODINGS:
-      C shroom cluster
-      S single shroom
-      E for embellishment tile
-      D other dino bone elements in pallette, lets try this for now
-      X for skull in ground (rare)
-      Y for full dinosaur skeleton (big)
-      and as previously # marks wall tile, * marks ground tile
-   */
-
-    // This is kinda silly and kinda hardcoded to work on the "working" level in that if there is none it will not render anything
-
-    private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath;
-    int levelWidth, levelHeight;
-    char[,] GeometryGrid;
-    char[,] DecorationGrid;
-
-    void GetAttributes()
+    private void Start()
     {
-        foreach (string line in File.ReadLines(LevelInfoFilePath))
+        LoadLevel();
+    }
+
+    private void LoadLevel()
+    {
+
+        string readyFolder = "Assets/Generated/Ready";
+
+        string[] levelFolders = Directory.GetDirectories(readyFolder);
+
+        string levelFolder = levelFolders[0];
+
+        GeometryFilePath = Path.Combine(levelFolder, "geometry.txt");
+        DecorationsFilePath = Path.Combine(levelFolder, "decorations.txt");
+        LevelInfoFilePath = Path.Combine(levelFolder, "info.txt");
+
+        GroundsTilemap.ClearAllTiles();
+        WallsTilemap.ClearAllTiles();
+        DecorationsTilemap.ClearAllTiles();
+        ReadInfo();
+        LoadGeometryGrid();
+        LoadDecorationGrid();
+        RenderGeometry();
+        RenderDecorations();
+        player.transform.position = new Vector3(playerX, playerY, 0);
+
+
+    }
+
+    void ReadInfo()
+    {
+
+        foreach(string line in File.ReadLines(LevelInfoFilePath))
         {
-            if (line.StartsWith("width"))
+            string[] parts = line.Split(':');
+
+            string key = parts[0].Trim();
+            string value = parts[1].Trim();
+
+            switch (key)
             {
-                levelWidth = int.Parse(line.Split(':')[1].Trim());
-            }
-            else if (line.StartsWith("height"))
-            {
-                levelHeight = int.Parse(line.Split(':')[1].Trim());
+                case "width":
+                    levelWidth = int.Parse(value);
+                    break;
+
+                case "height":
+                    levelHeight = int.Parse(value);
+                    break;
+
+                case "playerX":
+                    playerX = int.Parse(value);
+                    break;
+
+                case "playerY":
+                    playerY = int.Parse(value);
+                    break;
             }
         }
     }
+
+
 
     void LoadGeometryGrid()
     {
         string[] lines = File.ReadAllLines(GeometryFilePath);
         for (int y = 0; y < levelHeight; ++y)
         {
-            for (int x = 0; x < levelWidth; ++x)
-            {
-                GeometryGrid[x, y] = lines[y][x];
-            }
+           for (int x = 0; x < levelWidth; ++x)
+           {
+              GeometryGrid[x, y] = lines[y][x];
+           }
         }
     }
-
-
 
     void LoadDecorationGrid()
     {
@@ -81,46 +118,9 @@ public class UnityLevelRenderer : MonoBehaviour
         }
     }
 
-    void PreRenderTasks()
-    {
-        
-        // get the level number I am working on now. Suppose only one level only exists in working folder.
-        string[] geo = Directory.GetFiles(
-        "Assets/Generated/Working",
-        "*_geometry.txt");
-        GeometryFilePath = geo[0];
-
-        string[] info = Directory.GetFiles(
-        "Assets/Generated/Working",
-        "*_info.txt");
-        LevelInfoFilePath = info[0];
-
-        string[] decor = Directory.GetFiles("Assets/Generated/Working", "*_decorations.txt");
-        DecorationsFilePath = decor[0];
-
-        GetAttributes();
-        GeometryGrid = new char[levelWidth, levelHeight];
-        DecorationGrid = new char[levelWidth, levelHeight];
-        LoadGeometryGrid();
-        LoadDecorationGrid();
-        
-    }
-
-
-
-
-    [ContextMenu("Render")]
-    public void RenderTilemaps()
-    {
-
-        PreRenderTasks();
-        RenderGeometry();
-        RenderDecorations();
-    }
-
     void RenderGeometry()
     {
-       
+
         for (int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)
@@ -134,7 +134,7 @@ public class UnityLevelRenderer : MonoBehaviour
                 {
                     WallsTilemap.SetTile(cell, WallTile);
                 }
-   
+
             }
         }
     }
@@ -155,32 +155,22 @@ public class UnityLevelRenderer : MonoBehaviour
                 {
                     DecorationsTilemap.SetTile(cell, dinoSingularTile);
                 }
-                else if (DecorationGrid[x,y] == 'C')
+                else if (DecorationGrid[x, y] == 'C')
                 {
                     DecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
                 }
-                else if (DecorationGrid[x,y] == 'S')
+                else if (DecorationGrid[x, y] == 'S')
                 {
                     DecorationsTilemap.SetTile(cell, RandomSingleShroomRuleTile);
                 }
-                else if (DecorationGrid[x,y] == 'X')
+                else if (DecorationGrid[x, y] == 'X')
                 {
                     DecorationsTilemap.SetTile(cell, SkullTile);
                 }
-               
+
             }
         }
     }
 
 
-
-
-    [ContextMenu("Clear tilemaps")]
-    public void Clear()
-    {
-        LevelOutlineTilemap.ClearAllTiles();
-        GroundsTilemap.ClearAllTiles();
-        WallsTilemap.ClearAllTiles();
-        DecorationsTilemap.ClearAllTiles();
-    }
 }
