@@ -18503,7 +18503,7 @@ GameObject:
   - component: {fileID: 697598629}
   - component: {fileID: 697598626}
   - component: {fileID: 697598624}
-  - component: {fileID: 697598628}
+  - component: {fileID: 697598630}
   m_Layer: 0
   m_Name: LevelGeneratorSystem
   m_TagString: Untagged
@@ -18627,18 +18627,6 @@ MonoBehaviour:
   MaxYProtrusion: 8
   protrudeIslets: 1
   protrudeOuterWalls: 1
---- !u!114 &697598628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697598622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3865b2c9de588824d8eadf93d6c8a80e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelCommitter
 --- !u!114 &697598629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18651,6 +18639,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b605b75678efd5d4291f1651c76c08d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WalkabilitySearch
+--- !u!114 &697598630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697598622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3865b2c9de588824d8eadf93d6c8a80e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelCommitter
 --- !u!1 &902001949
 GameObject:
   m_ObjectHideFlags: 0

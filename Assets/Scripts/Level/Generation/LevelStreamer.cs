@@ -6,11 +6,11 @@ public class LevelCommitter : MonoBehaviour
 {
 
 
-    [ContextMenu("Commit level")]
+    [ContextMenu("Stream level to runtime folder")]
     private void Commit()
     {
         string workingFolder = "Assets/Generated/Working/";
-        string readyFolder = "Assets/Generated/Ready";
+        string streamingFolder = "Assets/StreamingAssets/Levels";
 
         string[] geometryFiles = Directory.GetFiles(workingFolder, "*_geometry.txt");
         string geometryPath = geometryFiles[0];
@@ -18,7 +18,7 @@ public class LevelCommitter : MonoBehaviour
         string geometryName = Path.GetFileNameWithoutExtension(geometryPath);
         string baseName = geometryName.Split('_')[0];
 
-        string levelFolder = Path.Combine(readyFolder, baseName);
+        string levelFolder = Path.Combine(streamingFolder, baseName);
         Directory.CreateDirectory(levelFolder);
 
         MoveFile(Path.Combine(workingFolder, $"{baseName}_geometry.txt"),

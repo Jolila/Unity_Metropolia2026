@@ -52,12 +52,15 @@ public class LevelRenderer : MonoBehaviour
         surface.BuildNavMesh();
         spawner = FindAnyObjectByType<EnemySpawner>();
         spawner.Initialize();
+
     }
 
     private void LoadLevel()
     {
 
-        string readyFolder = "Assets/Generated/Ready";
+        string readyFolder = Path.Combine(
+        Application.streamingAssetsPath,
+        "Levels");
 
         string[] levelFolders = Directory.GetDirectories(readyFolder);
 
@@ -78,12 +81,12 @@ public class LevelRenderer : MonoBehaviour
         DecorationGrid = new char[levelWidth, levelHeight];
         LoadGeometryGrid();
         LoadDecorationGrid();
+        LoadOutlineGrid();
+        player.transform.position = new Vector3(playerX, playerY, 0);
+        RenderOutline();
         RenderGeometry();
         RenderDecorations();
-        RenderOutline();
-        player.transform.position = new Vector3(playerX, playerY, 0);
-        
-       
+
 
     }
 
@@ -134,7 +137,7 @@ public class LevelRenderer : MonoBehaviour
 
     void RenderOutline()
     {
-        LoadOutlineGrid();
+        
 
         for (int y = 0; y < outlineHeight; y++)
         {
