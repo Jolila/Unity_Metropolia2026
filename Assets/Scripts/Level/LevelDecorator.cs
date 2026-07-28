@@ -44,8 +44,9 @@ public class LevelDecorator : MonoBehaviour
 
     // Take in only the grid data since the decoration generation is not based on the rules
     // alternatively for placing the dino tiles a sweep for tiles that can house the dino full skeleton needs to happen
-    char[,] GeometryGrid; 
+    char[,] GeometryGrid;
     char[,] DecorationsGrid;
+    char[,] OutlineGrid;
     [SerializeField] int minDinoBones = 0;
     [SerializeField] int maxDinoBones = 5;
     [SerializeField] int MinimumDistanceBetweenDinoBones = 3;
@@ -55,7 +56,7 @@ public class LevelDecorator : MonoBehaviour
     [SerializeField] float SingleShroomDensityWeight = 0.1f;
 
 
-    
+
 
     [SerializeField] float MinimumShroomSpawnPropability = 0.0f;
     [SerializeField] float MaximumShroomSpawnPropability = 0.7f;
@@ -73,7 +74,7 @@ public class LevelDecorator : MonoBehaviour
             if (line.StartsWith("width"))
             {
                 levelWidth = int.Parse(line.Split(':')[1].Trim());
-                Debug.Log("Parsed width : " + levelWidth); 
+                Debug.Log("Parsed width : " + levelWidth);
             }
             else if (line.StartsWith("height"))
             {
@@ -97,7 +98,7 @@ public class LevelDecorator : MonoBehaviour
     void SetUpLevelGrid()
     {
         string[] lines = File.ReadAllLines(GeometryFilePath);
-        for(int y = 0; y < levelHeight; ++y)
+        for (int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)
             {
@@ -107,12 +108,14 @@ public class LevelDecorator : MonoBehaviour
     }
 
 
-    private string GeometryFilePath, LevelInfoFilePath, DecorationsFilePath;
+    private string GeometryFilePath, LevelInfoFilePath, DecorationsFilePath, OutLineFilePath;
+    private int OutlinePadding = 10;
+    int outlineHeight, outlineWidth;
     [ContextMenu("Decorate level")]
     public void Decorate()
     {
 
-       
+
         string[] geo = Directory.GetFiles(
       "Assets/Generated/Working/",
       "*_geometry.txt");
@@ -121,10 +124,11 @@ public class LevelDecorator : MonoBehaviour
 
         string levelPart = GeometryFilePath.Split("_")[0];
         int id = GeometryFilePath.IndexOf("_");
-        int n = int.Parse(levelPart.Substring(id -3, 3));
-       
+        int n = int.Parse(levelPart.Substring(id - 3, 3));
+
         string levelString = $"level{n:D3}";
         DecorationsFilePath = "Assets/Generated/Working/" + levelString + "_decorations.txt";
+        OutLineFilePath = "Assets/Generated/Working/" + levelString + "_outline.txt";
 
 
 
@@ -149,19 +153,62 @@ public class LevelDecorator : MonoBehaviour
         PlaceSkull();
         OutputLevelDecorations();
         //AssetDatabase.Refresh();
+        GenerateOutline();
+        OutputLevelOutline();
+    }
+
+
+    public void GenerateOutline()
+    {
+        outlineWidth = levelWidth + OutlinePadding * 2;
+        outlineHeight = levelHeight + OutlinePadding * 2;
+        OutlineGrid = new char[outlineWidth, outlineHeight];
+   
+
+        for (int y = 0; y < outlineHeight; y++)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                OutlineGrid[x, y] = ' ';
+            }
+        }
+
+        // Top & Bottom strips.
+        for (int x = 0; x < outlineWidth; x++)
+        {
+            for (int y = 0; y < OutlinePadding; y++)
+            {
+                OutlineGrid[x, y] = 'O';
+                OutlineGrid[x, outlineHeight - 1 - y] = 'O';
+            }
+        }
+
+        // Left & Right strips.
+        for (int y = OutlinePadding; y < outlineHeight - OutlinePadding; y++)
+        {
+            for (int x = 0; x < OutlinePadding; x++)
+            {
+                OutlineGrid[x, y] = 'O';
+                OutlineGrid[outlineWidth - 1 - x, y] = 'O';
+            }
+        }
+
+
+
+
     }
 
     public List<Vector2Int> FindDinoBoneLocations()
     {
         String pattern = "#########";
         List<Vector2Int> dinobonelocations = new();
-        for(int y = 1; y < levelHeight -1; ++y)
+        for (int y = 1; y < levelHeight - 1; ++y)
         {
-            for(int x = 1; x < levelWidth -1; ++x)
+            for (int x = 1; x < levelWidth - 1; ++x)
             {
                 if (GeometryGrid[x, y] == '#')
                 {
-                    if(GetPattern(x,y) == pattern)
+                    if (GetPattern(x, y) == pattern)
                     {
                         dinobonelocations.Add(new Vector2Int(x, y));
                     }
@@ -173,7 +220,7 @@ public class LevelDecorator : MonoBehaviour
 
     List<Vector2Int> Fisher_Yates(List<Vector2Int> orig)
     {
-        for(int i = orig.Count -1; i > 0; --i)
+        for (int i = orig.Count - 1; i > 0; --i)
         {
             int j = UnityEngine.Random.Range(0, i + 1);
             (orig[i], orig[j]) = (orig[j], orig[i]);
@@ -189,7 +236,7 @@ public class LevelDecorator : MonoBehaviour
         double dx = (x1 - x2) * (x1 - x2);
         double distx = Math.Sqrt(dx);
         if (Math.Abs(distx - minimumDistance) <= epsi) return true;
-        
+
 
         int y1 = a.y;
         int y2 = b.y;
@@ -197,7 +244,7 @@ public class LevelDecorator : MonoBehaviour
         double disty = Math.Sqrt(dy);
         if (Math.Abs(disty - minimumDistance) <= epsi) return true;
         return false;
-        
+
     }
     // This might be too greedy ? 
     public void PlaceDinoBones(List<Vector2Int> locations)
@@ -208,11 +255,11 @@ public class LevelDecorator : MonoBehaviour
         var used = new List<Vector2Int>();
         int max = shuffledLoc.Count < n ? shuffledLoc.Count : n;
 
-        for(int i = 0; i < max; ++i)
+        for (int i = 0; i < max; ++i)
         {
 
             //check if too close
-            foreach(Vector2Int other in used)
+            foreach (Vector2Int other in used)
             {
                 if (IsTooClose(shuffledLoc[i], other, MinimumDistanceBetweenDinoBones))
                 {
@@ -236,7 +283,7 @@ public class LevelDecorator : MonoBehaviour
         int remaining = shuffledLoc.Count - max;
         if (remaining < 0) return;
 
-        for(int i = max; i < max + remaining; ++i)
+        for (int i = max; i < max + remaining; ++i)
         {
             shroomSporeLocations.Add(shuffledLoc[i]);
         }
@@ -249,25 +296,25 @@ public class LevelDecorator : MonoBehaviour
 
         // place seed shrooms
         int debugCounter = 0;
-        foreach(Vector2Int pos in shroomSporeLocations)
+        foreach (Vector2Int pos in shroomSporeLocations)
         {
             ++debugCounter;
             //Debug.Log("Shroom spore location : " + debugCounter + " : (" + pos.x + "," + pos.y + ")");
             float roll = UnityEngine.Random.Range(0.0f, 1.0f);
             // is the dino bone search simply too greedy for trying to place the bones far enough from each other?
-            if(roll > 1.0f - InitialShroomSporeSpawnChance) DecorationsGrid[pos.x, pos.y] = 'C'; // why is there a crash here, the grid is initialized properly?
+            if (roll > 1.0f - InitialShroomSporeSpawnChance) DecorationsGrid[pos.x, pos.y] = 'C'; // why is there a crash here, the grid is initialized properly?
         }
 
         // place additional clusters and single shrooms based on densities and cluster spawning threshold
         int shroomIteration = 0;
-        while(shroomIteration <= MaxShroomPlacementIterations)
+        while (shroomIteration <= MaxShroomPlacementIterations)
         {
-            
+
             for (int y = 1; y < levelHeight - 1; ++y)
             {
                 for (int x = 1; x < levelWidth - 1; ++x)
                 {
-                    if (DecorationsGrid[x, y] == 'C' || DecorationsGrid[x,y] == 'S')
+                    if (DecorationsGrid[x, y] == 'C' || DecorationsGrid[x, y] == 'S')
                     {
                         float density = EvaluateShroomDensity(new Vector2Int(x, y));
                         float p = Mathf.Lerp(MinimumShroomSpawnPropability, MaximumShroomSpawnPropability, density);
@@ -291,11 +338,11 @@ public class LevelDecorator : MonoBehaviour
             ++shroomIteration;
         }
 
-        
+
     }
 
 
-  
+
     // remember to normalize the density by making the returned local density to correspond exaclty 1/8 portion of the host shrooms density.
     // ie this makes this density a 
     private float EvaluateShroomDensity(Vector2Int pos)
@@ -308,8 +355,8 @@ public class LevelDecorator : MonoBehaviour
             if (DecorationsGrid[pos.x + v.x, pos.y + v.y] == 'C') clustercount++;
             else if (DecorationsGrid[((Vector3Int)pos).x, pos.y + v.y] == 'S') singlescount++;
         }
-     
-        return (clustercount * ShroomClusterDensityWeight 
+
+        return (clustercount * ShroomClusterDensityWeight
             + singlescount * SingleShroomDensityWeight) / 8.0f;
 
     }
@@ -331,15 +378,15 @@ public class LevelDecorator : MonoBehaviour
     {
 
         bool skullPlaced = false;
-        while(!skullPlaced)
+        while (!skullPlaced)
         {
 
-        
-        for(int y = 2; y < levelHeight - 2; ++y)
-        {
-            for(int x = 2; x < levelWidth -2; ++x)
+
+            for (int y = 2; y < levelHeight - 2; ++y)
             {
-                    if (GeometryGrid[x,y] == '*')
+                for (int x = 2; x < levelWidth - 2; ++x)
+                {
+                    if (GeometryGrid[x, y] == '*')
                     {
                         float f = UnityEngine.Random.Range(0.0f, 1.0f);
                         if (f > 0.99)
@@ -349,8 +396,8 @@ public class LevelDecorator : MonoBehaviour
                             return;
                         }
                     }
+                }
             }
-        }
 
         }
     }
@@ -369,6 +416,26 @@ public class LevelDecorator : MonoBehaviour
             output.AppendLine();
         }
         File.WriteAllText(DecorationsFilePath, output.ToString());
+    }
+
+
+
+
+    void OutputLevelOutline()
+    {
+        StringBuilder output = new();
+
+        for (int y = outlineHeight - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                output.Append(OutlineGrid[x, y]);
+            }
+            output.AppendLine();
+            
+        }
+        File.WriteAllText(OutLineFilePath, output.ToString());
+        
     }
 
 

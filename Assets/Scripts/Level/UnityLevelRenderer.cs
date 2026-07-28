@@ -11,6 +11,7 @@ public class UnityLevelRenderer : MonoBehaviour
     [SerializeField] Tilemap DecorationsTilemap;
     [SerializeField] TileBase dinoSingularTile;
     [SerializeField] TileBase SkullTile;
+    [SerializeField] TileBase outlineTile;
 
     [SerializeField] RuleTile RandomDinoBoneRuleTile;
     [SerializeField] RuleTile RandomShroomClusterRuleTile;
@@ -35,10 +36,11 @@ public class UnityLevelRenderer : MonoBehaviour
 
     // This is kinda silly and kinda hardcoded to work on the "working" level in that if there is none it will not render anything
 
-    private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath;
-    int levelWidth, levelHeight;
+    private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath, OutlineFilePath;
+    int levelWidth, levelHeight, outlineWidth, outlineHeight, OutlinePadding;
     char[,] GeometryGrid;
     char[,] DecorationGrid;
+    char[,] OutlineGrid;
 
     void GetAttributes()
     {
@@ -55,17 +57,17 @@ public class UnityLevelRenderer : MonoBehaviour
         }
     }
 
-    void LoadGeometryGrid()
-    {
-        string[] lines = File.ReadAllLines(GeometryFilePath);
-        for (int y = 0; y < levelHeight; ++y)
+        void LoadGeometryGrid()
         {
-            for (int x = 0; x < levelWidth; ++x)
+            string[] lines = File.ReadAllLines(GeometryFilePath);
+            for (int y = 0; y < levelHeight; ++y)
             {
-                GeometryGrid[x, y] = lines[y][x];
+                for (int x = 0; x < levelWidth; ++x)
+                {
+                    GeometryGrid[x, y] = lines[y][x];
+                }
             }
         }
-    }
 
 
 
@@ -77,6 +79,24 @@ public class UnityLevelRenderer : MonoBehaviour
             for (int x = 0; x < levelWidth; ++x)
             {
                 DecorationGrid[x, y] = lines[y][x];
+            }
+        }
+    }
+
+    void LoadOutlineGrid()
+    {
+        string[] lines = File.ReadAllLines(OutlineFilePath);
+
+        outlineHeight = lines.Length;
+        outlineWidth = lines[0].Length;
+
+        OutlineGrid = new char[outlineWidth, outlineHeight];
+
+        for (int y = 0; y < outlineHeight; y++)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                OutlineGrid[x, y] = lines[y][x];
             }
         }
     }
@@ -98,12 +118,16 @@ public class UnityLevelRenderer : MonoBehaviour
         string[] decor = Directory.GetFiles("Assets/Generated/Working", "*_decorations.txt");
         DecorationsFilePath = decor[0];
 
+        string[] outline = Directory.GetFiles("Assets/Generated/Working", "*_outline.txt");
+        OutlineFilePath = outline[0];
+
         GetAttributes();
         GeometryGrid = new char[levelWidth, levelHeight];
         DecorationGrid = new char[levelWidth, levelHeight];
         LoadGeometryGrid();
         LoadDecorationGrid();
-        
+        OutlinePadding = 10;
+        LoadOutlineGrid();
     }
 
 
@@ -116,6 +140,26 @@ public class UnityLevelRenderer : MonoBehaviour
         PreRenderTasks();
         RenderGeometry();
         RenderDecorations();
+        RenderOutline();
+    }
+
+    void RenderOutline()
+    {
+        for (int y = 0; y < outlineHeight; y++)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                if (OutlineGrid[x, y] != 'O')
+                    continue;
+
+                LevelOutlineTilemap.SetTile(
+                    new Vector3Int(
+                    x - OutlinePadding,
+                    y - OutlinePadding,
+                    0),
+                    outlineTile);
+            }
+        }
     }
 
     void RenderGeometry()

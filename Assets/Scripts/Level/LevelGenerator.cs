@@ -213,9 +213,7 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        // Lastly do a sweep for legal single tiles which look stupid and might cause enemies to spawn in unreachable locations
-
-        FixRemainingSingleFloorTiles();
+        // remove the single tiles from here since they ought to be fixed by the walkability search
 
         // put the player position on the info map
         int playerXOffsetSign = UnityEngine.Random.Range(0.0f, 1.0f) > 0.5 ? 1 : -1;
