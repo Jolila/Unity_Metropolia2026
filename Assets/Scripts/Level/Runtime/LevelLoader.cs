@@ -156,7 +156,6 @@ public class LevelRenderer : MonoBehaviour
                 if (OutlineGrid[x, y] == 'C')
                 {
                     OutlineDecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
-                    Debug.Log("Place shroom here");
                 }
                 else if (OutlineGrid[x, y] == 'S')
                 {
