@@ -142,7 +142,7 @@ public class LevelGenerator : MonoBehaviour
     public void Generate(){
 
 
-        levelNumber = GetNextAvailableLevelNumber("Assets/Generated/Ready");
+        levelNumber = GetNextAvailableLevelNumber("Assets/StreamingAssets/Levels");
         levelString = $"level{levelNumber:D3}";
 
         UnityEngine.Random.InitState(seed);
