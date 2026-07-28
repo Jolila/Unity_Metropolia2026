@@ -33,7 +33,7 @@ public class LevelCommitter : MonoBehaviour
         MoveFile(Path.Combine(workingFolder, $"{baseName}_config.txt"),
                      Path.Combine(levelFolder, "config.txt"));
 
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
     }
 
 

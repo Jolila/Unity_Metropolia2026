@@ -240,7 +240,7 @@ public class LevelGenerator : MonoBehaviour
         OutputLevel();
         OutputLevelConfig();
         OutputLevelInfo(new Vector2Int(playerXPos, playerYPos));
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
     }
 
     bool GridsAreEqual(char[,] a, char[,] b)

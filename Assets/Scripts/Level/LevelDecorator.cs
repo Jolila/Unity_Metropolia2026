@@ -148,7 +148,7 @@ public class LevelDecorator : MonoBehaviour
         PlaceShrooms();
         PlaceSkull();
         OutputLevelDecorations();
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
     }
 
     public List<Vector2Int> FindDinoBoneLocations()
