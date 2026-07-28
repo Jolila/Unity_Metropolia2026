@@ -149,12 +149,15 @@ public class LevelDecorator : MonoBehaviour
 
         List<Vector2Int> dinobones = FindDinoBoneLocations();
         PlaceDinoBones(dinobones);
-        PlaceShrooms();
+        PlaceShrooms(DecorationsGrid, levelWidth, levelHeight, shroomSporeLocations);
         PlaceSkull();
-        OutputLevelDecorations();
+        
         //AssetDatabase.Refresh();
         GenerateOutline();
+        PlaceShrooms(OutlineGrid, outlineWidth, outlineHeight, FindOutlineLocations(OutlineGrid, outlineWidth, outlineHeight));
         OutputLevelOutline();
+
+        OutputLevelDecorations();
     }
 
 
@@ -193,9 +196,24 @@ public class LevelDecorator : MonoBehaviour
             }
         }
 
+    }
 
+    public List<Vector2Int> FindOutlineLocations(char[,] outlineGrid, int width, int height)
+    {
+        List<Vector2Int> locations = new();
 
+        for (int y = 0; y < height; ++y)
+        {
+            for (int x = 0; x < width; ++x)
+            {
+                if (outlineGrid[x, y] == 'O')
+                {
+                    locations.Add(new Vector2Int(x, y));
+                }
+            }
+        }
 
+        return locations;
     }
 
     public List<Vector2Int> FindDinoBoneLocations()
@@ -290,19 +308,17 @@ public class LevelDecorator : MonoBehaviour
 
     }
 
-    public void PlaceShrooms()
+    public void PlaceShrooms(char[,] grid, int width, int height, List<Vector2Int> seedLocations)
     {
 
 
         // place seed shrooms
-        int debugCounter = 0;
-        foreach (Vector2Int pos in shroomSporeLocations)
+        foreach (Vector2Int pos in seedLocations)
         {
-            ++debugCounter;
-            //Debug.Log("Shroom spore location : " + debugCounter + " : (" + pos.x + "," + pos.y + ")");
+     
             float roll = UnityEngine.Random.Range(0.0f, 1.0f);
             // is the dino bone search simply too greedy for trying to place the bones far enough from each other?
-            if (roll > 1.0f - InitialShroomSporeSpawnChance) DecorationsGrid[pos.x, pos.y] = 'C'; // why is there a crash here, the grid is initialized properly?
+            if (roll > 1.0f - InitialShroomSporeSpawnChance) grid[pos.x, pos.y] = 'C';
         }
 
         // place additional clusters and single shrooms based on densities and cluster spawning threshold
@@ -310,13 +326,13 @@ public class LevelDecorator : MonoBehaviour
         while (shroomIteration <= MaxShroomPlacementIterations)
         {
 
-            for (int y = 1; y < levelHeight - 1; ++y)
+            for (int y = 1; y < height - 1; ++y)
             {
-                for (int x = 1; x < levelWidth - 1; ++x)
+                for (int x = 1; x < width - 1; ++x)
                 {
-                    if (DecorationsGrid[x, y] == 'C' || DecorationsGrid[x, y] == 'S')
+                    if (grid[x, y] == 'C' || grid[x, y] == 'S')
                     {
-                        float density = EvaluateShroomDensity(new Vector2Int(x, y));
+                        float density = EvaluateShroomDensity(grid,new Vector2Int(x, y), width, height);
                         float p = Mathf.Lerp(MinimumShroomSpawnPropability, MaximumShroomSpawnPropability, density);
                         float seededPropability = UnityEngine.Random.Range(0.0f, 1.0f);
                         if (seededPropability > p)
@@ -324,11 +340,11 @@ public class LevelDecorator : MonoBehaviour
                             if (density > ShroomClusterDensityThreshhold)
                             {
 
-                                DecorationsGrid[x, y] = 'C';
+                                grid[x, y] = 'C';
                             }
                             else
                             {
-                                DecorationsGrid[x, y] = 'S';
+                                grid[x, y] = 'S';
                             }
                         }
 
@@ -345,15 +361,15 @@ public class LevelDecorator : MonoBehaviour
 
     // remember to normalize the density by making the returned local density to correspond exaclty 1/8 portion of the host shrooms density.
     // ie this makes this density a 
-    private float EvaluateShroomDensity(Vector2Int pos)
+    private float EvaluateShroomDensity(char[,] grid,Vector2Int pos, int width, int height)
     {
         int clustercount = 0, singlescount = 0;
 
         foreach (Vector2Int v in neighborDirections)
         {
             Vector2Int neighbor = new Vector2Int(pos.x + v.x, pos.y + v.y);
-            if (DecorationsGrid[pos.x + v.x, pos.y + v.y] == 'C') clustercount++;
-            else if (DecorationsGrid[((Vector3Int)pos).x, pos.y + v.y] == 'S') singlescount++;
+            if (grid[pos.x + v.x, pos.y + v.y] == 'C') clustercount++;
+            else if (grid[((Vector3Int)pos).x, pos.y + v.y] == 'S') singlescount++;
         }
 
         return (clustercount * ShroomClusterDensityWeight

@@ -9,6 +9,7 @@ public class UnityLevelRenderer : MonoBehaviour
     [SerializeField] Tilemap GroundsTilemap;
     [SerializeField] Tilemap WallsTilemap;
     [SerializeField] Tilemap DecorationsTilemap;
+    [SerializeField] Tilemap OutlineDecorationsTilemap;
     [SerializeField] TileBase dinoSingularTile;
     [SerializeField] TileBase SkullTile;
     [SerializeField] TileBase outlineTile;
@@ -149,17 +150,28 @@ public class UnityLevelRenderer : MonoBehaviour
         {
             for (int x = 0; x < outlineWidth; x++)
             {
-                if (OutlineGrid[x, y] != 'O')
-                    continue;
-
-                LevelOutlineTilemap.SetTile(
-                    new Vector3Int(
-                    x - OutlinePadding,
-                    y - OutlinePadding,
-                    0),
-                    outlineTile);
+                Vector3Int cell = new Vector3Int(x - OutlinePadding, y - OutlinePadding, 0);
+                LevelOutlineTilemap.SetTile(cell, outlineTile);
             }
         }
+
+        for (int y = 0; y < outlineHeight; y++)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                Vector3Int cell = new Vector3Int(x - OutlinePadding, y - OutlinePadding, 0);
+                  if (OutlineGrid[x, y] == 'C')
+                {
+                    OutlineDecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
+                    Debug.Log("Place shroom here");
+                }
+                else if (OutlineGrid[x, y] == 'S')
+                {
+                    OutlineDecorationsTilemap.SetTile(cell, RandomSingleShroomRuleTile);
+                }
+            }
+        }
+
     }
 
     void RenderGeometry()
