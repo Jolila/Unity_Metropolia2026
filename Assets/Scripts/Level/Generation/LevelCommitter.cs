@@ -18,7 +18,7 @@ public class LevelCommitter : MonoBehaviour
         string geometryName = Path.GetFileNameWithoutExtension(geometryPath);
         string baseName = geometryName.Split('_')[0];
 
-        string levelFolder = Path.Combine("Assets/Generated/Ready", baseName);
+        string levelFolder = Path.Combine(readyFolder, baseName);
         Directory.CreateDirectory(levelFolder);
 
         MoveFile(Path.Combine(workingFolder, $"{baseName}_geometry.txt"),
@@ -32,6 +32,8 @@ public class LevelCommitter : MonoBehaviour
 
         MoveFile(Path.Combine(workingFolder, $"{baseName}_config.txt"),
                      Path.Combine(levelFolder, "config.txt"));
+
+        MoveFile(Path.Combine(workingFolder, $"{baseName}_outline.txt"), Path.Combine(levelFolder, "outline.txt"));
 
         //AssetDatabase.Refresh();
     }

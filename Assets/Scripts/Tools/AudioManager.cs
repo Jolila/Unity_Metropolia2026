@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
     const string SFX_GROUP_NAME = "SFX";
 
     const string MASTER_VOLUME_NAME = "MasterVolume";
-    const string MUSIC_VOLUME_NAME = "MusiVolume";
+    const string MUSIC_VOLUME_NAME = "MusicVolume";
     const string SFX_VOLUME_NAME = "SFXVolume";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 

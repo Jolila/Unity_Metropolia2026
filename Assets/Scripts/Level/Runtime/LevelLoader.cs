@@ -7,10 +7,12 @@ using UnityEngine.Tilemaps;
 public class LevelRenderer : MonoBehaviour
 {
 
-    private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath;
-    int levelWidth, levelHeight, playerX, playerY;
+    private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath, OutlineFilePath;
+    int levelWidth, levelHeight, playerX, playerY, outlineWidth, outlineHeight;
     char[,] GeometryGrid;
     char[,] DecorationGrid;
+    char[,] OutlineGrid;
+    int OutlinePadding = 10;
 
     [SerializeField] Tilemap LevelOutlineTilemap;
     [SerializeField] Tilemap GroundsTilemap;
@@ -21,6 +23,8 @@ public class LevelRenderer : MonoBehaviour
     [SerializeField] Tilemap DecorationsTilemap;
     [SerializeField] TileBase dinoSingularTile;
     [SerializeField] TileBase SkullTile;
+    [SerializeField] Tilemap OutlineDecorationsTilemap;
+    [SerializeField] TileBase outlineTile;
 
     [SerializeField] RuleTile RandomDinoBoneRuleTile;
     [SerializeField] RuleTile RandomShroomClusterRuleTile;
@@ -62,7 +66,9 @@ public class LevelRenderer : MonoBehaviour
         GeometryFilePath = Path.Combine(levelFolder, "geometry.txt");
         DecorationsFilePath = Path.Combine(levelFolder, "decorations.txt");
         LevelInfoFilePath = Path.Combine(levelFolder, "info.txt");
-     
+        OutlineFilePath = Path.Combine(levelFolder, "outline.txt");
+
+
         GroundsTilemap.ClearAllTiles();
         WallsTilemap.ClearAllTiles();
         DecorationsTilemap.ClearAllTiles();
@@ -74,6 +80,7 @@ public class LevelRenderer : MonoBehaviour
         LoadDecorationGrid();
         RenderGeometry();
         RenderDecorations();
+        RenderOutline();
         player.transform.position = new Vector3(playerX, playerY, 0);
         
        
@@ -86,6 +93,8 @@ public class LevelRenderer : MonoBehaviour
         WallsTilemapCollider.enabled = false;
         WallsTilemapCollider.enabled = true;
     }
+
+
 
     
 
@@ -119,6 +128,60 @@ public class LevelRenderer : MonoBehaviour
                 case "playerY":
                     playerY = int.Parse(value);
                     break;
+            }
+        }
+    }
+
+    void RenderOutline()
+    {
+        LoadOutlineGrid();
+
+        for (int y = 0; y < outlineHeight; y++)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                Vector3Int cell = new Vector3Int(x - OutlinePadding, y - OutlinePadding, 0);
+                LevelOutlineTilemap.SetTile(cell, outlineTile);
+            }
+        }
+
+        for (int y = 0; y < outlineHeight; y++)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                Vector3Int cell = new Vector3Int(x - OutlinePadding, y - OutlinePadding, 0);
+                if (OutlineGrid[x, y] == 'C')
+                {
+                    OutlineDecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
+                    Debug.Log("Place shroom here");
+                }
+                else if (OutlineGrid[x, y] == 'S')
+                {
+                    OutlineDecorationsTilemap.SetTile(cell, RandomSingleShroomRuleTile);
+                }
+            }
+        }
+
+
+
+
+
+    }
+
+    void LoadOutlineGrid()
+    {
+        string[] lines = File.ReadAllLines(OutlineFilePath);
+
+        outlineHeight = lines.Length;
+        outlineWidth = lines[0].Length;
+
+        OutlineGrid = new char[outlineWidth, outlineHeight];
+
+        for (int y = 0; y < outlineHeight; y++)
+        {
+            for (int x = 0; x < outlineWidth; x++)
+            {
+                OutlineGrid[x, y] = lines[y][x];
             }
         }
     }

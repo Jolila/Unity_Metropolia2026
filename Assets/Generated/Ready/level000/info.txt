@@ -1,6 +1,6 @@
-width : 57
-height : 72
-seed:1111
-Islet count 3
-playerX : 30
-playerY : 39
+width : 74
+height : 55
+seed:44
+Islet count 13
+playerX : 41
+playerY : 24

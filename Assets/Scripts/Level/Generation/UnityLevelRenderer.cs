@@ -238,5 +238,6 @@ public class UnityLevelRenderer : MonoBehaviour
         GroundsTilemap.ClearAllTiles();
         WallsTilemap.ClearAllTiles();
         DecorationsTilemap.ClearAllTiles();
+        OutlineDecorationsTilemap.ClearAllTiles();
     }
 }
