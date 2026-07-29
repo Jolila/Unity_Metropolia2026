@@ -69,7 +69,7 @@ public class PlayerStaffController : MonoBehaviour
     {
 
         // add some amount of spread
-        float randomizedSpread = Random.Range(-3f, 3f);
+        float randomizedSpread = Random.Range(-7f, 7f);
         float doubleSpread = 9f;
         //Vector2 spreadDirection = Quaternion.Euler(0, 0, Random.Range(-7.5f, 7.5f)) * _lookDirection;
 

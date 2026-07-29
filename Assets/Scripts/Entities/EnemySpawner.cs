@@ -28,6 +28,11 @@ public class EnemySpawner : MonoBehaviour
     {
         SetEnemySpawnPositions();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
+        for(int i = 0; i < 20; ++i)
+        {
+            Vector3 spawnPos = GetRandomPosition();
+            PoolManager.Instance.Get(PoolID.Rat, spawnPos, Quaternion.identity);
+        }
     }
 
 
