@@ -87,14 +87,14 @@ public class EnemySpawner : MonoBehaviour
 
     PoolID GetRandomEnemyType()
     {
-        int n = Random.Range(0, 4);
+        int n = Random.Range(0, 5);
         return n switch
         {
             0 => PoolID.Rat,
             1 => PoolID.Bat,
             2 => PoolID.Slime,
             3 => PoolID.Zombie,
-            _ => PoolID.Rat
+            4 => PoolID.Ghost
         };
     }
 

@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21f915596eb9574ba4d8690e89679e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  _travelSpeed: 5
+  _travelSpeed: 20
   _damage: 1
   _rb: {fileID: 8808235119238393158}
   _enemyHitSound: {fileID: 8300000, guid: 78b5b2931f63eda4da03efceceafeab2, type: 3}

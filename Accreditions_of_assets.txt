@@ -7,7 +7,7 @@ https://opengameart.org/content/pizel-font
 
 Additional visual elements:
 
-The following assets were used in level embellishments:
+
 Skull Pixel Art(2024) by Cal McEachern
 https://opengameart.org/content/skull-pixel-art
 
@@ -18,9 +18,11 @@ Modification done by Flying Tiger Comics(2016):
 https://opengameart.org/content/fossil-undead-rpg-enemy-mod-therapsid-charset
 
 
-https://opengameart.org/content/fossil-undead-rpg-enemy-mod-therapsid-charset
-
 Misc. Dark Fantasy Scenere Sprites(2012) by ETTiNGRiNDER
 https://opengameart.org/content/misc-dark-fantasy-scenery-sprites
-- Used shrooms in the texture atlas to create the shroom clusters
 
+Ghost (2020) by StygianChrno
+https://opengameart.org/content/ghost-5
+
+
+All soundtracks composed by ven-gnz / Tassu
