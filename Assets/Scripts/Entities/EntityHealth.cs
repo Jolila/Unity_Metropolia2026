@@ -9,6 +9,7 @@ public class EntityHealth : MonoBehaviour
 
     public Action OnDeath;
     public Action<float, float> OnHealthChanged;
+    public bool _isDead;
 
     void Awake()
     {
@@ -20,6 +21,7 @@ public class EntityHealth : MonoBehaviour
     {
         ResetHealth();
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+        _isDead = false;
     }
 
     void OnDisable()
@@ -45,11 +47,13 @@ public class EntityHealth : MonoBehaviour
 
     public void LoseHealth(float healthLost)
     {
+        if (_isDead) return;
         _currentHealth -= healthLost;
         OnHealthChanged?.Invoke(Mathf.Clamp(_currentHealth, 0, _maxHealth), _maxHealth);
 
         if(_currentHealth <= 0)
         {
+            _isDead = true;
             Death();
         }
     }

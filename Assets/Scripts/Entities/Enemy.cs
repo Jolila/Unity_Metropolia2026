@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour
     EntityHealth _entityHealth;
 
     [SerializeField] AudioClip _deathSound;
+    public Transform player;
+    public SpriteRenderer sprite;
 
     UnityEngine.AI.NavMeshAgent _agent;
     GameObject _target;
@@ -14,6 +16,7 @@ public class Enemy : MonoBehaviour
     void OnEnable()
     {
         _entityHealth.OnDeath += DestroyEnemy;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
 
@@ -33,11 +36,20 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         _agent.SetDestination(_target.transform.position);
+        if (player.position.x < transform.position.x)
+        {
+            sprite.flipX = true;
+        }
+        else
+        {
+            sprite.flipX = false;
+        }
     }
 
     void OnDisable()
     {
         _entityHealth.OnDeath -= DestroyEnemy;
+        GameManager.Instance.RegisterKill();
     }
 
     void DestroyEnemy()

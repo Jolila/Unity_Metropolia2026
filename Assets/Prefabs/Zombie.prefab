@@ -137,6 +137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   _deathSound: {fileID: 8300000, guid: 78b5b2931f63eda4da03efceceafeab2, type: 3}
+  player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+  sprite: {fileID: 1952910094458462963}
 --- !u!114 &3912206297297763149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +168,7 @@ MonoBehaviour:
   _maxHealth: 20
   _currentHealth: 0
   _healthRegen: 2
+  _isDead: 0
 --- !u!1 &1103205922100976843
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,8 +536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f676f382febb9c149af5dc124150cc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyOrienter
-  player: {fileID: 0}
-  sprite: {fileID: 1952910094458462963}
 --- !u!95 &2070116231868114615
 Animator:
   serializedVersion: 7

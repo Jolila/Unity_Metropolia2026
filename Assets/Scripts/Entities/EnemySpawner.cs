@@ -11,17 +11,17 @@ public class EnemySpawner : MonoBehaviour
     List<Vector3> _spawnPositions = new();
     [SerializeField] float _spawnCooldown;
     [SerializeField] float _spawnCooldownReductionMultiplier;
-    [SerializeField] GameObject player;
     Vector3 playerPosition;
     double minimumDistance;
     float _currentCooldown;
+    Transform player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
         minimumDistance = 1.25f;
-        
-        
+
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     public void Initialize()
@@ -50,7 +50,8 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerPosition = player.transform.position;
+        if (player == null) return;
+        playerPosition = player.position;
         HandleEnemySpawning();
     }
 

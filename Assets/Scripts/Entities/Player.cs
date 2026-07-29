@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         _playerHealth = GetComponent<EntityHealth>();
+        _playerHealth._isDead = false;
         _playerHealth.OnDeath += HandleDeath;
     }
 
@@ -18,7 +19,6 @@ public class Player : MonoBehaviour
 
     public void HandleDeath()
     {
-
         StartCoroutine(WaitAndExecute());
         
 

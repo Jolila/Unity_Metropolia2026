@@ -3,13 +3,11 @@ using UnityEngine;
 public class EnemyOrienter : MonoBehaviour
 {
 
-    public Transform player;
-    public SpriteRenderer sprite;
-    float rotationSpeed = 10.0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player  = GameObject.FindGameObjectWithTag("Player").transform;
+        
     }
 
     // Update is called once per frame
@@ -29,14 +27,7 @@ public class EnemyOrienter : MonoBehaviour
 
      
        
-        if(player.position.x < transform.position.x)
-        {
-            sprite.flipX = true;
-        }
-        else
-        {
-            sprite.flipX = false;
-        }
+
         
     }
 }
