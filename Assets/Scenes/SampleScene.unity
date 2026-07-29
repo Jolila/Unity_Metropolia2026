@@ -1248,7 +1248,7 @@ MonoBehaviour:
   _inGameCanvasGroup: {fileID: 104811132}
   InGameTimerText: {fileID: 2016341766}
   finalTimeText: {fileID: 1701904083}
-  killCountText: {fileID: 0}
+  killCountText: {fileID: 1813391571}
 --- !u!1 &250842212
 GameObject:
   m_ObjectHideFlags: 0
@@ -3655,7 +3655,6 @@ MonoBehaviour:
   _groundTiles: {fileID: 250842215}
   _spawnCooldown: 1
   _spawnCooldownReductionMultiplier: 0.9
-  player: {fileID: 1861740455}
 --- !u!114 &940148326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5305,7 +5304,6 @@ GameObject:
   - component: {fileID: 1701904082}
   - component: {fileID: 1701904084}
   - component: {fileID: 1701904083}
-  - component: {fileID: 1701904085}
   m_Layer: 5
   m_Name: EndTimeText
   m_TagString: Untagged
@@ -5352,7 +5350,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Time:'
+  m_text: 'Time: 01:23:191'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9bc7524b73b6a5d4881e597ce3c9ce8f, type: 2}
   m_sharedMaterial: {fileID: -6487083933774204222, guid: 9bc7524b73b6a5d4881e597ce3c9ce8f, type: 2}
@@ -5432,19 +5430,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1701904081}
   m_CullTransparentMesh: 1
---- !u!114 &1701904085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1701904081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50b50facffaf759449055ef4d49cccfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PostGameScreen
-  timerText: {fileID: 1701904083}
 --- !u!1 &1807452809
 GameObject:
   m_ObjectHideFlags: 0
@@ -6242,6 +6227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2030963769}
   - component: {fileID: 2030963768}
+  - component: {fileID: 2030963770}
   m_Layer: 0
   m_Name: GameManagerObject
   m_TagString: Untagged
@@ -6262,6 +6248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _inGameUIManager: {fileID: 223341751}
+  timer: {fileID: 2030963770}
   _mainMenuManager: {fileID: 2127928815}
 --- !u!4 &2030963769
 Transform:
@@ -6278,6 +6265,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2030963770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030963767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0b734465d63fc14e8ac2667d8a639be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timer
+  textbox: {fileID: 2016341766}
+  player: {fileID: 1861740455}
 --- !u!1001 &2068747318
 PrefabInstance:
   m_ObjectHideFlags: 0

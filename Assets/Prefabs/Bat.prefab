@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 4355706441492227380}
   - component: {fileID: 8224199469496419364}
   - component: {fileID: 5940123364507658054}
-  - component: {fileID: 2186376703116628539}
   m_Layer: 0
   m_Name: BatVisual
   m_TagString: Untagged
@@ -215,18 +214,6 @@ Animation:
   m_AnimatePhysics: 0
   m_UpdateMode: 0
   m_CullingType: 0
---- !u!114 &2186376703116628539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5813610988173597968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f676f382febb9c149af5dc124150cc13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyOrienter
 --- !u!1 &6394731116622321747
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b9b9bda62431941a2024f7e2114774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityHealth
-  _maxHealth: 4
+  _maxHealth: 2
   _currentHealth: 0
   _healthRegen: 0
   _isDead: 0
