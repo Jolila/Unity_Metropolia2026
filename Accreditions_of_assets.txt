@@ -16,5 +16,11 @@ A modification on Fossil (Undead) RPG Enemy Sprites(2011) by Redhsrike:
 https://opengameart.org/content/fossil-undead-rpg-enemy-sprites
 Modification done by Flying Tiger Comics(2016):
 https://opengameart.org/content/fossil-undead-rpg-enemy-mod-therapsid-charset
-- Only one of the textures were used in embellishments of walls.
+
+
+https://opengameart.org/content/fossil-undead-rpg-enemy-mod-therapsid-charset
+
+Misc. Dark Fantasy Scenere Sprites(2012) by ETTiNGRiNDER
+https://opengameart.org/content/misc-dark-fantasy-scenery-sprites
+- Used shrooms in the texture atlas to create the shroom clusters
 

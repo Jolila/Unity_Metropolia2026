@@ -30,7 +30,6 @@ public class HealthBar : MonoBehaviour
 
     public void OnHealthChanged(float currentHealth, float maxHealth)
     {
-        Debug.Log($"Health Changed: {currentHealth}/{maxHealth}");
         _hpBarFill.fillAmount = currentHealth / maxHealth;
     }
 }

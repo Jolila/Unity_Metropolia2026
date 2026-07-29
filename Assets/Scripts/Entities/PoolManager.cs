@@ -77,14 +77,5 @@ public class PoolManager : MonoBehaviour
         obj.SetActive(true);
         return obj;
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

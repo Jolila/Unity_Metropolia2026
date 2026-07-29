@@ -17,20 +17,11 @@ public class DamageDealer : MonoBehaviour
         if(collision.gameObject.TryGetComponent(out EntityHealth entityHealth))
         {
             entityHealth.LoseHealth(Time.fixedDeltaTime * _dps);
-            Debug.Log("Player hug");
+           
         }
 
         
       
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 
@@ -18,10 +19,17 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         
-        minimumDistance = 15.0f;
+        minimumDistance = 1.25f;
+        
+        
+    }
+
+    public void Initialize()
+    {
         SetEnemySpawnPositions();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
     }
+
 
     void SetEnemySpawnPositions()
     {
@@ -94,6 +102,13 @@ public class EnemySpawner : MonoBehaviour
 
         PoolID id = GetRandomEnemyType();
         Vector3 pos = GetRandomPosition();
+
+        if (!NavMesh.SamplePosition(pos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        {
+            Debug.Log("Rejected spawn - not on NavMesh");
+            return;
+        }
+
         PoolManager.Instance.Get(id, pos, Quaternion.identity);
             
     }

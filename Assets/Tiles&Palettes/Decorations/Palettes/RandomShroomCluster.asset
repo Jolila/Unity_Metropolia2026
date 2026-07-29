@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
+  m_Name: RandomShroomCluster
+  m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.RuleTile
+  m_DefaultSprite: {fileID: 4666736105348542837, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+  m_DefaultGameObject: {fileID: 0}
+  m_DefaultColliderType: 1
+  m_TilingRules:
+  - m_Id: 0
+    m_Sprites:
+    - {fileID: 4666736105348542837, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: 7422058848825443754, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: 521181305710500628, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: 4487814463670821218, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: -9069668735086792252, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: 1860153730183155816, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: -120579046111256286, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: -7908878170763925238, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: -4224562403320496154, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: 8159958221505157725, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    - {fileID: 3549321112161807713, guid: 0872c85665b00194e89acc4609b54ae4, type: 3}
+    m_GameObject: {fileID: 0}
+    m_MinAnimationSpeed: 1
+    m_MaxAnimationSpeed: 1
+    m_PerlinScale: 0.5
+    m_Output: 1
+    m_ColliderType: 1
+    m_RandomTransform: 0
+    m_Neighbors: 
+    m_NeighborPositions:
+    - {x: -1, y: 1, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 1, y: 1, z: 0}
+    - {x: -1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: -1, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 1, y: -1, z: 0}
+    m_RuleTransform: 0
