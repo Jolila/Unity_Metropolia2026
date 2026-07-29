@@ -10,6 +10,8 @@ public class Projectile : MonoBehaviour
 
     public void InitializeProjectile(Vector2 direction)
     {
+        gameObject.SetActive(true);
+        Debug.Log("Shootin projectile");
         Launch(direction);
     }
 
@@ -40,19 +42,11 @@ public class Projectile : MonoBehaviour
             AudioManager.Instance.PlayAudio(_enemyHitSound, AudioManager.SoundType.SFX, 1.0f, false);
         }
     }
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void DestroyProjectile()
     {
-        Destroy(gameObject);
+        _rb.linearVelocity = Vector2.zero;
+        gameObject.SetActive(false);
     }
 }

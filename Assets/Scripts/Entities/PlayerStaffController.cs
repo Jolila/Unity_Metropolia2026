@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-using rand = UnityEngine.Random;
-
 public class PlayerStaffController : MonoBehaviour
 {
 
@@ -14,6 +12,7 @@ public class PlayerStaffController : MonoBehaviour
     [SerializeField] float _fireRate;
     [SerializeField] float _fireRingRate;
     [SerializeField] GameObject player;
+    [SerializeField] ObjectPool _projectilePool;
     private Light2D staffLight;
     private EntityHealth playerHealth;
     private bool controlStaff;
@@ -69,21 +68,38 @@ public class PlayerStaffController : MonoBehaviour
     void Shoot()
     {
 
-
+        // add some amount of spread
         float randomizedSpread = Random.Range(-3f, 3f);
         float doubleSpread = 9f;
-        Projectile newProjectile = Instantiate(_projectile, _tip.position, Quaternion.identity);
-        Vector2 spreadDirection = Quaternion.Euler(0, 0, Random.Range(-7.5f, 7.5f)) * _lookDirection;
-        if(Random.Range(0, 1.0f) > 0.8f)
+        //Vector2 spreadDirection = Quaternion.Euler(0, 0, Random.Range(-7.5f, 7.5f)) * _lookDirection;
+
+      
+        // roll for doubleshot
+        if (Random.Range(0, 1.0f) > 0.8f)
         {
+            GameObject go1 = _projectilePool.GetPooledObject();
+            Projectile projectile1 = go1.GetComponent<Projectile>();
+            projectile1.transform.position = _tip.position;
+            projectile1.transform.rotation = Quaternion.identity;
+            projectile1.InitializeProjectile(
+                    Quaternion.Euler(0, 0, randomizedSpread - doubleSpread) * _lookDirection);
             
-            Projectile newProjectile1 = Instantiate(_projectile, _tip.position, Quaternion.identity);
-            newProjectile.InitializeProjectile(Quaternion.Euler(0, 0, randomizedSpread -doubleSpread) * _lookDirection);
-            newProjectile1.InitializeProjectile(Quaternion.Euler(0, 0, doubleSpread + randomizedSpread) * _lookDirection);
+            GameObject go2 = _projectilePool.GetPooledObject();
+            Projectile projectile2 = go2.GetComponent<Projectile>();
+                projectile2.transform.position = _tip.position;
+                projectile2.transform.rotation = Quaternion.identity;
+
+                projectile2.InitializeProjectile(
+                    Quaternion.Euler(0, 0, randomizedSpread + doubleSpread) * _lookDirection);
+            
         }
         else
         {
-            newProjectile.InitializeProjectile(spreadDirection);
+            GameObject go1 = _projectilePool.GetPooledObject();
+            Projectile projectile = go1.GetComponent<Projectile>();
+            projectile.transform.position = _tip.position;
+            projectile.transform.rotation = Quaternion.identity;
+            projectile.InitializeProjectile(Quaternion.Euler(0,0, randomizedSpread) * _lookDirection);
         }
 
 

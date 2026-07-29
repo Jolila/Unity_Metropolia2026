@@ -106,7 +106,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (!NavMesh.SamplePosition(pos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
-            Debug.Log("Rejected spawn - not on NavMesh");
+           
             return;
         }
 

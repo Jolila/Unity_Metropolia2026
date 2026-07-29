@@ -37,7 +37,6 @@ public class Ghost : MonoBehaviour
 
     private void Death()
     {
-        Debug.Log("Ghost is killed");
         AudioManager.Instance.PlayAudio(deathSound, AudioManager.SoundType.SFX, 1f, false);
         GameManager.Instance.RegisterKill();
         gameObject.SetActive(false);
