@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+using rand = UnityEngine.Random;
+
 public class PlayerStaffController : MonoBehaviour
 {
 
@@ -18,11 +20,14 @@ public class PlayerStaffController : MonoBehaviour
     float _nextFireRingTime;
     Vector2 _lookDirection;
     float _nextFireTime;
+
+   
     // Update is called once per frame
 
     void Awake()
     {
         staffLight = GetComponentInChildren<Light2D>();
+        
     }
 
     void Start()
@@ -63,9 +68,29 @@ public class PlayerStaffController : MonoBehaviour
 
     void Shoot()
     {
+
+
+        float randomizedSpread = Random.Range(-3f, 3f);
+        float doubleSpread = 9f;
         Projectile newProjectile = Instantiate(_projectile, _tip.position, Quaternion.identity);
+        Vector2 spreadDirection = Quaternion.Euler(0, 0, Random.Range(-7.5f, 7.5f)) * _lookDirection;
+        if(Random.Range(0, 1.0f) > 0.8f)
+        {
+            
+            Projectile newProjectile1 = Instantiate(_projectile, _tip.position, Quaternion.identity);
+            newProjectile.InitializeProjectile(Quaternion.Euler(0, 0, randomizedSpread -doubleSpread) * _lookDirection);
+            newProjectile1.InitializeProjectile(Quaternion.Euler(0, 0, doubleSpread + randomizedSpread) * _lookDirection);
+        }
+        else
+        {
+            newProjectile.InitializeProjectile(spreadDirection);
+        }
+
+
         AudioManager.Instance.PlayAudio(_shootSound, AudioManager.SoundType.SFX, 0.4f, false);
-        newProjectile.InitializeProjectile(_lookDirection);
+        // Add recoil to player
+        Vector2 playerOffset = new Vector2(0.1f, 0.1f) * _lookDirection;
+        player.transform.position -= new Vector3(playerOffset.x, playerOffset.y, 0);
     }
 
     void UseFireRing()
