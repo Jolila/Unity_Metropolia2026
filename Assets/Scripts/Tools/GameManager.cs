@@ -18,7 +18,8 @@ public class GameManager : MonoBehaviour
     {
         if(Instance != null)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
@@ -50,6 +51,17 @@ public class GameManager : MonoBehaviour
         kills = 0;
         hits = 0;
         misses = 0;
+        timer.StartTimer();
+    }
+
+    public void StopGameTimer()
+    {
+        timer.StopTimer();
+    }
+
+    public void SetUI(InGameUIManager ui)
+    {
+        _inGameUIManager = ui;
     }
 
     public void StartGame()
@@ -60,7 +72,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_inGameUIManager != null) _inGameUIManager.updateTimerText(timer.ElapsedTime);
+        _inGameUIManager.updateTimerText(timer.ElapsedTime);
     }
 
     public void GameOver()

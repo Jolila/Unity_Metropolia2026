@@ -19,14 +19,13 @@ public class Player : MonoBehaviour
 
     public void HandleDeath()
     {
+        GameManager.Instance.StopGameTimer();
         StartCoroutine(WaitAndExecute());
-        
-
     }
 
     IEnumerator WaitAndExecute()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         GameManager.Instance.GameOver();
     }
 }

@@ -3697,7 +3697,7 @@ MonoBehaviour:
     objects: []
   - id: 1
     prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
-    size: 0
+    size: 20
     objects: []
   - id: 2
     prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}
@@ -3705,11 +3705,11 @@ MonoBehaviour:
     objects: []
   - id: 3
     prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
-    size: 0
+    size: 20
     objects: []
   - id: 4
     prefab: {fileID: 8231525188190148662, guid: 9a0c15124a279884a8a50aea8a8a8f9b, type: 3}
-    size: 0
+    size: 20
     objects: []
 --- !u!1 &956263067
 GameObject:

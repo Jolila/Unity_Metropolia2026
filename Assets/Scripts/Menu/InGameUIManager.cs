@@ -17,7 +17,7 @@ public class InGameUIManager : MonoBehaviour
 
     private void Awake()
     {
-
+        GameManager.Instance.SetUI(this);
     }
 
     private void Update()
@@ -61,7 +61,9 @@ public class InGameUIManager : MonoBehaviour
 
         double acc = accuracyP * 100;
         string accuracyString;
-        if (acc < 10) accuracyString = $"Accuracy : {acc:0}%";
+
+        if (acc == double.NaN) accuracyString = $"Accuracy : 0 %";
+        else if (acc < 10) accuracyString = $"Accuracy : {acc:0}%";
         else accuracyString = $"Accuracy : {acc:00}%";
         accuracyText.text = accuracyString;
 
@@ -72,6 +74,5 @@ public class InGameUIManager : MonoBehaviour
         
         GameManager.Instance.ResetGame();
        
-        // set the timer singleton state to 0.0
     }
 }
