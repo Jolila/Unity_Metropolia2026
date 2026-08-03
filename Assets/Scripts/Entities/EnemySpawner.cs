@@ -13,26 +13,69 @@ public class EnemySpawner : MonoBehaviour
     List<Vector3> wallSpawnPositions = new();
     [SerializeField] float _spawnCooldown;
     [SerializeField] float _spawnCooldownReductionMultiplier;
+    [SerializeField] float cellSize = 20.0f;
+    Dictionary<Vector2Int, List<Vector3>> groundsGrid = new();
+    Dictionary<Vector2Int, List<Vector3>> wallsGrid = new();
     Vector3 playerPosition;
-    float minimumDistance;
-    float maximumDistance;
+    Vector2Int currentPlayerCell;
+    List<Vector3> groundCandidates = new();
+    List<Vector3> wallCandidates = new();
+
     float _currentCooldown;
     Transform player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
-        minimumDistance = 4f;
-        maximumDistance = 14f;
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     public void Initialize()
     {
+
+       
         SetEnemySpawnPositions();
+        BuildSpatialGrid();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
 
        
+    }
+
+    Vector2Int GetCell(Vector3 worldPos)
+    {
+        return new Vector2Int(
+            Mathf.FloorToInt(worldPos.x / cellSize),
+            Mathf.FloorToInt(worldPos.y / cellSize));
+   
+    }
+
+    public void BuildSpatialGrid()
+    {
+        foreach (var point in groundSpawnPositions)
+        {
+            Vector2Int cell = GetCell(point);
+
+            if(!groundsGrid.TryGetValue(cell, out var list))
+            {
+                list = new List<Vector3>();
+                groundsGrid[cell] = list;
+            }
+            list.Add(point);
+        }
+
+        foreach(var point in wallSpawnPositions)
+        {
+            Vector2Int cell = GetCell(point);
+
+            if(!wallsGrid.TryGetValue(cell, out var list))
+            {
+                list = new List<Vector3>();
+                wallsGrid[cell] = list;
+            }
+            list.Add(point);
+        }
+
+        RefreshCandidates();
     }
 
 
@@ -63,10 +106,40 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         if (player == null) return;
         playerPosition = player.position;
+        Vector2Int playerCell = GetCell(playerPosition);
+        if(playerCell != currentPlayerCell)
+        {
+            currentPlayerCell = playerCell;
+            RefreshCandidates();
+        }
         HandleEnemySpawning();
   
+    }
+
+    void RefreshCandidates()
+    {
+        groundCandidates.Clear();
+        wallCandidates.Clear();
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0) continue;
+
+                Vector2Int cell =
+                    currentPlayerCell + new Vector2Int(x, y);
+
+                if (groundsGrid.TryGetValue(cell, out var ground))
+                    groundCandidates.AddRange(ground);
+
+                if (wallsGrid.TryGetValue(cell, out var wall))
+                    wallCandidates.AddRange(wall);
+            }
+        }
     }
 
     void HandleEnemySpawning()
@@ -81,39 +154,9 @@ public class EnemySpawner : MonoBehaviour
 
     Vector3 GetRandomPosition(PoolID id)
     {
-        Vector3 spawnPosition = groundSpawnPositions[0];
         bool useWall = id == PoolID.Ghost || id == PoolID.Bat;
-        const int maxIters = 3;
-
-        if (!useWall)
-        {
-            for (int i = 0; i <= maxIters; i++)
-            {
-                spawnPosition = groundSpawnPositions[Random.Range(0, groundSpawnPositions.Count)];
-                Vector3 toPlayer = spawnPosition - playerPosition;
-                if (toPlayer.magnitude > minimumDistance && toPlayer.magnitude < maximumDistance)
-                {
-                    return spawnPosition;
-                }
-            }
-        }
-
-        else
-        {
-            for (int i = 0; i <= maxIters; i++)
-            {
-
-
-                spawnPosition = wallSpawnPositions[Random.Range(0, wallSpawnPositions.Count)];
-                Vector3 toPlayer = spawnPosition - playerPosition;
-                if (toPlayer.magnitude > minimumDistance && toPlayer.magnitude < maximumDistance)
-                {
-                    return spawnPosition;
-                }
-            }
-        }
-
-            return spawnPosition;
+        if (useWall) return wallCandidates[Random.Range(0, wallCandidates.Count)];
+        return groundCandidates[Random.Range(0, groundCandidates.Count)];
     }
 
     PoolID GetRandomEnemyType()
@@ -140,15 +183,14 @@ public class EnemySpawner : MonoBehaviour
             
     }
 
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (!Application.isPlaying)
-    //        return;
+    void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying)
+            return;
 
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(playerPosition, minimumDistance);
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
 
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(playerPosition, maximumDistance);
-    //}
+        
+    }
 }
