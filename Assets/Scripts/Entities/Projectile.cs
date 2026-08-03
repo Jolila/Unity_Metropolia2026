@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -7,11 +8,12 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _damage;
     [SerializeField] Rigidbody2D _rb;
     [SerializeField] AudioClip _enemyHitSound;
+    Vector2 d;
 
     public void InitializeProjectile(Vector2 direction)
     {
         gameObject.SetActive(true);
-        Debug.Log("Shootin projectile");
+        d = direction;
         Launch(direction);
     }
 
@@ -29,7 +31,9 @@ public class Projectile : MonoBehaviour
         }
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            DealDamage(collision.gameObject);
+            GameObject enemy = collision.gameObject;
+            DealDamage(enemy);
+            enemy.transform.position += new Vector3(d.x, d.y, 0) * 0.15f;
             DestroyProjectileOnEnemy();
         }
     }
@@ -44,11 +48,7 @@ public class Projectile : MonoBehaviour
     }
 
 
-    void DestroyProjectile()
-    {
-        _rb.linearVelocity = Vector2.zero;
-        gameObject.SetActive(false);
-    }
+   
 
     void DestroyProjectileOnTerrain()
     {

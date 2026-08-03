@@ -14,15 +14,16 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] float _spawnCooldown;
     [SerializeField] float _spawnCooldownReductionMultiplier;
     Vector3 playerPosition;
-    double minimumDistance;
+    float minimumDistance;
+    float maximumDistance;
     float _currentCooldown;
     Transform player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
-        minimumDistance = 1.25f;
-
+        minimumDistance = 4f;
+        maximumDistance = 14f;
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
@@ -31,12 +32,7 @@ public class EnemySpawner : MonoBehaviour
         SetEnemySpawnPositions();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
 
-        // initial rats or some warm up objects, maybe there should be less and they do not move
-        //for(int i = 0; i < 20; ++i)
-        //{
-        //    Vector3 spawnPos = GetRandomPosition(PoolID.Slime);
-        //    PoolManager.Instance.Get(PoolID.Rat, spawnPos, Quaternion.identity);
-        //}
+       
     }
 
 
@@ -70,6 +66,7 @@ public class EnemySpawner : MonoBehaviour
         if (player == null) return;
         playerPosition = player.position;
         HandleEnemySpawning();
+  
     }
 
     void HandleEnemySpawning()
@@ -94,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 spawnPosition = groundSpawnPositions[Random.Range(0, groundSpawnPositions.Count)];
                 Vector3 toPlayer = spawnPosition - playerPosition;
-                if (toPlayer.magnitude > minimumDistance)
+                if (toPlayer.magnitude > minimumDistance && toPlayer.magnitude < maximumDistance)
                 {
                     return spawnPosition;
                 }
@@ -109,7 +106,7 @@ public class EnemySpawner : MonoBehaviour
 
                 spawnPosition = wallSpawnPositions[Random.Range(0, wallSpawnPositions.Count)];
                 Vector3 toPlayer = spawnPosition - playerPosition;
-                if (toPlayer.magnitude > minimumDistance)
+                if (toPlayer.magnitude > minimumDistance && toPlayer.magnitude < maximumDistance)
                 {
                     return spawnPosition;
                 }
@@ -139,13 +136,19 @@ public class EnemySpawner : MonoBehaviour
         Vector3 pos = GetRandomPosition(id);
         PoolManager.Instance.Get(id, pos, Quaternion.identity);
 
-        //if (!NavMesh.SamplePosition(pos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-        //{
-           
-        //    return;
-        //}
 
-        //PoolManager.Instance.Get(id, pos, Quaternion.identity);
             
     }
+
+    //void OnDrawGizmosSelected()
+    //{
+    //    if (!Application.isPlaying)
+    //        return;
+
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(playerPosition, minimumDistance);
+
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(playerPosition, maximumDistance);
+    //}
 }
