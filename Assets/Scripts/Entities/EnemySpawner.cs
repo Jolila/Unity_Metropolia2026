@@ -8,7 +8,9 @@ public class EnemySpawner : MonoBehaviour
 {
 
     [SerializeField] Tilemap _groundTiles;
-    List<Vector3> _spawnPositions = new();
+    [SerializeField] Tilemap _wallTiles;
+    List<Vector3> groundSpawnPositions = new();
+    List<Vector3> wallSpawnPositions = new();
     [SerializeField] float _spawnCooldown;
     [SerializeField] float _spawnCooldownReductionMultiplier;
     Vector3 playerPosition;
@@ -28,11 +30,13 @@ public class EnemySpawner : MonoBehaviour
     {
         SetEnemySpawnPositions();
         InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
-        for(int i = 0; i < 20; ++i)
-        {
-            Vector3 spawnPos = GetRandomPosition();
-            PoolManager.Instance.Get(PoolID.Rat, spawnPos, Quaternion.identity);
-        }
+
+        // initial rats or some warm up objects, maybe there should be less and they do not move
+        //for(int i = 0; i < 20; ++i)
+        //{
+        //    Vector3 spawnPos = GetRandomPosition(PoolID.Slime);
+        //    PoolManager.Instance.Get(PoolID.Rat, spawnPos, Quaternion.identity);
+        //}
     }
 
 
@@ -42,7 +46,15 @@ public class EnemySpawner : MonoBehaviour
         {
             if(_groundTiles.HasTile(position))
             {
-                _spawnPositions.Add(_groundTiles.GetCellCenterWorld(position));
+                groundSpawnPositions.Add(_groundTiles.GetCellCenterWorld(position));
+            }
+        }
+
+        foreach(Vector3Int p in _wallTiles.cellBounds.allPositionsWithin)
+        {
+            if(_wallTiles.HasTile(p))
+            {
+                wallSpawnPositions.Add(_wallTiles.GetCellCenterWorld(p));
             }
         }
     }
@@ -70,24 +82,41 @@ public class EnemySpawner : MonoBehaviour
 
     }
 
-    Vector3 GetRandomPosition()
+    Vector3 GetRandomPosition(PoolID id)
     {
-        Vector3 spawnPosition = _spawnPositions[0];
-   
-
+        Vector3 spawnPosition = groundSpawnPositions[0];
+        bool useWall = id == PoolID.Ghost || id == PoolID.Bat;
         const int maxIters = 3;
 
-        for(int i = 0; i <= maxIters; i++)
+        if (!useWall)
         {
-            spawnPosition = _spawnPositions[Random.Range(0, _spawnPositions.Count)];
-            Vector3 toPlayer = spawnPosition - playerPosition;
-            if(toPlayer.magnitude > minimumDistance)
+            for (int i = 0; i <= maxIters; i++)
             {
-                return spawnPosition;
+                spawnPosition = groundSpawnPositions[Random.Range(0, groundSpawnPositions.Count)];
+                Vector3 toPlayer = spawnPosition - playerPosition;
+                if (toPlayer.magnitude > minimumDistance)
+                {
+                    return spawnPosition;
+                }
             }
         }
 
-        return spawnPosition;
+        else
+        {
+            for (int i = 0; i <= maxIters; i++)
+            {
+
+
+                spawnPosition = wallSpawnPositions[Random.Range(0, wallSpawnPositions.Count)];
+                Vector3 toPlayer = spawnPosition - playerPosition;
+                if (toPlayer.magnitude > minimumDistance)
+                {
+                    return spawnPosition;
+                }
+            }
+        }
+
+            return spawnPosition;
     }
 
     PoolID GetRandomEnemyType()
@@ -107,15 +136,16 @@ public class EnemySpawner : MonoBehaviour
     {
 
         PoolID id = GetRandomEnemyType();
-        Vector3 pos = GetRandomPosition();
-
-        if (!NavMesh.SamplePosition(pos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-        {
-           
-            return;
-        }
-
+        Vector3 pos = GetRandomPosition(id);
         PoolManager.Instance.Get(id, pos, Quaternion.identity);
+
+        //if (!NavMesh.SamplePosition(pos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        //{
+           
+        //    return;
+        //}
+
+        //PoolManager.Instance.Get(id, pos, Quaternion.identity);
             
     }
 }

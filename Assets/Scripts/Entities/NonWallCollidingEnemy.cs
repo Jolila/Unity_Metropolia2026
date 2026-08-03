@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.U2D;
 
-public class Ghost : MonoBehaviour
+public class NonWallCollidingEnemy : MonoBehaviour
 {
     public Transform player;
     public float speed = 3.5f;
     private EntityHealth health;
+    public SpriteRenderer sprite;
     [SerializeField] private AudioClip deathSound;
 
     private void Awake()
@@ -32,6 +34,15 @@ public class Ghost : MonoBehaviour
 
         Vector3 direction = (player.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
+
+        if (player.position.x < transform.position.x)
+        {
+            sprite.flipX = true;
+        }
+        else
+        {
+            sprite.flipX = false;
+        }
     }
 
 
