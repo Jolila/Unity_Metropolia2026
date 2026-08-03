@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     float _nextFootstepAudio = 0.0f;
     private Rigidbody2D _rb;
-    public float movementSpeed;
+    [SerializeField] float movementSpeed = 9.0f;
     [SerializeField] SpriteRenderer _characterBody;
     [SerializeField] private Animator _animator;
     [SerializeField] AudioClip _footstep;
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         color = _characterBody.color;
-        movementSpeed = 7.5f;
+        
         isDead = false;
         _entityHealth.OnDeath += PlayDeathAnimation;
     }

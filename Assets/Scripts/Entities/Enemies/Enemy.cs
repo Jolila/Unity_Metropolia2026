@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IEnemyAI
 {
     EntityHealth _entityHealth;
 
@@ -10,18 +10,13 @@ public class Enemy : MonoBehaviour
     public SpriteRenderer sprite;
 
     UnityEngine.AI.NavMeshAgent _agent;
-    GameObject _target;
-    Vector3 lastTargetPos;
-    bool updateLastTargetPos;
+
     // Start is called once before the first execution of Update after the Mono
     // Behaviour is created
 
     void OnEnable()
     {
         _entityHealth.OnDeath += DestroyEnemy;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        lastTargetPos = player.transform.position;
-        updateLastTargetPos = true;
         _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
     }
 
@@ -32,37 +27,29 @@ public class Enemy : MonoBehaviour
         _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         _agent.updateRotation = false;
     }
-    void Start()
-    {
-        _target = GameObject.FindGameObjectWithTag("Player");
-        _entityHealth.OnDeath += DestroyEnemy;
-    }
 
-    // Update is called once per frame
     void Update()
     {
 
-        if ((player.position - lastTargetPos).sqrMagnitude > 0.25f)
-        {
-            updateLastTargetPos = true;
-        }
-
-        if(updateLastTargetPos)
-        {
-            lastTargetPos = player.position;
-            _agent.SetDestination(lastTargetPos);
-        }
-
-        
-        if (player.position.x < transform.position.x)
-        {
-            sprite.flipX = true;
-        }
-        else
-        {
-            sprite.flipX = false;
-        }
     }
+
+    void Start()
+    {
+        _entityHealth.OnDeath += DestroyEnemy;
+    }
+
+    public void Tick(Vector3 playerPosition)
+    {
+        sprite.flipX = playerPosition.x < transform.position.x;
+        // does the navmesh move here on not setting the destination? Does it cache?
+    }
+
+    public void UpdateTarget(Vector3 target)
+    {
+        // update the destination only when needed
+        _agent.SetDestination(target);
+    }
+
 
     void OnDisable()
     {

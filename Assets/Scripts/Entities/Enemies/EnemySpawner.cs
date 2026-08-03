@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
@@ -11,15 +12,16 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Tilemap _wallTiles;
     List<Vector3> groundSpawnPositions = new();
     List<Vector3> wallSpawnPositions = new();
-    [SerializeField] float _spawnCooldown;
-    [SerializeField] float _spawnCooldownReductionMultiplier;
     [SerializeField] float cellSize = 20.0f;
     Dictionary<Vector2Int, List<Vector3>> groundsGrid = new();
     Dictionary<Vector2Int, List<Vector3>> wallsGrid = new();
     Vector3 playerPosition;
     Vector2Int currentPlayerCell;
     List<Vector3> groundCandidates = new();
+    List<Vector3> groundCandidateBuffer = new();
     List<Vector3> wallCandidates = new();
+    List<Vector3> wallCandidateBuffer = new();
+
 
     float _currentCooldown;
     Transform player;
@@ -33,12 +35,9 @@ public class EnemySpawner : MonoBehaviour
     public void Initialize()
     {
 
-       
         SetEnemySpawnPositions();
         BuildSpatialGrid();
-        InvokeRepeating(nameof(HandleGameDifficultyIncrease), 1f, 1f);
 
-       
     }
 
     Vector2Int GetCell(Vector3 worldPos)
@@ -98,10 +97,12 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void HandleGameDifficultyIncrease()
+
+    public void SpawnNewEnemy(Vector3 initialTarget)
     {
-        _spawnCooldown *= _spawnCooldownReductionMultiplier;
+        HandleEnemySpawning(initialTarget);
     }
+
 
     // Update is called once per frame
     void Update()
@@ -115,14 +116,14 @@ public class EnemySpawner : MonoBehaviour
             currentPlayerCell = playerCell;
             RefreshCandidates();
         }
-        HandleEnemySpawning();
   
     }
 
     void RefreshCandidates()
     {
-        groundCandidates.Clear();
-        wallCandidates.Clear();
+        Debug.Log("Refreshing candidates");
+        groundCandidateBuffer.Clear();
+        wallCandidateBuffer.Clear();
 
         for (int x = -1; x <= 1; x++)
         {
@@ -134,21 +135,30 @@ public class EnemySpawner : MonoBehaviour
                     currentPlayerCell + new Vector2Int(x, y);
 
                 if (groundsGrid.TryGetValue(cell, out var ground))
-                    groundCandidates.AddRange(ground);
+                    groundCandidateBuffer.AddRange(ground);
 
                 if (wallsGrid.TryGetValue(cell, out var wall))
-                    wallCandidates.AddRange(wall);
+                    wallCandidateBuffer.AddRange(wall);
             }
         }
+        SwapBuffers();
     }
 
-    void HandleEnemySpawning()
+    void SwapBuffers()
     {
-        _currentCooldown -= Time.deltaTime;
-        if (_currentCooldown > Time.time) return;
+        var tempGround = groundCandidates;
+        groundCandidates = groundCandidateBuffer;
+        groundCandidateBuffer = tempGround;
 
-        _currentCooldown = Time.time + _spawnCooldown;
-        SpawnEnemyToRandomLocation();
+        var tempWalls = wallCandidates;
+        wallCandidates = wallCandidateBuffer;
+        wallCandidateBuffer = tempWalls;
+    }
+
+    void HandleEnemySpawning(Vector3 initialTarget)
+    {
+
+        SpawnEnemyToRandomLocation(initialTarget);
 
     }
 
@@ -172,25 +182,26 @@ public class EnemySpawner : MonoBehaviour
         };
     }
 
-    void SpawnEnemyToRandomLocation()
+    void SpawnEnemyToRandomLocation(Vector3 initialTarget)
     {
 
         PoolID id = GetRandomEnemyType();
         Vector3 pos = GetRandomPosition(id);
-        PoolManager.Instance.Get(id, pos, Quaternion.identity);
+        PoolManager.Instance.Get(id, pos, Quaternion.identity, initialTarget);
+       
 
 
-            
+         
     }
 
-    void OnDrawGizmosSelected()
-    {
-        if (!Application.isPlaying)
-            return;
+    //void OnDrawGizmosSelected()
+    //{
+    //    if (!Application.isPlaying)
+    //        return;
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
 
         
-    }
+    //}
 }

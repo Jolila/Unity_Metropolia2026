@@ -24,7 +24,7 @@ public class PoolManager : MonoBehaviour
         public List<GameObject> objects;
     }
 
-    [SerializeField] private List<Pool> pools;
+    [SerializeField] public List<Pool> pools;
 
     private Dictionary<PoolID, Pool> _poolLookup;
 
@@ -68,13 +68,18 @@ public class PoolManager : MonoBehaviour
 
     }
 
-    public GameObject Get(PoolID id, Vector3 pos, Quaternion rot)
+    public GameObject Get(PoolID id, Vector3 pos, Quaternion rot, Vector3 initialTarget)
     {
         GameObject obj = Get(id);
         if (obj == null) return null;
 
         obj.transform.SetPositionAndRotation(pos, rot);
         obj.SetActive(true);
+        if(obj.TryGetComponent<IEnemyAI>(out var enemy))
+        {
+            enemy.UpdateTarget(initialTarget);
+            enemy.Tick(initialTarget);
+        }
         return obj;
     }
     

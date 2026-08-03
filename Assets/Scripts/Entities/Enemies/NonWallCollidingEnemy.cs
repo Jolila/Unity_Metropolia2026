@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class NonWallCollidingEnemy : MonoBehaviour
+public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 {
     public Transform player;
+    public Vector3 targetDirection;
     public float speed = 3.5f;
     private EntityHealth health;
     public SpriteRenderer sprite;
@@ -16,7 +17,7 @@ public class NonWallCollidingEnemy : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+
     }
 
     private void OnEnable()
@@ -31,18 +32,7 @@ public class NonWallCollidingEnemy : MonoBehaviour
 
     private void Update()
     {
-
-        Vector3 direction = (player.position - transform.position).normalized;
-        transform.position += direction * speed * Time.deltaTime;
-
-        if (player.position.x < transform.position.x)
-        {
-            sprite.flipX = true;
-        }
-        else
-        {
-            sprite.flipX = false;
-        }
+        transform.position += targetDirection * speed * Time.deltaTime;
     }
 
 
@@ -51,5 +41,16 @@ public class NonWallCollidingEnemy : MonoBehaviour
         AudioManager.Instance.PlayAudio(deathSound, AudioManager.SoundType.SFX, 1f, false);
         GameManager.Instance.RegisterKill();
         gameObject.SetActive(false);
+    }
+
+    public void Tick(Vector3 playerPosition)
+    {
+        
+        
+    }
+
+    public void UpdateTarget(Vector3 playerPosition)
+    {
+        targetDirection = (playerPosition - transform.position).normalized;
     }
 }

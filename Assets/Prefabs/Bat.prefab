@@ -366,6 +366,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NonWallCollidingEnemy
   player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
-  speed: 4
+  speed: 3
   sprite: {fileID: 4355706441492227380}
   deathSound: {fileID: 8300000, guid: 78b5b2931f63eda4da03efceceafeab2, type: 3}

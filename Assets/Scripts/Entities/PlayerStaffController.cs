@@ -19,6 +19,7 @@ public class PlayerStaffController : MonoBehaviour
     float _nextFireRingTime;
     Vector2 _lookDirection;
     float _nextFireTime;
+    private Camera mainCamera;
 
    
     // Update is called once per frame
@@ -26,7 +27,7 @@ public class PlayerStaffController : MonoBehaviour
     void Awake()
     {
         staffLight = GetComponentInChildren<Light2D>();
-        
+        mainCamera = Camera.main;
     }
 
     void Start()
@@ -61,7 +62,7 @@ public class PlayerStaffController : MonoBehaviour
 
     void SetLookDirection()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         _lookDirection = (mousePosition - (Vector2)transform.position).normalized;
     }
 
