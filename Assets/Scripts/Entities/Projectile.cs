@@ -25,12 +25,12 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Terrain"))
         {
-            DestroyProjectile();
+            DestroyProjectileOnTerrain();
         }
         if(collision.gameObject.CompareTag("Enemy"))
         {
             DealDamage(collision.gameObject);
-            DestroyProjectile();
+            DestroyProjectileOnEnemy();
         }
     }
 
@@ -49,4 +49,20 @@ public class Projectile : MonoBehaviour
         _rb.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);
     }
+
+    void DestroyProjectileOnTerrain()
+    {
+        _rb.linearVelocity = Vector2.zero;
+        gameObject.SetActive(false);
+        GameManager.Instance.RegisterMiss();
+    }
+
+    void DestroyProjectileOnEnemy()
+    {
+        _rb.linearVelocity = Vector2.zero;
+        gameObject.SetActive(false);
+        GameManager.Instance.RegisterHit();
+    }
+
+
 }

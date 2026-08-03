@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
 
     Transform playerTransform;
+    Vector3 cameraBack = Vector3.back * 10f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,6 +18,6 @@ public class CameraController : MonoBehaviour
     {
         if (playerTransform == null)
             return;
-        transform.position = playerTransform.position + Vector3.back * 10f;
+        transform.position = playerTransform.position + cameraBack;
     }
 }

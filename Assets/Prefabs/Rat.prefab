@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6507195209312586058}
   - component: {fileID: 1972708321644615467}
   - component: {fileID: 5959986345654983083}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DamageDealer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
+  m_Radius: 0.05
 --- !u!114 &5959986345654983083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4355706441492227380}
   - component: {fileID: 8224199469496419364}
   - component: {fileID: 5940123364507658054}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RatVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 1937395537848987055}
   - component: {fileID: 2789361539517078082}
   - component: {fileID: 4125876475502800399}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 4, y: 4, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6507195209312586058}
@@ -313,12 +313,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.075
+  m_Offset: {x: 0, y: 0.005}
+  m_Radius: 0.05
 --- !u!50 &2789361539517078082
 Rigidbody2D:
   serializedVersion: 5
@@ -355,16 +355,16 @@ NavMeshAgent:
   m_GameObject: {fileID: 6394731116622321747}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.005
   m_Speed: 5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 1
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 0.0001
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.13
-  m_BaseOffset: 0.065
+  m_Height: 0.005
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2

@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     int kills = 0;
+    double hits = 0;
+    double misses = 0;
 
     [SerializeField] MainMenuManager _mainMenuManager;
 
@@ -27,6 +29,16 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void RegisterMiss()
+    {
+        ++misses;
+    }
+
+    public void RegisterHit()
+    {
+        ++hits;
+    }
+
     public void RegisterKill()
     {
         ++kills;
@@ -36,6 +48,8 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
         kills = 0;
+        hits = 0;
+        misses = 0;
     }
 
     public void StartGame()
@@ -53,6 +67,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         timer.StopTimer();
-        _inGameUIManager.ShowGameOverPanel(timer.ElapsedTime, kills);
+        double accP = hits / (hits + misses);
+
+        _inGameUIManager.ShowGameOverPanel(timer.ElapsedTime, kills, accP);
     }
 }

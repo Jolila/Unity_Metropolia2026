@@ -13,6 +13,7 @@ public class InGameUIManager : MonoBehaviour
 
     [SerializeField] private TMP_Text finalTimeText;
     [SerializeField] private TMP_Text killCountText;
+    [SerializeField] TMP_Text accuracyText;
 
     private void Awake()
     {
@@ -40,7 +41,7 @@ public class InGameUIManager : MonoBehaviour
         _inGameCanvasGroup.blocksRaycasts = true;
     }
 
-    public void ShowGameOverPanel(float finaltime, int finalKills)
+    public void ShowGameOverPanel(float finaltime, int finalKills, double accuracyP)
     {
         _gameOverPanelCG.alpha = 1;
         _gameOverPanelCG.interactable = true;
@@ -57,6 +58,12 @@ public class InGameUIManager : MonoBehaviour
 
         finalTimeText.text = $"Time: {minutes:00}:{seconds:00}:{h:000}";
         killCountText.text = "Kills : " + finalKills;
+
+        double acc = accuracyP * 100;
+        string accuracyString;
+        if (acc < 10) accuracyString = $"Accuracy : {acc:0}%";
+        else accuracyString = $"Accuracy : {acc:00}%";
+        accuracyText.text = accuracyString;
 
     }
 

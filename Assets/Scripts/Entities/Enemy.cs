@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Enemy : MonoBehaviour
 
     UnityEngine.AI.NavMeshAgent _agent;
     GameObject _target;
+    Vector3 lastTargetPos;
+    bool updateLastTargetPos;
     // Start is called once before the first execution of Update after the Mono
     // Behaviour is created
 
@@ -17,6 +20,9 @@ public class Enemy : MonoBehaviour
     {
         _entityHealth.OnDeath += DestroyEnemy;
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        lastTargetPos = player.transform.position;
+        updateLastTargetPos = true;
+        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
     }
 
 
@@ -35,7 +41,19 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _agent.SetDestination(_target.transform.position);
+
+        if ((player.position - lastTargetPos).sqrMagnitude > 0.25f)
+        {
+            updateLastTargetPos = true;
+        }
+
+        if(updateLastTargetPos)
+        {
+            lastTargetPos = player.position;
+            _agent.SetDestination(lastTargetPos);
+        }
+
+        
         if (player.position.x < transform.position.x)
         {
             sprite.flipX = true;
