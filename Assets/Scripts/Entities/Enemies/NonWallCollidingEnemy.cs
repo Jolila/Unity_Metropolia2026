@@ -8,7 +8,6 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
     public float speed = 3.5f;
     private EntityHealth health;
     public SpriteRenderer sprite;
-    [SerializeField] private AudioClip deathSound;
 
     private void Awake()
     {
@@ -30,23 +29,16 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
         health.OnDeath -= Death;
     }
 
-    private void Update()
-    {
-        transform.position += targetDirection * speed * Time.deltaTime;
-    }
-
 
     private void Death()
     {
-        AudioManager.Instance.PlayAudio(deathSound, AudioManager.SoundType.SFX, 1f, false);
         GameManager.Instance.RegisterKill();
         gameObject.SetActive(false);
     }
 
     public void Tick(Vector3 playerPosition)
     {
-        
-        
+        transform.position += targetDirection * speed * Time.deltaTime;
     }
 
     public void UpdateTarget(Vector3 playerPosition)

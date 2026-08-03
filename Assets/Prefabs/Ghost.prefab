@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 235876547473664169}
   - component: {fileID: 6017159155671308588}
   - component: {fileID: 8180637282049128689}
+  - component: {fileID: 927367561909092988}
   m_Layer: 15
   m_Name: Ghost
   m_TagString: Enemy
@@ -275,9 +276,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ghost
   player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+  targetDirection: {x: 0, y: 0, z: 0}
   speed: 1.5
   sprite: {fileID: 2536003338476956258}
-  deathSound: {fileID: 8300000, guid: 722bb49d78798d84bb628e3b47e9107d, type: 3}
 --- !u!50 &8180637282049128689
 Rigidbody2D:
   serializedVersion: 5
@@ -305,3 +306,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &927367561909092988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8231525188190148662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8f1b84bbe381d4b96fd9fb73b00eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostAudio

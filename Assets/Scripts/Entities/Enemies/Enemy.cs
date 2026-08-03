@@ -59,7 +59,8 @@ public class Enemy : MonoBehaviour, IEnemyAI
 
     void DestroyEnemy()
     {
-        AudioManager.Instance.PlayAudio(_deathSound, AudioManager.SoundType.SFX, 1.0f, false);
+        
+        AudioManager.Instance.PlayEnemyDeath();
         gameObject.SetActive(false);
     }
 }

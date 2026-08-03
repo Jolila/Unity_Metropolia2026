@@ -6,8 +6,6 @@ public class PlayerStaffController : MonoBehaviour
 
     [SerializeField] Projectile _projectile;
     [SerializeField] FireRing _fireRing;
-    [SerializeField] AudioClip _shootSound;
-    [SerializeField] AudioClip _fireRingSound;
     [SerializeField] Transform _tip;
     [SerializeField] float _fireRate;
     [SerializeField] float _fireRingRate;
@@ -102,9 +100,8 @@ public class PlayerStaffController : MonoBehaviour
             projectile.transform.rotation = Quaternion.identity;
             projectile.InitializeProjectile(Quaternion.Euler(0,0, randomizedSpread) * _lookDirection);
         }
-
-
-        AudioManager.Instance.PlayAudio(_shootSound, AudioManager.SoundType.SFX, 0.4f, false);
+ 
+        AudioManager.Instance.PlayProjectileShoot();
         // Add recoil to player
         Vector2 playerOffset = new Vector2(0.1f, 0.1f) * _lookDirection;
         player.transform.position -= new Vector3(playerOffset.x, playerOffset.y, 0);
@@ -113,7 +110,7 @@ public class PlayerStaffController : MonoBehaviour
     void UseFireRing()
     {
         FireRing newFireRing = Instantiate(_fireRing, transform.position, Quaternion.identity);
-        AudioManager.Instance.PlayAudio(_fireRingSound, AudioManager.SoundType.SFX, 0.3f, false);
+        AudioManager.Instance.PlayFireRing();
         newFireRing.InitializeFireAttack(transform);
     }
 

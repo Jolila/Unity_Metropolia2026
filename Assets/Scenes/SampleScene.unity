@@ -5473,6 +5473,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   _mixer: {fileID: 24100000, guid: 63e9ff453c6f5f247b4f4fdb649ac8d4, type: 2}
   _music: {fileID: 8300000, guid: cf6c5c4b8604132418b5300762abdb9f, type: 3}
+  _sfxGroup: {fileID: 0}
+  _musicSource: {fileID: 0}
+  _sfxSourceCount: 12
+  projectileShoot: {fileID: 0}
+  enemyHit: {fileID: 8300000, guid: 78b5b2931f63eda4da03efceceafeab2, type: 3}
+  regularEnemyDeath: {fileID: 8300000, guid: 722bb49d78798d84bb628e3b47e9107d, type: 3}
+  ghostDeath: {fileID: 8300000, guid: 540e54b4008937340ae1ba2b947a1a4e, type: 3}
+  fireRing: {fileID: 8300000, guid: ee48f8b5f865ee348879ae979aee837a, type: 3}
 --- !u!4 &1699024761
 Transform:
   m_ObjectHideFlags: 0

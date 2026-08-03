@@ -29,12 +29,27 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioMixer _mixer;
     [SerializeField] AudioClip _music;
 
-    private AudioSource _musicSource;
     AudioMixerGroup _musicGroup;
-    AudioMixerGroup _sfxGroup;
 
-    const string MUSIC_GROUP_NAME = "Music";
-    const string SFX_GROUP_NAME = "SFX";
+    [Header("Mixer")]
+    [SerializeField] private AudioMixerGroup _sfxGroup;
+
+    [Header("Sources")]
+    [SerializeField] private AudioSource _musicSource;
+    [SerializeField] private int _sfxSourceCount = 12;
+
+    [Header("Clips")]
+    [SerializeField] private AudioClip projectileShoot;
+    [SerializeField] private AudioClip enemyHit;
+    [SerializeField] private AudioClip regularEnemyDeath;
+    [SerializeField] private AudioClip ghostDeath;
+    [SerializeField] private AudioClip fireRing;
+  
+
+    private AudioSource[] _sfxSources;
+    private int _nextSource;
+    private int currentSource;
+
 
     const string MASTER_VOLUME_NAME = "MasterVolume";
     const string MUSIC_VOLUME_NAME = "MusicVolume";
@@ -50,15 +65,20 @@ public class AudioManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        _musicGroup = _mixer.FindMatchingGroups(MUSIC_GROUP_NAME)[0];
-        _sfxGroup = _mixer.FindMatchingGroups(SFX_GROUP_NAME)[0];
+        _sfxSources = new AudioSource[_sfxSourceCount];
 
+        for (int i = 0; i < _sfxSourceCount; i++)
+        {
+            GameObject go = new GameObject($"SFX Source {i}");
+            go.transform.SetParent(transform);
 
-        _musicSource = gameObject.AddComponent<AudioSource>();
-        _musicSource.playOnAwake = false;
-        _musicSource.loop = true;
-        _musicSource.clip = _music;
-        _musicSource.outputAudioMixerGroup = _musicGroup;
+            AudioSource source = go.AddComponent<AudioSource>();
+            source.outputAudioMixerGroup = _sfxGroup;
+
+            _sfxSources[i] = source;
+        }
+        currentSource = 0;
+        _nextSource = 1;
     }
 
     void Start()
@@ -142,6 +162,49 @@ public class AudioManager : MonoBehaviour
       
        
     }
+
+    public void PlaySFX(AudioClip clip, float volume)
+    {
+        AudioSource source = _sfxSources[currentSource];
+
+        source.clip = clip;
+        source.volume = volume;
+        source.loop = false;
+        source.Play();
+
+        currentSource++;
+
+        if (currentSource >= _sfxSources.Length)
+            currentSource = 0;
+    }
+
+
+    public void PlayEnemyHit()
+    {
+        PlaySFX(enemyHit, 0.8f);
+    }
+
+    public void PlayEnemyDeath()
+    {
+        PlaySFX(regularEnemyDeath, 0.8f);
+    }
+
+    public void PlayProjectileShoot()
+    {
+        PlaySFX(projectileShoot, 0.4f);
+    }
+
+    public void PlayFireRing()
+    {
+        PlaySFX(fireRing, 0.3f);
+    }
+
+    public void PlayGhostDeath()
+    {
+        PlaySFX(ghostDeath, 1.0f);
+    }
+
+
 
 }
 

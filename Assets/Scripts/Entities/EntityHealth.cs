@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EntityHealth : MonoBehaviour
@@ -6,11 +7,10 @@ public class EntityHealth : MonoBehaviour
     [SerializeField] float _maxHealth;
     [SerializeField] float _currentHealth;
     [SerializeField] float _healthRegen;
-
-    public Action OnDeath;
     public Action<float, float> OnHealthChanged;
+    public Action OnDeath;
     public bool _isDead;
-
+        
     void Awake()
     {
         _currentHealth = _maxHealth;
