@@ -16,7 +16,9 @@ public class EnemyManager : MonoBehaviour
     Transform player;
 
 
+    private int framesPerPoolUpdate = 2;
 
+    private int frameCounter;
 
 
 
@@ -33,6 +35,12 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        frameCounter++;
+        if (frameCounter < framesPerPoolUpdate) return;
+
+        frameCounter = 0;
+
        _spawner.SpawnNewEnemy(cachedPlayerPosition);
             
 
