@@ -1,9 +1,9 @@
 Config : 
-seed : 666
-min level width :70
-max level width :90
-min level height :70
-max level height :90
+seed : 171
+min level width :44
+max level width :88
+min level height :44
+max level height :88
 min number of islets : 6
 max number of islets : 18
 minIsletHeight : 2

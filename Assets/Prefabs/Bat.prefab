@@ -368,7 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NonWallCollidingEnemy
   player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
   targetDirection: {x: 0, y: 0, z: 0}
-  speed: 3
+  speed: 3.5
   sprite: {fileID: 4355706441492227380}
   frozen: 0
 --- !u!114 &4033199629912058352

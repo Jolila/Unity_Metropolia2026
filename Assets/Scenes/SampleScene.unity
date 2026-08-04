@@ -2658,9 +2658,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   retargetDistance: 2.5
-  _spawner: {fileID: 474080290}
   _poolManager: {fileID: 474080289}
-  interval: 0.5
+  _spawner: {fileID: 474080290}
+  updateSchedule:
+  - pool: 0
+    startIndex: 0
+    count: 40
+  - pool: 1
+    startIndex: 0
+    count: 40
+  - pool: 1
+    startIndex: 0
+    count: 40
+  - pool: 0
+    startIndex: 40
+    count: 40
+  - pool: 2
+    startIndex: 0
+    count: 25
+  - pool: 0
+    startIndex: 40
+    count: 40
+  - pool: 0
+    startIndex: 0
+    count: 40
+  - pool: 1
+    startIndex: 40
+    count: 40
+  - pool: 1
+    startIndex: 0
+    count: 40
+  - pool: 4
+    startIndex: 0
+    count: 25
+  - pool: 1
+    startIndex: 40
+    count: 40
+  - pool: 1
+    startIndex: 0
+    count: 40
+  - pool: 0
+    startIndex: 40
+    count: 40
+  - pool: 0
+    startIndex: 0
+    count: 40
+  - pool: 3
+    startIndex: 0
+    count: 25
 --- !u!114 &474080289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2676,23 +2721,23 @@ MonoBehaviour:
   pools:
   - id: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
-    size: 100
+    size: 80
     objects: []
   - id: 1
     prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
-    size: 100
+    size: 80
     objects: []
   - id: 2
     prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}
-    size: 50
+    size: 25
     objects: []
   - id: 3
     prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
-    size: 20
+    size: 25
     objects: []
   - id: 4
     prefab: {fileID: 8231525188190148662, guid: 9a0c15124a279884a8a50aea8a8a8f9b, type: 3}
-    size: 15
+    size: 25
     objects: []
 --- !u!114 &474080290
 MonoBehaviour:
@@ -3265,7 +3310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
   pooledObjects: []
   objectToPool: {fileID: 8633226205050583916, guid: 3d0a9e76a50fb61469acaa7b97154f4d, type: 3}
-  amountToPool: 50
+  amountToPool: 100
 --- !u!1 &703803023
 GameObject:
   m_ObjectHideFlags: 0
@@ -7171,7 +7216,7 @@ PrefabInstance:
       objectReference: {fileID: 1861740455}
     - target: {fileID: 3480183630426177931, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: _fireRate
-      value: 15
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 3480183630426177931, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: _projectilePool

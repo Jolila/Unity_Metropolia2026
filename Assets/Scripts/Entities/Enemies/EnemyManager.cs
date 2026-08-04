@@ -1,26 +1,40 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using static EnemyPoolManager;
 
 public class EnemyManager : MonoBehaviour
 {
 
-    int currentPool = 0;
+
+
     Vector3 cachedPlayerPosition;
     private bool needsRetarget;
-    int updatedPools = 0;
+    int updatedPasses = 0;
+
+    int currentPool = 0;
     [SerializeField] float retargetDistance = 2.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
     Transform player;
 
+    [System.Serializable]
+    public struct UpdatePass
+    {
+        public PoolID pool;
+        public int startIndex;
+        public int count;
+    }
 
-    private int framesPerPoolUpdate = 2;
 
-    private int frameCounter;
+
+    [SerializeField]
+    private List<UpdatePass> updateSchedule = new();
+
+    private int currentPass;
+
+
     bool gameStarted;
-
-
-    [SerializeField] float interval = 0.000001f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,76 +68,88 @@ public class EnemyManager : MonoBehaviour
         if (GameManager.Instance.GetIsCountDown()) return;
 
 
-        frameCounter++;
-        if (frameCounter < framesPerPoolUpdate) return;
-
-        frameCounter = 0;
-
        _spawner.SpawnNewEnemy(cachedPlayerPosition);
+
             
 
         if (!needsRetarget &&
-    (player.position - cachedPlayerPosition).sqrMagnitude >
-    retargetDistance * retargetDistance)
+        (player.position - cachedPlayerPosition).sqrMagnitude >
+        retargetDistance * retargetDistance)
         {
             cachedPlayerPosition = player.position;
             needsRetarget = true;
-            updatedPools = 0;
+            updatedPasses = 0;
         }
 
-        UpdatePool();
-        ++currentPool;
 
-        if (currentPool >= EnemyPoolManager.Instance.pools.Count)
-            currentPool = 0;
-        
+        UpdatePass pass = updateSchedule[currentPass];
+        UpdatePool(pass);
+
+        currentPass++;
+
+        if (currentPass >= updateSchedule.Count)
+            currentPass = 0;
+
     }
 
 
-    void UpdatePool()
-    {
-        var pool = EnemyPoolManager.Instance.pools[currentPool];
 
-        
-        foreach (var obj in pool.objects)
+
+    void UpdatePool(UpdatePass pass)
+    {
+
+
+        Pool pool = EnemyPoolManager.Instance.GetPool(pass.pool);
+
+        int end = Mathf.Min(pass.startIndex + pass.count,
+                          pool.objects.Count);
+
+
+        for (int i = pass.startIndex; i < end; i++)
         {
-            if (!obj.activeInHierarchy) continue;
+            GameObject obj = pool.objects[i];
+
+            if (!obj.activeInHierarchy)
+                continue;
+
             IEnemyAI enemy = obj.GetComponent<IEnemyAI>();
 
+            if (enemy == null)
+                continue;
 
-            if (enemy == null) continue;
             enemy.Tick(cachedPlayerPosition);
 
             if (needsRetarget)
                 enemy.UpdateTarget(cachedPlayerPosition);
-
-           
         }
 
         if (needsRetarget)
         {
-            updatedPools++;
+            updatedPasses++;
 
-            if (updatedPools >= EnemyPoolManager.Instance.pools.Count)
+            if (updatedPasses >= updateSchedule.Count)
             {
                 needsRetarget = false;
-                updatedPools = 0;
+                updatedPasses = 0;
             }
         }
 
     }
 
-    void OnDrawGizmosSelected()
-    {
-        if (!Application.isPlaying)
-            return;
 
-        Gizmos.color = Color.purple;
-        Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
+
+
+    //void OnDrawGizmosSelected()
+    //{
+    //    if (!Application.isPlaying)
+    //        return;
+
+    //    Gizmos.color = Color.purple;
+    //    Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
      
 
 
-    }
+    //}
 
 
 }

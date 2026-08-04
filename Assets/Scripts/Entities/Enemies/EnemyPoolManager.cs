@@ -91,20 +91,12 @@ public class EnemyPoolManager : MonoBehaviour
     }
 
 
-    public void SetEnemiesFrozen(bool frozen)
+    public Pool GetPool(PoolID id)
     {
-        foreach(var pool in pools)
-        {
-            foreach(var obj in pool.objects)
-            {
-                if (!obj.activeInHierarchy) continue;
-
-                if(obj.TryGetComponent<IEnemyAI>(out var enemy))
-                {
-                    enemy.SetFrozen(frozen);
-                }
-            }
-        }
+        _poolLookup.TryGetValue(id, out var pool);
+        return pool;
     }
-    
+
+
+
 }

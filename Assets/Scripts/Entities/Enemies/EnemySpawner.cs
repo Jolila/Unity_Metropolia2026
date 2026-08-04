@@ -189,24 +189,24 @@ public class EnemySpawner : MonoBehaviour
         Vector3 pos = GetRandomPosition(id);
         if(GameManager.Instance.GetIsCountDown())
         {
-            PoolManager.Instance.Get(id, pos, Quaternion.identity, null);
+            EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, null);
             return;
         }
-        PoolManager.Instance.Get(id, pos, Quaternion.identity, initialTarget);
+        EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, initialTarget);
        
 
 
          
     }
 
-    void OnDrawGizmosSelected()
-    {
-        if (!Application.isPlaying)
-            return;
+    //void OnDrawGizmosSelected()
+    //{
+    //    if (!Application.isPlaying)
+    //        return;
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
 
 
-    }
+    //}
 }

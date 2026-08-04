@@ -141,6 +141,7 @@ public class GameManager : MonoBehaviour
       
         AudioManager.Instance.StopMusic();
         AudioManager.Instance.PlayCountDown();
+        _inGameUIManager.updateTimerText(0.0f);
         _inGameUIManager.setCountdownText("3");
         yield return new WaitForSecondsRealtime(1f);
        
@@ -156,6 +157,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayMusic();
         _isCountDown = false;
         _enemyManager.OnStartGame();
+        timer.StartTimer();
     }
 
     public bool GetIsCountDown()

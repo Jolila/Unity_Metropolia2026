@@ -34,7 +34,6 @@ public class Timer : MonoBehaviour
     {
         elapsedTime = 0.0f;
         isRunning = true;
-        Debug.Log("Timer reset");
     }
 
 
