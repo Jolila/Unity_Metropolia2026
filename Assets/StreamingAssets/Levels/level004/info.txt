@@ -1,0 +1,6 @@
+width : 105
+height : 84
+seed:34635
+Islet count 37
+playerX : 49
+playerY : 47

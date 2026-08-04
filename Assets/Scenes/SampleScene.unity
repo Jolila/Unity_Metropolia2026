@@ -2657,53 +2657,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66de5e88c9f255c488d7b6cd3bcaee18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
-  retargetDistance: 2.5
+  retargetDistance: 4
   _poolManager: {fileID: 474080289}
   _spawner: {fileID: 474080290}
   updateSchedule:
-  - pool: 0
-    startIndex: 0
-    count: 40
   - pool: 1
     startIndex: 0
-    count: 40
+    count: 90
   - pool: 1
-    startIndex: 0
-    count: 40
+    startIndex: 90
+    count: 90
   - pool: 0
-    startIndex: 40
-    count: 40
+    startIndex: 0
+    count: 30
+  - pool: 0
+    startIndex: 30
+    count: 30
   - pool: 2
     startIndex: 0
     count: 25
-  - pool: 0
-    startIndex: 40
-    count: 40
-  - pool: 0
-    startIndex: 0
-    count: 40
-  - pool: 1
-    startIndex: 40
-    count: 40
-  - pool: 1
-    startIndex: 0
-    count: 40
-  - pool: 4
+  - pool: 3
     startIndex: 0
     count: 25
-  - pool: 1
-    startIndex: 40
-    count: 40
-  - pool: 1
-    startIndex: 0
-    count: 40
-  - pool: 0
-    startIndex: 40
-    count: 40
-  - pool: 0
-    startIndex: 0
-    count: 40
-  - pool: 3
+  - pool: 4
     startIndex: 0
     count: 25
 --- !u!114 &474080289
@@ -2721,11 +2697,11 @@ MonoBehaviour:
   pools:
   - id: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
-    size: 80
+    size: 60
     objects: []
   - id: 1
     prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
-    size: 80
+    size: 180
     objects: []
   - id: 2
     prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}

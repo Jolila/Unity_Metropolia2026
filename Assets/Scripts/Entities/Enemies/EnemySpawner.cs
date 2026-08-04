@@ -98,9 +98,31 @@ public class EnemySpawner : MonoBehaviour
     }
 
 
-    public void SpawnNewEnemy(Vector3? initialTarget)
+    public GameObject SpawnNewEnemy(Vector3? initialTarget)
     {
-        HandleEnemySpawning(initialTarget);
+        PoolID id = GetRandomEnemyType();
+        Vector3 pos = GetRandomPosition(id);
+
+        NavMeshHit hit;
+
+        if(id == PoolID.Rat || id == PoolID.Slime || id == PoolID.Zombie)
+        {
+            if (!NavMesh.SamplePosition(pos, out hit, 1f, NavMesh.AllAreas))
+            {
+                Debug.LogError("Spawn is not on NavMesh!");
+            }
+        }
+       
+
+
+        if (GameManager.Instance.GetIsCountDown())
+        {
+            return 
+                EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, null);
+           
+        }
+        return 
+            EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, initialTarget);
     }
 
 
@@ -155,12 +177,7 @@ public class EnemySpawner : MonoBehaviour
         wallCandidateBuffer = tempWalls;
     }
 
-    void HandleEnemySpawning(Vector3? initialTarget)
-    {
-       
-        SpawnEnemyToRandomLocation(initialTarget);
-
-    }
+ 
 
     Vector3 GetRandomPosition(PoolID id)
     {
@@ -182,22 +199,7 @@ public class EnemySpawner : MonoBehaviour
         };
     }
 
-    void SpawnEnemyToRandomLocation(Vector3? initialTarget)
-    {
 
-        PoolID id = GetRandomEnemyType();
-        Vector3 pos = GetRandomPosition(id);
-        if(GameManager.Instance.GetIsCountDown())
-        {
-            EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, null);
-            return;
-        }
-        EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, initialTarget);
-       
-
-
-         
-    }
 
     //void OnDrawGizmosSelected()
     //{

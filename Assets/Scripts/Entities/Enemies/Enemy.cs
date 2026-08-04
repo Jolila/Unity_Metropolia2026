@@ -1,8 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IEnemyAI
 {
+    bool waiting;
     EntityHealth _entityHealth;
 
     [SerializeField] AudioClip _deathSound;
@@ -31,7 +33,18 @@ public class Enemy : MonoBehaviour, IEnemyAI
 
     void Update()
     {
+        if (!waiting)
+            return;
 
+        Debug.Log(
+            $"Pending:{_agent.pathPending} " +
+            $"HasPath:{_agent.hasPath} " +
+            $"Status:{_agent.pathStatus} " +
+            $"OnMesh:{_agent.isOnNavMesh} " +
+            $"Vel:{_agent.velocity.magnitude:F2}");
+
+        if (_agent.hasPath)
+            waiting = false;
     }
 
 
@@ -43,9 +56,14 @@ public class Enemy : MonoBehaviour, IEnemyAI
 
     public void UpdateTarget(Vector3 target)
     {
-        // update the destination only when needed
-        Debug.Log($"SetDestination({target})");
-        _agent.SetDestination(target);
+       
+
+     
+          
+
+        bool ok = _agent.SetDestination(target);
+        Debug.Log(ok);
+
     }
 
 
@@ -60,6 +78,7 @@ public class Enemy : MonoBehaviour, IEnemyAI
         
         AudioManager.Instance.PlayEnemyDeath();
         GameManager.Instance.RegisterKill();
+        _agent.ResetPath();
         gameObject.SetActive(false);
     }
 

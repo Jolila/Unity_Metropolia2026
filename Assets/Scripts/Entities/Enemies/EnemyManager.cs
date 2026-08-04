@@ -16,6 +16,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] float retargetDistance = 2.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
+    float spawnInterval = 0.05f;
+    float spawnTimer = 0.0f;
     Transform player;
 
     [System.Serializable]
@@ -54,7 +56,7 @@ public class EnemyManager : MonoBehaviour
 
     public void spawnInitialEnemy()
     {
-        _spawner.SpawnNewEnemy(null);
+        GameObject dummy = _spawner.SpawnNewEnemy(null);
         
     }
 
@@ -67,10 +69,25 @@ public class EnemyManager : MonoBehaviour
         //Debug.Log(GameManager.Instance.GetIsCountDown());
         if (GameManager.Instance.GetIsCountDown()) return;
 
+        spawnTimer += Time.deltaTime;
+        if(spawnTimer >= spawnInterval)
+        {
+            GameObject spawned = _spawner.SpawnNewEnemy(cachedPlayerPosition);
 
-       _spawner.SpawnNewEnemy(cachedPlayerPosition);
+            if (spawned != null &&
+                spawned.TryGetComponent<IEnemyAI>(out var enemy))
+            {
+                if (needsRetarget)
+                    enemy.UpdateTarget(cachedPlayerPosition);
+                enemy.Tick(cachedPlayerPosition);
+            }
+            spawnTimer = 0.0f;
+        }
 
-            
+  
+
+
+
 
         if (!needsRetarget &&
         (player.position - cachedPlayerPosition).sqrMagnitude >
@@ -139,17 +156,17 @@ public class EnemyManager : MonoBehaviour
 
 
 
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (!Application.isPlaying)
-    //        return;
+    void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying)
+            return;
 
-    //    Gizmos.color = Color.purple;
-    //    Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
-     
+        Gizmos.color = Color.purple;
+        Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
 
 
-    //}
+
+    }
 
 
 }

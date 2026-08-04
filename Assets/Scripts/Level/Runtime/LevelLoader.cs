@@ -64,7 +64,9 @@ public class LevelRenderer : MonoBehaviour
 
         string[] levelFolders = Directory.GetDirectories(readyFolder);
 
-        string levelFolder = levelFolders[Random.Range(0, levelFolders.Length)];
+        string levelFolder = levelFolders[3];
+
+
 
         GeometryFilePath = Path.Combine(levelFolder, "geometry.txt");
         DecorationsFilePath = Path.Combine(levelFolder, "decorations.txt");
