@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Tilemap _wallTiles;
     List<Vector3> groundSpawnPositions = new();
     List<Vector3> wallSpawnPositions = new();
-    [SerializeField] float cellSize = 20.0f;
+    [SerializeField] float cellSize = 12.5f;
     Dictionary<Vector2Int, List<Vector3>> groundsGrid = new();
     Dictionary<Vector2Int, List<Vector3>> wallsGrid = new();
     Vector3 playerPosition;
@@ -98,7 +98,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
 
-    public void SpawnNewEnemy(Vector3 initialTarget)
+    public void SpawnNewEnemy(Vector3? initialTarget)
     {
         HandleEnemySpawning(initialTarget);
     }
@@ -155,9 +155,9 @@ public class EnemySpawner : MonoBehaviour
         wallCandidateBuffer = tempWalls;
     }
 
-    void HandleEnemySpawning(Vector3 initialTarget)
+    void HandleEnemySpawning(Vector3? initialTarget)
     {
-
+       
         SpawnEnemyToRandomLocation(initialTarget);
 
     }
@@ -182,11 +182,16 @@ public class EnemySpawner : MonoBehaviour
         };
     }
 
-    void SpawnEnemyToRandomLocation(Vector3 initialTarget)
+    void SpawnEnemyToRandomLocation(Vector3? initialTarget)
     {
 
         PoolID id = GetRandomEnemyType();
         Vector3 pos = GetRandomPosition(id);
+        if(GameManager.Instance.GetIsCountDown())
+        {
+            PoolManager.Instance.Get(id, pos, Quaternion.identity, null);
+            return;
+        }
         PoolManager.Instance.Get(id, pos, Quaternion.identity, initialTarget);
        
 
@@ -194,14 +199,14 @@ public class EnemySpawner : MonoBehaviour
          
     }
 
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (!Application.isPlaying)
-    //        return;
+    void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying)
+            return;
 
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
 
-        
-    //}
+
+    }
 }

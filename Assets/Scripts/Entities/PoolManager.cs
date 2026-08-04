@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum PoolID
 {
@@ -68,7 +69,7 @@ public class PoolManager : MonoBehaviour
 
     }
 
-    public GameObject Get(PoolID id, Vector3 pos, Quaternion rot, Vector3 initialTarget)
+    public GameObject Get(PoolID id, Vector3 pos, Quaternion rot, Vector3? initialTarget = null)
     {
         GameObject obj = Get(id);
         if (obj == null) return null;
@@ -77,10 +78,33 @@ public class PoolManager : MonoBehaviour
         obj.SetActive(true);
         if(obj.TryGetComponent<IEnemyAI>(out var enemy))
         {
-            enemy.UpdateTarget(initialTarget);
-            enemy.Tick(initialTarget);
+
+            if (initialTarget.HasValue)
+            {
+                enemy.UpdateTarget(initialTarget.Value);
+                enemy.Tick(initialTarget.Value);
+            }
+
+
         }
         return obj;
+    }
+
+
+    public void SetEnemiesFrozen(bool frozen)
+    {
+        foreach(var pool in pools)
+        {
+            foreach(var obj in pool.objects)
+            {
+                if (!obj.activeInHierarchy) continue;
+
+                if(obj.TryGetComponent<IEnemyAI>(out var enemy))
+                {
+                    enemy.SetFrozen(frozen);
+                }
+            }
+        }
     }
     
 }

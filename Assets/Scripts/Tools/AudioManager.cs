@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public class AudioManager : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class AudioManager : MonoBehaviour
    
     
     [SerializeField] AudioMixer _mixer;
-    [SerializeField] AudioClip _music;
+    [SerializeField] AudioSource _musicSource;
 
     AudioMixerGroup _musicGroup;
 
@@ -35,7 +36,14 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup _sfxGroup;
 
     [Header("Sources")]
-    [SerializeField] private AudioSource _musicSource;
+    [SerializeField] private AudioClip _startupMusic;
+    [SerializeField] private AudioClip _countdownClip;
+    [SerializeField] private AudioClip[] _musicClips;
+    
+
+
+    AudioClip _nextSong;
+    AudioClip _currentSong;
     [SerializeField] private int _sfxSourceCount = 12;
 
     [Header("Clips")]
@@ -49,6 +57,8 @@ public class AudioManager : MonoBehaviour
     private AudioSource[] _sfxSources;
     private int _nextSource;
     private int currentSource;
+
+    public float musicVolume, SFXVolume, masterVolume;
 
 
     const string MASTER_VOLUME_NAME = "MasterVolume";
@@ -65,6 +75,7 @@ public class AudioManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
+
         _sfxSources = new AudioSource[_sfxSourceCount];
 
         for (int i = 0; i < _sfxSourceCount; i++)
@@ -79,32 +90,76 @@ public class AudioManager : MonoBehaviour
         }
         currentSource = 0;
         _nextSource = 1;
+
+        LoadVolumeSettings();
+        PlayStartupSong();
+    }
+
+    public void PlayCountDown()
+    {
+        PlaySFX(_countdownClip, SFXVolume);
+    }
+
+
+    public void LoadVolumeSettings()
+    {
+        float masterVolume = PlayerPrefs.GetFloat("Settings.MasterVolume", 1f);
+        float musicVolume = PlayerPrefs.GetFloat("Settings.MusicVolume", 1f);
+        float sfxVolume = PlayerPrefs.GetFloat("Settings.SFXVolume", 1f);
+
+        ChangeMasterVolume(musicVolume);
+        ChangeSFXVolume(sfxVolume);
+        ChangeMusicVolume(musicVolume);
+
+        this.musicVolume = musicVolume;
+        this.SFXVolume = sfxVolume;
+        this.masterVolume = masterVolume;
     }
 
     void Start()
     {
-        PlayMusic();
+
+        PlayStartupSong();
+        _currentSong = _startupMusic;
+        _nextSong = _musicClips[Random.Range(0, _musicClips.Length)];
     }
 
-    void PlayMusic()
+    public void PlayMusic()
     {
-        if(_musicSource == null)
-        {
-            return;
-        }
 
-        if(_musicSource.isPlaying)
-        {
-            return;
-        }
-        _musicSource.Play();
+        PlayMusic(_nextSong);
+        _currentSong = _nextSong;
+        _nextSong = _musicClips[Random.Range(0, _musicClips.Length)];
     }
 
-    public void RestartMusic()
+    public void StopMusic()
     {
         _musicSource.Stop();
-        _musicSource.Play();
     }
+
+    void PlayStartupSong()
+    {
+
+        if (_musicSource == null)
+        {
+            return;
+        }
+
+        if (_musicSource.isPlaying)
+        {
+            return;
+        }
+        PlayMusic(_startupMusic);
+    }
+
+    private void PlayMusic(AudioClip clip)
+    {
+        _musicSource.clip = clip;
+        _musicSource.loop = true;
+        _musicSource.Play(); 
+    }
+
+  
 
     // Update is called once per frame
     void Update()
@@ -123,6 +178,7 @@ public class AudioManager : MonoBehaviour
     {
         _mixer.SetFloat(MUSIC_VOLUME_NAME, Mathf.Log10(volume) * 20);
         PlayerPrefs.SetFloat("Settings.MusicVolume", volume);
+        musicVolume = volume;
         PlayerPrefs.Save();
     }
 
@@ -131,6 +187,7 @@ public class AudioManager : MonoBehaviour
     {
         _mixer.SetFloat(SFX_VOLUME_NAME, Mathf.Log10(volume) * 20);
         PlayerPrefs.SetFloat("Settings.SFXVolume", volume);
+        SFXVolume = volume;
         PlayerPrefs.Save();
     }
 
@@ -138,27 +195,14 @@ public class AudioManager : MonoBehaviour
     {
         
 
-        if(soundType == SoundType.Music)
-        {
-            _musicSource.clip = audioClip;
-            _musicSource.volume = volume;
-            _musicSource.loop = loop;
-
-            _musicSource.Stop();
-            _musicSource.Play();
-
-            return;
-        }
-
-
-        GameObject audioObject = new GameObject(audioClip.name + " Source");
-        AudioSource audioSource = audioObject.AddComponent<AudioSource>();
-        audioSource.clip = audioClip;
-        audioSource.volume = volume;
-        audioSource.loop = false;
-        audioSource.outputAudioMixerGroup = _sfxGroup;
-        audioSource.Play();
-        Destroy(audioObject, audioClip.length);
+        //GameObject audioObject = new GameObject(audioClip.name + " Source");
+        //AudioSource audioSource = audioObject.AddComponent<AudioSource>();
+        //audioSource.clip = audioClip;
+        //audioSource.volume = volume;
+        //audioSource.loop = false;
+        //audioSource.outputAudioMixerGroup = _sfxGroup;
+        //audioSource.Play();
+        //Destroy(audioObject, audioClip.length);
       
        
     }

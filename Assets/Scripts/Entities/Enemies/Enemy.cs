@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour, IEnemyAI
     {
         _entityHealth.OnDeath += DestroyEnemy;
         _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+        
     }
 
 
@@ -33,10 +34,6 @@ public class Enemy : MonoBehaviour, IEnemyAI
 
     }
 
-    void Start()
-    {
-        _entityHealth.OnDeath += DestroyEnemy;
-    }
 
     public void Tick(Vector3 playerPosition)
     {
@@ -47,6 +44,7 @@ public class Enemy : MonoBehaviour, IEnemyAI
     public void UpdateTarget(Vector3 target)
     {
         // update the destination only when needed
+        Debug.Log($"SetDestination({target})");
         _agent.SetDestination(target);
     }
 
@@ -54,13 +52,25 @@ public class Enemy : MonoBehaviour, IEnemyAI
     void OnDisable()
     {
         _entityHealth.OnDeath -= DestroyEnemy;
-        GameManager.Instance.RegisterKill();
+        
     }
 
     void DestroyEnemy()
     {
         
         AudioManager.Instance.PlayEnemyDeath();
+        GameManager.Instance.RegisterKill();
         gameObject.SetActive(false);
     }
+
+
+
+    public void SetFrozen(bool frozen)
+    {
+       
+        _agent.isStopped = frozen;
+        Debug.Log($"{name} frozen={frozen}, isStopped={_agent.isStopped}");
+    }
+
+  
 }

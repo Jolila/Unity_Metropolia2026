@@ -37,10 +37,16 @@ public class PlayerStaffController : MonoBehaviour
     }
     void Update()
     {
+
+       
+
         if (Time.timeScale == 0f || !controlStaff) return;
         SetLookDirection();
         RotateStaff();
-        if(Input.GetButton("Fire1") && Time.time >= _nextFireTime)
+
+        if (GameManager.Instance.GetIsCountDown()) return;
+
+        if (Input.GetButton("Fire1") && Time.time >= _nextFireTime)
         {
             _nextFireTime = Time.time + 1f / _fireRate;
             Shoot();

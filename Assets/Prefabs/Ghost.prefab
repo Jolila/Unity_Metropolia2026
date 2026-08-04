@@ -277,8 +277,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ghost
   player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
   targetDirection: {x: 0, y: 0, z: 0}
-  speed: 1.5
+  speed: 2.5
   sprite: {fileID: 2536003338476956258}
+  frozen: 0
 --- !u!50 &8180637282049128689
 Rigidbody2D:
   serializedVersion: 5

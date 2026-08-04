@@ -370,6 +370,7 @@ MonoBehaviour:
   targetDirection: {x: 0, y: 0, z: 0}
   speed: 3
   sprite: {fileID: 4355706441492227380}
+  frozen: 0
 --- !u!114 &4033199629912058352
 MonoBehaviour:
   m_ObjectHideFlags: 0

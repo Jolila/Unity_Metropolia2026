@@ -10,6 +10,7 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] CanvasGroup _inGameCanvasGroup;
 
     [SerializeField] private TMP_Text InGameTimerText;
+    [SerializeField] private TMP_Text CountdownText;
 
     [SerializeField] private TMP_Text finalTimeText;
     [SerializeField] private TMP_Text killCountText;
@@ -17,12 +18,17 @@ public class InGameUIManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.SetUI(this);
+   
     }
 
     private void Update()
     {
 
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.SetUI(this);
     }
 
     public void updateTimerText(float time)
@@ -32,6 +38,11 @@ public class InGameUIManager : MonoBehaviour
         int sec = (int)time % 60;
 
         InGameTimerText.text = $"Time: {minutes:00}:{sec:00}";
+    }
+
+    public void setCountdownText(string text)
+    {
+        CountdownText.text = text;
     }
 
     public void ShowInGameUI()

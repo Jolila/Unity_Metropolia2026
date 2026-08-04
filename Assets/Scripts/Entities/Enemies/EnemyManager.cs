@@ -1,10 +1,8 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyManager : MonoBehaviour
 {
-
-
-
 
     int currentPool = 0;
     Vector3 cachedPlayerPosition;
@@ -12,6 +10,7 @@ public class EnemyManager : MonoBehaviour
     int updatedPools = 0;
     [SerializeField] float retargetDistance = 2.5f;
     [SerializeField] EnemySpawner _spawner;
+    [SerializeField] PoolManager _poolManager;
 
     Transform player;
 
@@ -19,22 +18,42 @@ public class EnemyManager : MonoBehaviour
     private int framesPerPoolUpdate = 2;
 
     private int frameCounter;
+    bool gameStarted;
 
 
-
-    private float timeSinceLastCall = 0f;
     [SerializeField] float interval = 0.000001f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
+        needsRetarget = false;
+        gameStarted = false;
+    }
+
+    public void OnStartGame()
+    {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         cachedPlayerPosition = player.position;
+        needsRetarget = true;
+        gameStarted = true;
+    }
+
+    public void spawnInitialEnemy()
+    {
+        _spawner.SpawnNewEnemy(null);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (!gameStarted) return;
+
+        //Debug.Log(GameManager.Instance.GetIsCountDown());
+        if (GameManager.Instance.GetIsCountDown()) return;
+
 
         frameCounter++;
         if (frameCounter < framesPerPoolUpdate) return;
