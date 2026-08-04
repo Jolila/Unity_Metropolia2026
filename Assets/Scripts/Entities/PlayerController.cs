@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     float _nextFootstepAudio = 0.0f;
     private Rigidbody2D _rb;
-    [SerializeField] float movementSpeed = 9.0f;
+    [SerializeField] float movementSpeed = 10.0f;
     [SerializeField] SpriteRenderer _characterBody;
     [SerializeField] private Animator _animator;
     [SerializeField] AudioClip _footstep;

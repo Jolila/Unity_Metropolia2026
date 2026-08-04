@@ -9,9 +9,8 @@ public class EnemyManager : MonoBehaviour
     private bool needsRetarget;
     int updatedPools = 0;
     [SerializeField] float retargetDistance = 2.5f;
+    [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
-    [SerializeField] PoolManager _poolManager;
-
     Transform player;
 
 
@@ -75,7 +74,7 @@ public class EnemyManager : MonoBehaviour
         UpdatePool();
         ++currentPool;
 
-        if (currentPool >= PoolManager.Instance.pools.Count)
+        if (currentPool >= EnemyPoolManager.Instance.pools.Count)
             currentPool = 0;
         
     }
@@ -83,13 +82,14 @@ public class EnemyManager : MonoBehaviour
 
     void UpdatePool()
     {
-        var pool = PoolManager.Instance.pools[currentPool];
+        var pool = EnemyPoolManager.Instance.pools[currentPool];
 
-        foreach(var obj in pool.objects)
+        
+        foreach (var obj in pool.objects)
         {
             if (!obj.activeInHierarchy) continue;
-
             IEnemyAI enemy = obj.GetComponent<IEnemyAI>();
+
 
             if (enemy == null) continue;
             enemy.Tick(cachedPlayerPosition);
@@ -104,7 +104,7 @@ public class EnemyManager : MonoBehaviour
         {
             updatedPools++;
 
-            if (updatedPools >= PoolManager.Instance.pools.Count)
+            if (updatedPools >= EnemyPoolManager.Instance.pools.Count)
             {
                 needsRetarget = false;
                 updatedPools = 0;

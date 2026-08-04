@@ -7,12 +7,12 @@ public enum PoolID
     Rat, Bat, Slime, Zombie, Ghost
 }
 
-public class PoolManager : MonoBehaviour
+public class EnemyPoolManager : MonoBehaviour
 {
 
   
 
-    public static PoolManager Instance;
+    public static EnemyPoolManager Instance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [System.Serializable]
