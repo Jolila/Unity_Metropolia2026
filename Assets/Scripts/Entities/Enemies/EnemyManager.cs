@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     int updatedPasses = 0;
 
     int currentPool = 0;
-    [SerializeField] float retargetDistance = 2.5f;
+    [SerializeField] float retargetDistance = 1.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
     float spawnInterval = 0.05f;

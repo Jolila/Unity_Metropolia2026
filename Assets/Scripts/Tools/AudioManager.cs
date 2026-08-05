@@ -52,6 +52,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip regularEnemyDeath;
     [SerializeField] private AudioClip ghostDeath;
     [SerializeField] private AudioClip fireRing;
+    [SerializeField] private AudioClip onPlayerDeath;
   
 
     private AudioSource[] _sfxSources;
@@ -97,7 +98,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCountDown()
     {
-        PlaySFX(_countdownClip, SFXVolume);
+        PlaySFX(_countdownClip, 1.0f);
     }
 
 
@@ -149,7 +150,11 @@ public class AudioManager : MonoBehaviour
         {
             return;
         }
-        PlayMusic(_startupMusic);
+
+        _musicSource.clip = _startupMusic;
+        _musicSource.loop = false;
+        _musicSource.Play();
+        
     }
 
     private void PlayMusic(AudioClip clip)
@@ -225,27 +230,32 @@ public class AudioManager : MonoBehaviour
 
     public void PlayEnemyHit()
     {
-        PlaySFX(enemyHit, 0.8f);
+        PlaySFX(enemyHit, 0.4f);
     }
 
     public void PlayEnemyDeath()
     {
-        PlaySFX(regularEnemyDeath, 0.8f);
+        PlaySFX(regularEnemyDeath, 0.4f);
     }
 
     public void PlayProjectileShoot()
     {
-        PlaySFX(projectileShoot, 0.4f);
+        PlaySFX(projectileShoot, 0.6f);
     }
 
     public void PlayFireRing()
     {
-        PlaySFX(fireRing, 0.3f);
+        PlaySFX(fireRing, 0.6f);
     }
 
     public void PlayGhostDeath()
     {
-        PlaySFX(ghostDeath, 1.0f);
+        PlaySFX(ghostDeath, 0.8f);
+    }
+
+    public void PlayOnPlayerDeath()
+    {
+        PlaySFX(onPlayerDeath, 1.0f);
     }
 
 

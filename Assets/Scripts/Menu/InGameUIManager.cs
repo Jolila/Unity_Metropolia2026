@@ -15,6 +15,7 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private TMP_Text finalTimeText;
     [SerializeField] private TMP_Text killCountText;
     [SerializeField] TMP_Text accuracyText;
+    [SerializeField] PostGameScreenController _postScreenAnimator;
 
     private void Awake()
     {
@@ -77,6 +78,10 @@ public class InGameUIManager : MonoBehaviour
         else if (acc < 10) accuracyString = $"Accuracy : {acc:0}%";
         else accuracyString = $"Accuracy : {acc:00}%";
         accuracyText.text = accuracyString;
+
+        _postScreenAnimator.PrepareAnimation();
+        StartCoroutine(_postScreenAnimator.PlayAnimations());
+
 
     }
 

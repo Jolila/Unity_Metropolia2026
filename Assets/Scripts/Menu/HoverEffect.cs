@@ -35,7 +35,7 @@ public class HoverEffect : MonoBehaviour,
         LeanTween.cancel(gameObject);
         transform.localScale = Vector2.one * _clickScaleIncrease;
         LeanTween.scale(gameObject, Vector2.one, _tweenEffectDuration).setIgnoreTimeScale(true);
-        AudioManager.Instance.PlayAudio(_clickAudio, AudioManager.SoundType.SFX, 1.0f, false);
+        AudioManager.Instance.PlaySFX(_clickAudio, 1.0f);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -45,7 +45,7 @@ public class HoverEffect : MonoBehaviour,
         LeanTween.scale(gameObject, Vector2.one * _hoverScaleIncrease,
             _tweenEffectDuration).setIgnoreTimeScale(true);
         _image.color = _onHoverColor;
-        AudioManager.Instance.PlayAudio(_hoverAudio, AudioManager.SoundType.SFX, 1.0f, false);
+        AudioManager.Instance.PlaySFX(_hoverAudio, 1.0f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -53,7 +53,7 @@ public class HoverEffect : MonoBehaviour,
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, Vector2.one, _tweenEffectDuration).setIgnoreTimeScale(true);
         _image.color = _onNotHoveredColor;
-        AudioManager.Instance.PlayAudio(_exitHoverAudio, AudioManager.SoundType.SFX, 0.6f, false);
+        AudioManager.Instance.PlaySFX(_exitHoverAudio, 1.0f);
     }
 
 }
