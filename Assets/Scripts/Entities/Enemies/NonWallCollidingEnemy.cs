@@ -48,13 +48,4 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
         transform.position += targetDirection * speed * Time.deltaTime;
     }
 
-    public void UpdateTarget(Vector3 playerPosition)
-    {
-        targetDirection = (playerPosition - transform.position).normalized;
-    }
-
-    public void SetFrozen(bool frozen)
-    {
-        this.frozen = frozen;
-    }
 }

@@ -81,7 +81,7 @@ public class EnemyPoolManager : MonoBehaviour
 
             if (initialTarget.HasValue)
             {
-                enemy.UpdateTarget(initialTarget.Value);
+                
                 enemy.Tick(initialTarget.Value);
             }
 

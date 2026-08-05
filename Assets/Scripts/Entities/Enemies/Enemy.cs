@@ -10,17 +10,15 @@ public class Enemy : MonoBehaviour, IEnemyAI
     [SerializeField] AudioClip _deathSound;
     public Transform player;
     public SpriteRenderer sprite;
-
     UnityEngine.AI.NavMeshAgent _agent;
-
-    // Start is called once before the first execution of Update after the Mono
-    // Behaviour is created
+    Vector3 cachedTarget;
+    float fakeMoveSpeed = 4f;
 
     void OnEnable()
     {
         _entityHealth.OnDeath += DestroyEnemy;
-        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-        
+        waiting = true;
+
     }
 
 
@@ -29,6 +27,7 @@ public class Enemy : MonoBehaviour, IEnemyAI
         _entityHealth = GetComponentInParent<EntityHealth>();
         _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         _agent.updateRotation = false;
+        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
     }
 
     void Update()
@@ -39,38 +38,39 @@ public class Enemy : MonoBehaviour, IEnemyAI
             _agent.isStopped = true;
             return;
         }
-        if (!waiting)
+
+        if (!waiting) // suppose the navmesh agent is handling the movement?
             return;
 
-        Debug.Log(
-            $"Pending:{_agent.pathPending} " +
-            $"HasPath:{_agent.hasPath} " +
-            $"Status:{_agent.pathStatus} " +
-            $"OnMesh:{_agent.isOnNavMesh} " +
-            $"Vel:{_agent.velocity.magnitude:F2}");
+        FakeAdvance();
+    }
 
-        if (_agent.hasPath)
+        void FakeAdvance()
+        {
+
+        if (!_agent.pathPending && _agent.hasPath)
+        {
+            _agent.Warp(transform.position);
             waiting = false;
+            return;
+        }
+
+        transform.position +=
+            (cachedTarget - transform.position).normalized *
+            fakeMoveSpeed *
+            Time.deltaTime;
+
     }
 
 
     public void Tick(Vector3 playerPosition)
     {
+        cachedTarget = playerPosition;
         sprite.flipX = playerPosition.x < transform.position.x;
-        // does the navmesh move here on not setting the destination? Does it cache?
+        _agent.SetDestination(playerPosition);
     }
 
-    public void UpdateTarget(Vector3 target)
-    {
-       
-
-     
-          
-
-        bool ok = _agent.SetDestination(target);
-        Debug.Log(ok);
-
-    }
+   
 
 
     void OnDisable()
@@ -88,14 +88,6 @@ public class Enemy : MonoBehaviour, IEnemyAI
         gameObject.SetActive(false);
     }
 
-
-
-    public void SetFrozen(bool frozen)
-    {
-       
-        _agent.isStopped = frozen;
-        Debug.Log($"{name} frozen={frozen}, isStopped={_agent.isStopped}");
-    }
 
   
 }

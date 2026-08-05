@@ -9,10 +9,6 @@ public class EnemyManager : MonoBehaviour
 
 
     Vector3 cachedPlayerPosition;
-    private bool needsRetarget;
-    int updatedPasses = 0;
-
-    int currentPool = 0;
     [SerializeField] float retargetDistance = 1.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
@@ -28,21 +24,15 @@ public class EnemyManager : MonoBehaviour
         public int count;
     }
 
-
-
     [SerializeField]
     private List<UpdatePass> updateSchedule = new();
-
     private int currentPass;
-
-
     bool gameStarted;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
-        needsRetarget = false;
         gameStarted = false;
     }
 
@@ -50,7 +40,6 @@ public class EnemyManager : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         cachedPlayerPosition = player.position;
-        needsRetarget = true;
         gameStarted = true;
     }
 
@@ -66,7 +55,7 @@ public class EnemyManager : MonoBehaviour
 
         if (!gameStarted) return;
 
-        //Debug.Log(GameManager.Instance.GetIsCountDown());
+
         if (GameManager.Instance.GetIsCountDown()) return;
 
         spawnTimer += Time.deltaTime;
@@ -77,30 +66,22 @@ public class EnemyManager : MonoBehaviour
             if (spawned != null &&
                 spawned.TryGetComponent<IEnemyAI>(out var enemy))
             {
-                if (needsRetarget)
-                    enemy.UpdateTarget(cachedPlayerPosition);
+               
                 enemy.Tick(cachedPlayerPosition);
             }
             spawnTimer = 0.0f;
         }
 
-  
-
-
-
-
-        if (!needsRetarget &&
+        if (
         (player.position - cachedPlayerPosition).sqrMagnitude >
         retargetDistance * retargetDistance)
         {
             cachedPlayerPosition = player.position;
-            needsRetarget = true;
-            updatedPasses = 0;
+           
         }
 
-
         UpdatePass pass = updateSchedule[currentPass];
-        UpdatePool(pass);
+        UpdateSingularPass(pass);
 
         currentPass++;
 
@@ -112,7 +93,7 @@ public class EnemyManager : MonoBehaviour
 
 
 
-    void UpdatePool(UpdatePass pass)
+    void UpdateSingularPass(UpdatePass pass)
     {
 
 
@@ -136,19 +117,7 @@ public class EnemyManager : MonoBehaviour
 
             enemy.Tick(cachedPlayerPosition);
 
-            if (needsRetarget)
-                enemy.UpdateTarget(cachedPlayerPosition);
-        }
-
-        if (needsRetarget)
-        {
-            updatedPasses++;
-
-            if (updatedPasses >= updateSchedule.Count)
-            {
-                needsRetarget = false;
-                updatedPasses = 0;
-            }
+           
         }
 
     }
