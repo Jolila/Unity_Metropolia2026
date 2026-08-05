@@ -1,214 +1,67 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Tilemaps;
-
 
 public class EnemySpawner : MonoBehaviour
 {
-
-    [SerializeField] Tilemap _groundTiles;
-    [SerializeField] Tilemap _wallTiles;
-    List<Vector3> groundSpawnPositions = new();
-    List<Vector3> wallSpawnPositions = new();
-    [SerializeField] float cellSize = 12.5f;
-    Dictionary<Vector2Int, List<Vector3>> groundsGrid = new();
-    Dictionary<Vector2Int, List<Vector3>> wallsGrid = new();
-    Vector3 playerPosition;
-    Vector2Int currentPlayerCell;
-    List<Vector3> groundCandidates = new();
-    List<Vector3> groundCandidateBuffer = new();
-    List<Vector3> wallCandidates = new();
-    List<Vector3> wallCandidateBuffer = new();
-
-
-    float _currentCooldown;
-    Transform player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField] EnemySpawnLocationsManager _locationsManager;
     void Start()
     {
         
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
-
-    public void Initialize()
-    {
-
-        SetEnemySpawnPositions();
-        BuildSpatialGrid();
-
-    }
-
-    Vector2Int GetCell(Vector3 worldPos)
-    {
-        return new Vector2Int(
-            Mathf.FloorToInt(worldPos.x / cellSize),
-            Mathf.FloorToInt(worldPos.y / cellSize));
-   
-    }
-
-    public void BuildSpatialGrid()
-    {
-        foreach (var point in groundSpawnPositions)
-        {
-            Vector2Int cell = GetCell(point);
-
-            if(!groundsGrid.TryGetValue(cell, out var list))
-            {
-                list = new List<Vector3>();
-                groundsGrid[cell] = list;
-            }
-            list.Add(point);
-        }
-
-        foreach(var point in wallSpawnPositions)
-        {
-            Vector2Int cell = GetCell(point);
-
-            if(!wallsGrid.TryGetValue(cell, out var list))
-            {
-                list = new List<Vector3>();
-                wallsGrid[cell] = list;
-            }
-            list.Add(point);
-        }
-
-        RefreshCandidates();
-    }
-
-
-    void SetEnemySpawnPositions()
-    {
-        foreach(Vector3Int position in _groundTiles.cellBounds.allPositionsWithin)
-        {
-            if(_groundTiles.HasTile(position))
-            {
-                groundSpawnPositions.Add(_groundTiles.GetCellCenterWorld(position));
-            }
-        }
-
-        foreach(Vector3Int p in _wallTiles.cellBounds.allPositionsWithin)
-        {
-            if(_wallTiles.HasTile(p))
-            {
-                wallSpawnPositions.Add(_wallTiles.GetCellCenterWorld(p));
-            }
-        }
-    }
-
-
-    public GameObject SpawnNewEnemy(Vector3? initialTarget)
-    {
-        PoolID id = GetRandomEnemyType();
-        Vector3 pos = GetRandomPosition(id);
-
-        NavMeshHit hit;
-
-        if(id == PoolID.Rat || id == PoolID.Slime || id == PoolID.Zombie)
-        {
-            if (!NavMesh.SamplePosition(pos, out hit, 1f, NavMesh.AllAreas))
-            {
-                Debug.LogError("Spawn is not on NavMesh!");
-            }
-        }
-       
-
-
-        if (GameManager.Instance.GetIsCountDown())
-        {
-            return 
-                EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, null);
-           
-        }
-        return 
-            EnemyPoolManager.Instance.Get(id, pos, Quaternion.identity, initialTarget);
-    }
-
 
     // Update is called once per frame
     void Update()
     {
-       
-        if (player == null) return;
-        playerPosition = player.position;
-        Vector2Int playerCell = GetCell(playerPosition);
-        if(playerCell != currentPlayerCell)
+        if (GameManager.Instance.GetState() != GameState.Playing) return;
+        SpawnRatSquad();
+        SpawnBats();
+    }
+
+
+    void SpawnRatSquad()
+    {
+
+        Vector3 leaderPos = _locationsManager.GetRandomOuterGroundSpawn();
+
+        GameObject leader =
+            EnemyPoolManager.Instance.Get(
+                PoolID.RatLeader,
+                leaderPos,
+                Quaternion.identity);
+
+        if (leader == null)
+            return;
+
+        Enemy leaderEnemy = leader.GetComponent<Enemy>();
+
+        for (int i = 0; i < 10; i++)
         {
-            currentPlayerCell = playerCell;
-            RefreshCandidates();
+            Vector2 offset = Random.insideUnitCircle * 2.5f;
+
+            GameObject follower =
+                EnemyPoolManager.Instance.Get(
+                    PoolID.RatFollower,
+                    leaderPos + (Vector3)offset,
+                    Quaternion.identity);
+
+            if (follower == null)
+                continue;
+
+            follower.GetComponent<FollowerEnemy>().leader =
+                leaderEnemy.transform;
+            
         }
-  
+
     }
 
-    void RefreshCandidates()
+    void SpawnBats()
     {
-        Debug.Log("Refreshing candidates");
-        groundCandidateBuffer.Clear();
-        wallCandidateBuffer.Clear();
 
-        for (int x = -1; x <= 1; x++)
+        for(int i = 0; i < 3; ++i)
         {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == 0 && y == 0) continue;
-
-                Vector2Int cell =
-                    currentPlayerCell + new Vector2Int(x, y);
-
-                if (groundsGrid.TryGetValue(cell, out var ground))
-                    groundCandidateBuffer.AddRange(ground);
-
-                if (wallsGrid.TryGetValue(cell, out var wall))
-                    wallCandidateBuffer.AddRange(wall);
-            }
+            EnemyPoolManager.Instance.Get(PoolID.Bat, _locationsManager.GetRandomInnerWallSpawn(), Quaternion.identity, GameManager.Instance.GetPlayerReference().transform.position);
         }
-        SwapBuffers();
+        
     }
-
-    void SwapBuffers()
-    {
-        var tempGround = groundCandidates;
-        groundCandidates = groundCandidateBuffer;
-        groundCandidateBuffer = tempGround;
-
-        var tempWalls = wallCandidates;
-        wallCandidates = wallCandidateBuffer;
-        wallCandidateBuffer = tempWalls;
-    }
-
- 
-
-    Vector3 GetRandomPosition(PoolID id)
-    {
-        bool useWall = id == PoolID.Ghost || id == PoolID.Bat;
-        if (useWall) return wallCandidates[Random.Range(0, wallCandidates.Count)];
-        return groundCandidates[Random.Range(0, groundCandidates.Count)];
-    }
-
-    PoolID GetRandomEnemyType()
-    {
-        int n = Random.Range(0, 5);
-        return n switch
-        {
-            0 => PoolID.Rat,
-            1 => PoolID.Bat,
-            2 => PoolID.Slime,
-            3 => PoolID.Zombie,
-            4 => PoolID.Ghost
-        };
-    }
-
-
-
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (!Application.isPlaying)
-    //        return;
-
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawCube(playerPosition, new Vector3(cellSize, cellSize, 0));
-
-
-    //}
 }

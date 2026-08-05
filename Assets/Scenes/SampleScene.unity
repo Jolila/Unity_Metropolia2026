@@ -2624,6 +2624,7 @@ GameObject:
   - component: {fileID: 474080288}
   - component: {fileID: 474080290}
   - component: {fileID: 474080289}
+  - component: {fileID: 474080291}
   m_Layer: 0
   m_Name: EnemySystem
   m_TagString: Untagged
@@ -2660,29 +2661,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   retargetDistance: 1.5
   _poolManager: {fileID: 474080289}
-  _spawner: {fileID: 474080290}
+  _spawner: {fileID: 474080291}
   updateSchedule:
-  - pool: 1
-    startIndex: 0
-    count: 90
-  - pool: 1
-    startIndex: 90
-    count: 90
   - pool: 0
     startIndex: 0
-    count: 30
-  - pool: 0
-    startIndex: 30
-    count: 30
-  - pool: 2
+    count: 10
+  - pool: 1
     startIndex: 0
-    count: 25
-  - pool: 3
-    startIndex: 0
-    count: 25
-  - pool: 4
-    startIndex: 0
-    count: 25
+    count: 120
 --- !u!114 &474080289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2698,23 +2684,11 @@ MonoBehaviour:
   pools:
   - id: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
-    size: 60
+    size: 10
     objects: []
   - id: 1
-    prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
-    size: 180
-    objects: []
-  - id: 2
-    prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}
-    size: 25
-    objects: []
-  - id: 3
-    prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
-    size: 25
-    objects: []
-  - id: 4
-    prefab: {fileID: 8231525188190148662, guid: 9a0c15124a279884a8a50aea8a8a8f9b, type: 3}
-    size: 25
+    prefab: {fileID: 6394731116622321747, guid: 92d11bfeec98fce4da1b76e48b9f17cf, type: 3}
+    size: 120
     objects: []
 --- !u!114 &474080290
 MonoBehaviour:
@@ -2731,6 +2705,19 @@ MonoBehaviour:
   _groundTiles: {fileID: 250842215}
   _wallTiles: {fileID: 48758572}
   cellSize: 12.5
+--- !u!114 &474080291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474080286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa45e481c5890d4f975dc3ff4f58b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _locationsManager: {fileID: 474080290}
 --- !u!1 &480752496
 GameObject:
   m_ObjectHideFlags: 0
@@ -6858,6 +6845,7 @@ MonoBehaviour:
   _inGameUIManager: {fileID: 223341751}
   _enemyManager: {fileID: 474080288}
   timer: {fileID: 2030963770}
+  player: {fileID: 0}
   _mainMenuManager: {fileID: 2127928815}
 --- !u!4 &2030963769
 Transform:
@@ -7193,7 +7181,7 @@ MonoBehaviour:
   WallsTilemap: {fileID: 48758572}
   WallsTilemapCollider: {fileID: 48758573}
   surface: {fileID: 390938079}
-  spawner: {fileID: 0}
+  spawnLocationsManager: {fileID: 0}
   DecorationsTilemap: {fileID: 124837380}
   dinoSingularTile: {fileID: 11400000, guid: 0435bd9a9439f7d4bae07b38fe44d77c, type: 2}
   SkullTile: {fileID: 11400000, guid: b9a1f11c82a89824cb98ee62946dd32e, type: 2}

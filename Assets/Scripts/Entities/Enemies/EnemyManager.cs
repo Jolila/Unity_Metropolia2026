@@ -12,8 +12,6 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] float retargetDistance = 1.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
-    float spawnInterval = 0.05f;
-    float spawnTimer = 0.0f;
     Transform player;
 
     [System.Serializable]
@@ -27,50 +25,35 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private List<UpdatePass> updateSchedule = new();
     private int currentPass;
-    bool gameStarted;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
-        gameStarted = false;
+
     }
 
     public void OnStartGame()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         cachedPlayerPosition = player.position;
-        gameStarted = true;
+
     }
 
     public void spawnInitialEnemy()
     {
-        GameObject dummy = _spawner.SpawnNewEnemy(null);
-        
+       
+     
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (!gameStarted) return;
-
-
-        if (GameManager.Instance.GetIsCountDown()) return;
-
-        spawnTimer += Time.deltaTime;
-        if(spawnTimer >= spawnInterval)
-        {
-            GameObject spawned = _spawner.SpawnNewEnemy(cachedPlayerPosition);
-
-            if (spawned != null &&
-                spawned.TryGetComponent<IEnemyAI>(out var enemy))
-            {
-               
-                enemy.Tick(cachedPlayerPosition);
-            }
-            spawnTimer = 0.0f;
-        }
+        
+        if (GameManager.Instance.GetState() == GameState.Countdown) return;
+        if (GameManager.Instance.GetState() != GameState.Playing) return;
 
         if (
         (player.position - cachedPlayerPosition).sqrMagnitude >
@@ -92,13 +75,10 @@ public class EnemyManager : MonoBehaviour
 
 
 
-
     void UpdateSingularPass(UpdatePass pass)
     {
 
-
         Pool pool = EnemyPoolManager.Instance.GetPool(pass.pool);
-
         int end = Mathf.Min(pass.startIndex + pass.count,
                           pool.objects.Count);
 
@@ -117,7 +97,6 @@ public class EnemyManager : MonoBehaviour
 
             enemy.Tick(cachedPlayerPosition);
 
-           
         }
 
     }

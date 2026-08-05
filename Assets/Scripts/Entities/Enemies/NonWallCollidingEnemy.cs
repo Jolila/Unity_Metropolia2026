@@ -3,12 +3,10 @@ using UnityEngine.U2D;
 
 public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 {
-    public Transform player;
     public Vector3 targetDirection;
     public float speed = 3.5f;
     private EntityHealth health;
     public SpriteRenderer sprite;
-    public bool frozen = false;
 
     private void Awake()
     {
@@ -32,7 +30,7 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 
     private void Update()
     {
-        if(!GameManager.Instance.GetGameIsEnding()) transform.position += targetDirection * speed * Time.deltaTime;
+        if(GameManager.Instance.GetState() != GameState.Ending) transform.position += targetDirection * speed * Time.deltaTime;
     }
 
 
@@ -44,7 +42,6 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 
     public void Tick(Vector3 playerPosition)
     {
-        if (frozen) return;
         transform.position += targetDirection * speed * Time.deltaTime;
     }
 

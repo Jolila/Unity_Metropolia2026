@@ -19,7 +19,7 @@ public class LevelRenderer : MonoBehaviour
     [SerializeField] Tilemap WallsTilemap;
     [SerializeField] TilemapCollider2D WallsTilemapCollider;
     [SerializeField] NavMeshSurface surface;
-    [SerializeField] EnemySpawner spawner;
+    [SerializeField] EnemySpawnLocationsManager spawnLocationsManager;
     [SerializeField] Tilemap DecorationsTilemap;
     [SerializeField] TileBase dinoSingularTile;
     [SerializeField] TileBase SkullTile;
@@ -50,8 +50,8 @@ public class LevelRenderer : MonoBehaviour
 
         RebuildColliders();
         surface.BuildNavMesh();
-        spawner = FindAnyObjectByType<EnemySpawner>();
-        spawner.Initialize();
+        spawnLocationsManager = FindAnyObjectByType<EnemySpawnLocationsManager>();
+        spawnLocationsManager.Initialize();
 
     }
 

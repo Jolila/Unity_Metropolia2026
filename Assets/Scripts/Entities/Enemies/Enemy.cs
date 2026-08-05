@@ -8,11 +8,10 @@ public class Enemy : MonoBehaviour, IEnemyAI
     EntityHealth _entityHealth;
 
     [SerializeField] AudioClip _deathSound;
-    public Transform player;
     public SpriteRenderer sprite;
     UnityEngine.AI.NavMeshAgent _agent;
     Vector3 cachedTarget;
-    float fakeMoveSpeed = 4f;
+
 
     void OnEnable()
     {
@@ -33,7 +32,7 @@ public class Enemy : MonoBehaviour, IEnemyAI
     void Update()
     {
 
-        if(GameManager.Instance.GetGameIsEnding())
+        if(GameManager.Instance.GetState() == GameState.Ending)
         {
             _agent.isStopped = true;
             return;
@@ -42,25 +41,9 @@ public class Enemy : MonoBehaviour, IEnemyAI
         if (!waiting) // suppose the navmesh agent is handling the movement?
             return;
 
-        FakeAdvance();
     }
 
-        void FakeAdvance()
-        {
 
-        if (!_agent.pathPending && _agent.hasPath)
-        {
-            _agent.Warp(transform.position);
-            waiting = false;
-            return;
-        }
-
-        transform.position +=
-            (cachedTarget - transform.position).normalized *
-            fakeMoveSpeed *
-            Time.deltaTime;
-
-    }
 
 
     public void Tick(Vector3 playerPosition)

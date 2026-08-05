@@ -44,7 +44,7 @@ public class PlayerStaffController : MonoBehaviour
         SetLookDirection();
         RotateStaff();
 
-        if (GameManager.Instance.GetIsCountDown()) return;
+        if (GameManager.Instance.GetState() == GameState.Countdown) return;
 
         if (Input.GetButton("Fire1") && Time.time >= _nextFireTime)
         {

@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 
 public enum PoolID
 {
-    Rat, Bat, Slime, Zombie, Ghost
+    RatLeader, RatFollower, Bat, Slime, Zombie, Ghost
 }
 
 public class EnemyPoolManager : MonoBehaviour
@@ -84,8 +84,6 @@ public class EnemyPoolManager : MonoBehaviour
                 
                 enemy.Tick(initialTarget.Value);
             }
-
-
         }
         return obj;
     }

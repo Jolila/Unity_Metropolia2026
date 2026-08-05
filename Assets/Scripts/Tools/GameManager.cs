@@ -3,20 +3,30 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+public enum GameState
+{
+    InMenu,
+    Playing,
+    Countdown,
+    Ending,
+    GameOver
+}
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField] InGameUIManager _inGameUIManager;
     [SerializeField] EnemyManager _enemyManager;
     [SerializeField] Timer timer;
+    [SerializeField] Player player;
     public static GameManager Instance { get; private set; }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public GameState State { get; private set; }
 
     int kills = 0;
     double hits = 0;
     double misses = 0;
-
-    private bool _isCountDown;
-    private bool _gameIsEnding;
     private float _spawnAccumulator;
 
     private float _countDownSpawnRate = 90f;
@@ -55,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        State = GameState.InMenu;
     }
 
     public void RegisterMiss()
@@ -81,7 +91,7 @@ public class GameManager : MonoBehaviour
         hits = 0;
         misses = 0;
         timer.StartTimer();
-        _gameIsEnding = false;
+        State = GameState.InMenu;
 
     }
 
@@ -97,24 +107,23 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        Debug.Log("StartGame called");
-        Debug.Log($"StartGame on {GetInstanceID()}");
+
 
         // apply countdown of three seconds, then apply timescale and then start playing song
         Time.timeScale = 1f;
         AudioManager.Instance.StopMusic();
-        _isCountDown = true;
+        State = GameState.Countdown;
         StartCoroutine(StartRoundCountdown());
-     
+        player = FindAnyObjectByType<Player>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (_isCountDown)
+        if (State == GameState.Countdown)
         {
-            _spawnAccumulator += Time.unscaledDeltaTime * _countDownSpawnRate;
+            _spawnAccumulator += Time.unscaledDeltaTime * _countDownSpawnRate; // utilize the spawner here once its proven it works...
 
             while (_spawnAccumulator >= 1f)
             {
@@ -157,26 +166,34 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         _inGameUIManager.setCountdownText("");
         AudioManager.Instance.PlayMusic();
-        _isCountDown = false;
+        SetState(GameState.Playing);
         _enemyManager.OnStartGame();
         timer.StartTimer();
     }
 
-    public bool GetIsCountDown()
-    {
-        return _isCountDown;
-    }
+
 
     public void SetGameEndsNow()
     {
-        _gameIsEnding = true;
+        State = GameState.Ending;
         AudioManager.Instance.StopMusic();
         AudioManager.Instance.PlayOnPlayerDeath();
 
     }
 
-    public bool GetGameIsEnding()
+    public Player GetPlayerReference()
     {
-        return _gameIsEnding;
+        return player;
+    }
+
+
+    public void SetState(GameState state)
+    {
+        State = state;
+    }
+
+    public GameState GetState()
+    {
+        return State;
     }
 }
