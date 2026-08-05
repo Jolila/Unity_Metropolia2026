@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public void HandleDeath()
     {
         GameManager.Instance.StopGameTimer();
+        GameManager.Instance.SetGameEndsNow();
         StartCoroutine(WaitAndExecute());
     }
 

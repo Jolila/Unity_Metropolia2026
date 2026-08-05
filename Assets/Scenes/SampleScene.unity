@@ -5648,6 +5648,7 @@ MonoBehaviour:
   regularEnemyDeath: {fileID: 8300000, guid: a60c2981de47c8442874dc521eabba0d, type: 3}
   ghostDeath: {fileID: 8300000, guid: 5d07b1c36dc5a734a86a1e8ca76e156f, type: 3}
   fireRing: {fileID: 8300000, guid: ee48f8b5f865ee348879ae979aee837a, type: 3}
+  onPlayerDeath: {fileID: 8300000, guid: 7dd89413303dfcb42ab1b4b0cb4898d8, type: 3}
   musicVolume: 0
   SFXVolume: 0
   masterVolume: 0

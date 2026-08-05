@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     double misses = 0;
 
     private bool _isCountDown;
+    private bool _gameIsEnding;
     private float _spawnAccumulator;
 
     private float _countDownSpawnRate = 90f;
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
         hits = 0;
         misses = 0;
         timer.StartTimer();
+        _gameIsEnding = false;
 
     }
 
@@ -163,5 +165,18 @@ public class GameManager : MonoBehaviour
     public bool GetIsCountDown()
     {
         return _isCountDown;
+    }
+
+    public void SetGameEndsNow()
+    {
+        _gameIsEnding = true;
+        AudioManager.Instance.StopMusic();
+        AudioManager.Instance.PlayOnPlayerDeath();
+
+    }
+
+    public bool GetGameIsEnding()
+    {
+        return _gameIsEnding;
     }
 }

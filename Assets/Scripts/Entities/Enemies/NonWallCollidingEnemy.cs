@@ -32,7 +32,7 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 
     private void Update()
     {
-        transform.position += targetDirection * speed * Time.deltaTime;
+        if(!GameManager.Instance.GetGameIsEnding()) transform.position += targetDirection * speed * Time.deltaTime;
     }
 
 

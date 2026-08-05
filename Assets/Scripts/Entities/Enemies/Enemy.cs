@@ -33,6 +33,12 @@ public class Enemy : MonoBehaviour, IEnemyAI
 
     void Update()
     {
+
+        if(GameManager.Instance.GetGameIsEnding())
+        {
+            _agent.isStopped = true;
+            return;
+        }
         if (!waiting)
             return;
 
