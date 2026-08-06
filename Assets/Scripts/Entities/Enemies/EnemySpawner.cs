@@ -26,9 +26,25 @@ public class EnemySpawner : MonoBehaviour
 
         // do some interesting logic here
 
+        switch (Time.frameCount % 6)
+        {
+            case 0:
+                SpawnRatSquad();
+                break;
+            case 1:
+                SpawnBats();
+                break;
+            case 2:
+                SpawnZombiSquad();
+                break;
+            case 3:
+                SpawnSlimeSquad();
+                break;
+
+        
+        }
 
 
-        SpawnRatSquad();
         SpawnBats();
     }
 
@@ -78,5 +94,74 @@ public class EnemySpawner : MonoBehaviour
             EnemyPoolManager.Instance.Get(EnemyType.Bat, _locationsManager.GetRandomInnerWallSpawn(), Quaternion.identity, GameManager.Instance.GetPlayerReference().transform.position);
         }
         
+    }
+
+
+    void SpawnSlimeSquad()
+    {
+        Vector3 leaderPos = _locationsManager.GetRandomOuterGroundSpawn();
+
+        GameObject leader =
+            EnemyPoolManager.Instance.Get(
+                EnemyType.SlimeLeader,
+                leaderPos,
+                Quaternion.identity);
+
+        if (leader == null)
+            return;
+
+        Enemy leaderEnemy = leader.GetComponent<Enemy>();
+
+        for (int i = 0; i < 10; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * 2.5f;
+
+            GameObject follower =
+                EnemyPoolManager.Instance.Get(
+                    EnemyType.SlimeFollower,
+                    leaderPos + (Vector3)offset,
+                    Quaternion.identity);
+
+            if (follower == null)
+                continue;
+
+            follower.GetComponent<FollowerEnemy>().leader =
+                leaderEnemy.transform;
+
+        }
+    }
+
+    void SpawnZombiSquad()
+    {
+        Vector3 leaderPos = _locationsManager.GetRandomOuterGroundSpawn();
+
+        GameObject leader =
+            EnemyPoolManager.Instance.Get(
+                EnemyType.ZombieLeader,
+                leaderPos,
+                Quaternion.identity);
+
+        if (leader == null)
+            return;
+
+        Enemy leaderEnemy = leader.GetComponent<Enemy>();
+
+        for (int i = 0; i < 10; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * 2.5f;
+
+            GameObject follower =
+                EnemyPoolManager.Instance.Get(
+                    EnemyType.ZombieFollower,
+                    leaderPos + (Vector3)offset,
+                    Quaternion.identity);
+
+            if (follower == null)
+                continue;
+
+            follower.GetComponent<FollowerEnemy>().leader =
+                leaderEnemy.transform;
+
+        }
     }
 }

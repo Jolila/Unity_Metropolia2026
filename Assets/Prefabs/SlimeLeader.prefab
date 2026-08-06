@@ -246,7 +246,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 7, y: 7, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6507195209312586058}
@@ -282,7 +282,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   _deathSound: {fileID: 8300000, guid: 78b5b2931f63eda4da03efceceafeab2, type: 3}
-  player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
   sprite: {fileID: 4355706441492227380}
 --- !u!58 &1937395537848987055
 CircleCollider2D:
