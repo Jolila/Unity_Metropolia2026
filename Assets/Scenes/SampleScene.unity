@@ -2662,22 +2662,44 @@ MonoBehaviour:
   retargetDistance: 1.5
   _poolManager: {fileID: 474080289}
   _spawner: {fileID: 474080291}
+  defaultUpdatePass:
+    ratLeaders: 2
+    slimeLeaders: 2
+    zombieLeaders: 2
+    followers: 30
+    bats: 20
+    ghosts: 20
   updateSchedule:
-  - pool: 0
-    startIndex: 0
-    count: 10
-  - pool: 1
-    startIndex: 0
-    count: 100
-  - pool: 2
-    startIndex: 0
-    count: 100
-  - pool: 2
-    startIndex: 100
-    count: 100
-  - pool: 1
-    startIndex: 100
-    count: 100
+  - ratLeaders: 0
+    slimeLeaders: 0
+    zombieLeaders: 0
+    followers: 0
+    bats: 0
+    ghosts: 0
+  - ratLeaders: 0
+    slimeLeaders: 0
+    zombieLeaders: 0
+    followers: 0
+    bats: 0
+    ghosts: 0
+  - ratLeaders: 0
+    slimeLeaders: 0
+    zombieLeaders: 0
+    followers: 0
+    bats: 0
+    ghosts: 0
+  - ratLeaders: 0
+    slimeLeaders: 0
+    zombieLeaders: 0
+    followers: 0
+    bats: 0
+    ghosts: 0
+  - ratLeaders: 0
+    slimeLeaders: 0
+    zombieLeaders: 0
+    followers: 0
+    bats: 0
+    ghosts: 0
 --- !u!114 &474080289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2691,15 +2713,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoolManager
   pools:
-  - id: 0
+  - type: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
     size: 20
     objects: []
-  - id: 1
+  - type: 1
     prefab: {fileID: 6394731116622321747, guid: 92d11bfeec98fce4da1b76e48b9f17cf, type: 3}
     size: 200
     objects: []
-  - id: 2
+  - type: 6
     prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
     size: 200
     objects: []

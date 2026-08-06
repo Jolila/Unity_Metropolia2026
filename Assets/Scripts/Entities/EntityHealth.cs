@@ -9,6 +9,7 @@ public class EntityHealth : MonoBehaviour
     [SerializeField] float _healthRegen;
     public Action<float, float> OnHealthChanged;
     public Action OnDeath;
+    public Action OnDeSpawn;
     public bool _isDead;
         
     void Awake()
@@ -33,17 +34,7 @@ public class EntityHealth : MonoBehaviour
     {
         _currentHealth = _maxHealth;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        InvokeRepeating(nameof(HandleHealthRegen), 1f, 5f);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void LoseHealth(float healthLost)
     {
@@ -58,15 +49,16 @@ public class EntityHealth : MonoBehaviour
         }
     }
 
-    void HandleHealthRegen()
-    {
-       // _currentHealth = Mathf.Clamp(_currentHealth + _maxHealth * _healthRegen, 0, _maxHealth);
-       // OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
-    }
+
 
     public void Death()
     {
         OnDeath?.Invoke();
+    }
+
+    public void Despawn()
+    {
+        OnDeSpawn?.Invoke();
     }
 
 

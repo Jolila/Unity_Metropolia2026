@@ -26,6 +26,23 @@ public class EnemyManager : MonoBehaviour
         public int ghosts;
     }
 
+    private readonly Dictionary<EnemyType, int> updateCursors = new();
+
+    [SerializeField]
+    private UpdatePass defaultUpdatePass = new()
+    {
+        ratLeaders = 2,
+        slimeLeaders = 2,
+        zombieLeaders = 2,
+
+        followers = 30,
+
+        bats = 20,
+        ghosts = 20
+    };
+
+
+
     [SerializeField]
     private List<UpdatePass> updateSchedule = new();
     private int currentPass;
@@ -56,13 +73,16 @@ public class EnemyManager : MonoBehaviour
             cachedPlayerPosition = currentPlayerPos;
         }
 
-        UpdatePass pass = updateSchedule[currentPass];
-        UpdateSingularPass(pass);
+        //UpdatePass pass = updateSchedule[currentPass];
 
-        currentPass++;
 
-        if (currentPass >= updateSchedule.Count)
-            currentPass = 0;
+
+        UpdateSingularPass(defaultUpdatePass);
+
+        //currentPass++;
+
+        //if (currentPass >= updateSchedule.Count)
+        //    currentPass = 0;
 
     }
 
@@ -71,43 +91,80 @@ public class EnemyManager : MonoBehaviour
     void UpdateSingularPass(UpdatePass pass)
     {
 
-        Pool pool = EnemyPoolManager.Instance.GetPool(pass.pool);
-        int end = Mathf.Min(pass.startIndex + pass.count,
-                          pool.objects.Count);
+        UpdatePool(EnemyType.RatLeader, pass.ratLeaders);
+        UpdatePool(EnemyType.SlimeLeader, pass.slimeLeaders);
+        UpdatePool(EnemyType.ZombieLeader, pass.zombieLeaders);
+
+        UpdatePool(EnemyType.RatFollower, pass.followers);
+        UpdatePool(EnemyType.SlimeFollower, pass.followers);
+        UpdatePool(EnemyType.ZombieFollower, pass.followers);
+
+        UpdatePool(EnemyType.Bat, pass.bats);
+        UpdatePool(EnemyType.Ghost, pass.ghosts);
+
+    }
 
 
-        for (int i = pass.startIndex; i < end; i++)
+    private void UpdatePool(EnemyType type, int budget)
+    {
+        if (budget <= 0)
+            return;
+
+        Pool pool = _poolManager.GetPool(type);
+
+        if (pool == null || pool.objects.Count == 0)
+            return;
+
+        if (!updateCursors.TryGetValue(type, out int cursor))
+            cursor = 0;
+
+        int updated = 0;
+        int searched = 0;
+
+        while (updated < budget && searched < pool.objects.Count)
         {
-            GameObject obj = pool.objects[i];
+            if (cursor >= pool.objects.Count)
+                cursor = 0;
+
+            GameObject obj = pool.objects[cursor];
+
+            cursor++;
+            searched++;
 
             if (!obj.activeInHierarchy)
                 continue;
 
-            IEnemyAI enemy = obj.GetComponent<IEnemyAI>();
-
-            if (enemy == null) continue;
-
-            enemy.Tick(cachedPlayerPosition);
-
+            if (obj.TryGetComponent<IEnemyAI>(out var enemy))
+            {
+                enemy.Tick(cachedPlayerPosition);
+                updated++;
+            }
         }
 
+        updateCursors[type] = cursor;
     }
 
 
 
-
-
-    void OnDrawGizmosSelected()
+    public void ResetScheduler()
     {
-        if (!Application.isPlaying)
-            return;
+        updateCursors.Clear();
 
-        Gizmos.color = Color.purple;
-        Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
-
-
-
+        foreach (EnemyType type in System.Enum.GetValues(typeof(EnemyType)))
+            updateCursors[type] = 0;
     }
+
+    //void OnDrawGizmosSelected()
+    //{
+    //    if (!Application.isPlaying)
+    //        return;
+
+    //    Gizmos.color = Color.purple;
+    //    Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
+
+
+
+    //}
 
 
 }

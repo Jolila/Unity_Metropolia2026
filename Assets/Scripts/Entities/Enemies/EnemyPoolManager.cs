@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public enum PoolID
+public enum EnemyType
 {
-    RatLeader, RatFollower, Bat, Slime, Zombie, Ghost
+    RatLeader, RatFollower, SlimeLeader, SlimeFollower, ZombieLeader, ZombieFollower, Bat, Ghost
 }
 
 public class EnemyPoolManager : MonoBehaviour
 {
 
-  
+
 
     public static EnemyPoolManager Instance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,7 +18,7 @@ public class EnemyPoolManager : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public PoolID id;
+        public EnemyType type;
         public GameObject prefab;
         public int size = 10;
         [HideInInspector]
@@ -27,13 +27,13 @@ public class EnemyPoolManager : MonoBehaviour
 
     [SerializeField] public List<Pool> pools;
 
-    private Dictionary<PoolID, Pool> _poolLookup;
+    private Dictionary<EnemyType, Pool> _poolLookup;
 
     void Awake()
     {
         Instance = this;
 
-        _poolLookup = new Dictionary<PoolID, Pool>();
+        _poolLookup = new Dictionary<EnemyType, Pool>();
         foreach(var pool in pools)
         {
             pool.objects = new List<GameObject>();
@@ -45,15 +45,15 @@ public class EnemyPoolManager : MonoBehaviour
                 pool.objects.Add(go);
             }
 
-            _poolLookup.Add(pool.id, pool);
+            _poolLookup.Add(pool.type, pool);
         }
     }
 
-    public GameObject Get(PoolID id)
+    public GameObject Get(EnemyType type)
     {
-        if(!_poolLookup.TryGetValue(id, out Pool pool))
+        if(!_poolLookup.TryGetValue(type, out Pool pool))
         {
-            Debug.Log($"No pool for object {id} !");
+            Debug.Log($"No pool for object {type} !");
             return null;
         }
 
@@ -69,9 +69,9 @@ public class EnemyPoolManager : MonoBehaviour
 
     }
 
-    public GameObject Get(PoolID id, Vector3 pos, Quaternion rot, Vector3? initialTarget = null)
+    public GameObject Get(EnemyType type, Vector3 pos, Quaternion rot, Vector3? initialTarget = null)
     {
-        GameObject obj = Get(id);
+        GameObject obj = Get(type);
         if (obj == null) return null;
 
         obj.transform.SetPositionAndRotation(pos, rot);
@@ -89,9 +89,9 @@ public class EnemyPoolManager : MonoBehaviour
     }
 
 
-    public Pool GetPool(PoolID id)
+    public Pool GetPool(EnemyType type)
     {
-        _poolLookup.TryGetValue(id, out var pool);
+        _poolLookup.TryGetValue(type, out var pool);
         return pool;
     }
 

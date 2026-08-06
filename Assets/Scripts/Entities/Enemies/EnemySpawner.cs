@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
 
         GameObject leader =
             EnemyPoolManager.Instance.Get(
-                PoolID.RatLeader,
+                EnemyType.RatLeader,
                 leaderPos,
                 Quaternion.identity);
 
@@ -55,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
 
             GameObject follower =
                 EnemyPoolManager.Instance.Get(
-                    PoolID.RatFollower,
+                    EnemyType.RatFollower,
                     leaderPos + (Vector3)offset,
                     Quaternion.identity);
 
@@ -75,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
         int amount = Random.Range(0, 7);
         for(int i = 0; i < amount; ++i)
         {
-            EnemyPoolManager.Instance.Get(PoolID.Bat, _locationsManager.GetRandomInnerWallSpawn(), Quaternion.identity, GameManager.Instance.GetPlayerReference().transform.position);
+            EnemyPoolManager.Instance.Get(EnemyType.Bat, _locationsManager.GetRandomInnerWallSpawn(), Quaternion.identity, GameManager.Instance.GetPlayerReference().transform.position);
         }
         
     }
