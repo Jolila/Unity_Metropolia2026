@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FollowerEnemy : MonoBehaviour
+public class FollowerEnemy : MonoBehaviour, IEnemyAI
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -13,6 +13,7 @@ public class FollowerEnemy : MonoBehaviour
 
     private EntityHealth health;
     public SpriteRenderer sprite;
+    private Vector3 targetDirection;
     private Vector2 formationOffset;
 
 
@@ -50,17 +51,20 @@ public class FollowerEnemy : MonoBehaviour
     void Update()
     {
 
+        transform.position += targetDirection * speed * Time.deltaTime;
+    }
+
+    public void Tick(Vector3 playerPosition)
+    {
         Transform target = leader;
         if (target == null)
         {
             target = GameManager.Instance.GetPlayerReference().transform;
         }
-
         Vector3 offsetTarget = target.position + (Vector3)formationOffset;
         Vector3 dir = (offsetTarget - transform.position).normalized;
 
-        transform.position += dir * speed * Time.deltaTime;
-
+        targetDirection = dir;
         sprite.flipX = dir.x < 0;
     }
 }

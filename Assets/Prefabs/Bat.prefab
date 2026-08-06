@@ -366,11 +366,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b31aa54255e084a9d8513e822f5341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NonWallCollidingEnemy
-  player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
   targetDirection: {x: 0, y: 0, z: 0}
-  speed: 3.5
+  speed: 4
   sprite: {fileID: 4355706441492227380}
-  frozen: 0
 --- !u!114 &4033199629912058352
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -120,20 +120,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (State == GameState.Countdown)
-        {
-            _spawnAccumulator += Time.unscaledDeltaTime * _countDownSpawnRate; // utilize the spawner here once its proven it works...
-
-            while (_spawnAccumulator >= 1f)
-            {
-                _spawnAccumulator--;
-                _enemyManager.spawnInitialEnemy();
-            }
-
-            return;
-        }
-
+        if (State != GameState.Playing) return;
         _inGameUIManager.updateTimerText(timer.ElapsedTime);
           
     }

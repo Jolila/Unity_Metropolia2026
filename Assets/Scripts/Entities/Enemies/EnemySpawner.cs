@@ -10,10 +10,24 @@ public class EnemySpawner : MonoBehaviour
         
     }
 
+
+    public void SpawnCountDownEnemies()
+    {
+
+            SpawnRatSquad();
+            SpawnBats();
+
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (GameManager.Instance.GetState() != GameState.Playing) return;
+
+        // do some interesting logic here
+
+
+
         SpawnRatSquad();
         SpawnBats();
     }
@@ -58,7 +72,8 @@ public class EnemySpawner : MonoBehaviour
     void SpawnBats()
     {
 
-        for(int i = 0; i < 3; ++i)
+        int amount = Random.Range(0, 7);
+        for(int i = 0; i < amount; ++i)
         {
             EnemyPoolManager.Instance.Get(PoolID.Bat, _locationsManager.GetRandomInnerWallSpawn(), Quaternion.identity, GameManager.Instance.GetPlayerReference().transform.position);
         }

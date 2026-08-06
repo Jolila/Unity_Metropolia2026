@@ -2640,12 +2640,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474080286}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 33.71996, y: 12.25787, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2135727147}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &474080288
 MonoBehaviour:
@@ -2668,7 +2668,16 @@ MonoBehaviour:
     count: 10
   - pool: 1
     startIndex: 0
-    count: 120
+    count: 100
+  - pool: 2
+    startIndex: 0
+    count: 100
+  - pool: 2
+    startIndex: 100
+    count: 100
+  - pool: 1
+    startIndex: 100
+    count: 100
 --- !u!114 &474080289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2684,11 +2693,15 @@ MonoBehaviour:
   pools:
   - id: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
-    size: 10
+    size: 20
     objects: []
   - id: 1
     prefab: {fileID: 6394731116622321747, guid: 92d11bfeec98fce4da1b76e48b9f17cf, type: 3}
-    size: 120
+    size: 200
+    objects: []
+  - id: 2
+    prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
+    size: 200
     objects: []
 --- !u!114 &474080290
 MonoBehaviour:
@@ -7161,7 +7174,6 @@ Transform:
   m_Children:
   - {fileID: 390938080}
   - {fileID: 1306741261}
-  - {fileID: 474080287}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2135727148
@@ -7466,3 +7478,4 @@ SceneRoots:
   - {fileID: 2030963769}
   - {fileID: 1222266518}
   - {fileID: 2135727147}
+  - {fileID: 474080287}

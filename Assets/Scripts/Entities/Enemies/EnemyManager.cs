@@ -12,14 +12,18 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] float retargetDistance = 1.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
-    Transform player;
 
     [System.Serializable]
     public struct UpdatePass
     {
-        public PoolID pool;
-        public int startIndex;
-        public int count;
+        public int ratLeaders;
+        public int slimeLeaders;
+        public int zombieLeaders;
+
+        public int followers;
+
+        public int bats;
+        public int ghosts;
     }
 
     [SerializeField]
@@ -29,38 +33,27 @@ public class EnemyManager : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
-    {
-        
+    { }
 
-    }
 
     public void OnStartGame()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        cachedPlayerPosition = player.position;
-
+        cachedPlayerPosition = GameManager.Instance.GetPlayerReference().transform.position;
     }
 
-    public void spawnInitialEnemy()
-    {
-       
-     
-    }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (GameManager.Instance.GetState() == GameState.Countdown) _spawner.SpawnCountDownEnemies();
         
-        if (GameManager.Instance.GetState() == GameState.Countdown) return;
         if (GameManager.Instance.GetState() != GameState.Playing) return;
-
+        Vector3 currentPlayerPos = GameManager.Instance.GetPlayerReference().transform.position;
         if (
-        (player.position - cachedPlayerPosition).sqrMagnitude >
+        (currentPlayerPos - cachedPlayerPosition).sqrMagnitude >
         retargetDistance * retargetDistance)
         {
-            cachedPlayerPosition = player.position;
-           
+            cachedPlayerPosition = currentPlayerPos;
         }
 
         UpdatePass pass = updateSchedule[currentPass];
@@ -92,14 +85,14 @@ public class EnemyManager : MonoBehaviour
 
             IEnemyAI enemy = obj.GetComponent<IEnemyAI>();
 
-            if (enemy == null)
-                continue;
+            if (enemy == null) continue;
 
             enemy.Tick(cachedPlayerPosition);
 
         }
 
     }
+
 
 
 

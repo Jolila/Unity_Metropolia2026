@@ -25,7 +25,6 @@ public class EnemySpawnLocationsManager : MonoBehaviour
 
 
     float _currentCooldown;
-    Transform player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -102,9 +101,9 @@ public class EnemySpawnLocationsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-        if (player == null) return;
-        GameManager.Instance.GetPlayerReference().transform.position = player.position;
+
+        if (GameManager.Instance.GetState() != GameState.Countdown || GameManager.Instance.GetState() != GameState.Playing) return; // OR later
+        
         Vector2Int playerCell = GetCell(GameManager.Instance.GetPlayerReference().transform.position);
         if(playerCell != currentPlayerCell)
         {
@@ -157,7 +156,7 @@ public class EnemySpawnLocationsManager : MonoBehaviour
     public Vector3 GetRandomOuterGroundSpawn()
     {
         return outerGroundCandidates[
-            Random.Range(0, outerGroundCandidates.Count)];
+            Random.Range(0, outerGroundCandidates.Count)];   
     }
 
     public Vector3 GetRandomInnerGroundSpawn()

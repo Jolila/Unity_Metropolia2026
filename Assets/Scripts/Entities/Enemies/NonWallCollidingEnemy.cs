@@ -42,7 +42,7 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 
     public void Tick(Vector3 playerPosition)
     {
-        transform.position += targetDirection * speed * Time.deltaTime;
+        targetDirection = (playerPosition - transform.position).normalized;
     }
 
 }
