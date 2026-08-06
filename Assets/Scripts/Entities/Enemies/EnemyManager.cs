@@ -6,12 +6,32 @@ using static EnemyPoolManager;
 public class EnemyManager : MonoBehaviour
 {
 
+    private static EnemyManager _instance;
+    public static EnemyManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<EnemyManager>();
+                if (_instance == null)
+                {
+                    Debug.Log(" Error : no enemy manager instance");
+                }
+            }
+            return _instance;
+        }
+    }
 
 
     Vector3 cachedPlayerPosition;
     [SerializeField] float retargetDistance = 1.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
+
+    [SerializeField] float cellSize = 12.5f;
+    private readonly Dictionary<Vector2Int, List<GameObject>> enemyGrid = new();
+    private readonly Dictionary<GameObject, Vector2Int> enemyCells = new();
 
     [System.Serializable]
     public struct UpdatePass
@@ -137,6 +157,7 @@ public class EnemyManager : MonoBehaviour
             if (obj.TryGetComponent<IEnemyAI>(out var enemy))
             {
                 enemy.Tick(cachedPlayerPosition);
+                UpdateEnemyCell(obj);
                 updated++;
             }
         }
@@ -152,6 +173,93 @@ public class EnemyManager : MonoBehaviour
 
         foreach (EnemyType type in System.Enum.GetValues(typeof(EnemyType)))
             updateCursors[type] = 0;
+    }
+
+    Vector2Int GetCell(Vector3 position)
+    {
+        return new Vector2Int(
+     Mathf.FloorToInt(position.x / cellSize),
+     Mathf.FloorToInt(position.y / cellSize));
+    }
+
+    public void RegisterEnemy(GameObject enemy)
+    {
+        Vector2Int cell = GetCell(enemy.transform.position);
+
+        if (!enemyGrid.TryGetValue(cell, out var list))
+        {
+            list = new List<GameObject>();
+            enemyGrid[cell] = list;
+        }
+
+        list.Add(enemy);
+        enemyCells[enemy] = cell;
+    }
+
+    public void UnregisterEnemy(GameObject enemy)
+    {
+        if (!enemyCells.TryGetValue(enemy, out var cell))
+            return;
+
+        if (enemyGrid.TryGetValue(cell, out var list))
+        {
+            list.Remove(enemy);
+
+            if (list.Count == 0)
+                enemyGrid.Remove(cell);
+        }
+
+        enemyCells.Remove(enemy);
+    }
+
+    public void UpdateEnemyCell(GameObject enemy)
+    {
+        Vector2Int newCell = GetCell(enemy.transform.position);
+
+        if (!enemyCells.TryGetValue(enemy, out var oldCell))
+        {
+            RegisterEnemy(enemy);
+            return;
+        }
+
+        if (oldCell == newCell)
+            return;
+
+        enemyGrid[oldCell].Remove(enemy);
+
+        if (enemyGrid[oldCell].Count == 0)
+            enemyGrid.Remove(oldCell);
+
+        if (!enemyGrid.TryGetValue(newCell, out var list))
+        {
+            list = new List<GameObject>();
+            enemyGrid[newCell] = list;
+        }
+
+        list.Add(enemy);
+
+        enemyCells[enemy] = newCell;
+    }
+
+    public void GetNearbyEnemies(Vector3 position, List<GameObject> results)
+    {
+        results.Clear();
+
+
+        Vector2Int center = GetCell(position);
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                Vector2Int cell = center + new Vector2Int(x, y);
+
+                if (enemyGrid.TryGetValue(cell, out var list))
+                    results.AddRange(list);
+            }
+        }
+
+   
     }
 
     //void OnDrawGizmosSelected()

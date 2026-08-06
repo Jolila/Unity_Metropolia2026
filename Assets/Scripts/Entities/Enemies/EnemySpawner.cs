@@ -45,7 +45,6 @@ public class EnemySpawner : MonoBehaviour
         }
 
 
-        SpawnBats();
     }
 
 
@@ -62,7 +61,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (leader == null)
             return;
-
+        EnemyManager.Instance.RegisterEnemy(leader);
         Enemy leaderEnemy = leader.GetComponent<Enemy>();
 
         for (int i = 0; i < 10; i++)
@@ -77,7 +76,7 @@ public class EnemySpawner : MonoBehaviour
 
             if (follower == null)
                 continue;
-
+            EnemyManager.Instance.RegisterEnemy(follower);
             follower.GetComponent<FollowerEnemy>().leader =
                 leaderEnemy.transform;
             
@@ -91,7 +90,11 @@ public class EnemySpawner : MonoBehaviour
         int amount = Random.Range(0, 7);
         for(int i = 0; i < amount; ++i)
         {
-            EnemyPoolManager.Instance.Get(EnemyType.Bat, _locationsManager.GetRandomInnerWallSpawn(), Quaternion.identity, GameManager.Instance.GetPlayerReference().transform.position);
+            GameObject bat  = EnemyPoolManager.Instance.Get(EnemyType.Bat,
+                _locationsManager.GetRandomInnerWallSpawn(),
+                Quaternion.identity,
+                GameManager.Instance.GetPlayerReference().transform.position);
+            if(bat != null) EnemyManager.Instance.RegisterEnemy(bat);
         }
         
     }
@@ -141,8 +144,11 @@ public class EnemySpawner : MonoBehaviour
                 leaderPos,
                 Quaternion.identity);
 
+       
+
         if (leader == null)
             return;
+        EnemyManager.Instance.RegisterEnemy(leader);
 
         Enemy leaderEnemy = leader.GetComponent<Enemy>();
 
@@ -155,9 +161,11 @@ public class EnemySpawner : MonoBehaviour
                     EnemyType.ZombieFollower,
                     leaderPos + (Vector3)offset,
                     Quaternion.identity);
+            
 
             if (follower == null)
                 continue;
+            EnemyManager.Instance.RegisterEnemy(follower);
 
             follower.GetComponent<FollowerEnemy>().leader =
                 leaderEnemy.transform;

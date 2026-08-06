@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using static UnityEngine.Input;
+using NUnit.Framework;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,7 +14,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip _footstep;
     EntityHealth _entityHealth;
     Color color;
-    private bool isDead;
+    private bool isDead; // I guess we can keep this for the animator
+
+    float damageRadius = 0.6f;
+    float contactDPS = 1.0f;
+    private readonly List<GameObject> nearbyEnemies = new();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -24,7 +31,6 @@ public class PlayerController : MonoBehaviour
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         color = _characterBody.color;
-        
         isDead = false;
         _entityHealth.OnDeath += PlayDeathAnimation;
     }
@@ -34,9 +40,10 @@ public class PlayerController : MonoBehaviour
     {
         
 
-        if (!isDead)
+        if (GameManager.Instance.GetState() == GameState.Playing)
         {
             HandlePlayerMovement();
+            HandleContactDamage();
         }
         else
         {
@@ -44,6 +51,37 @@ public class PlayerController : MonoBehaviour
            
         }
 
+    }
+
+
+    void HandleContactDamage()
+    {
+        EnemyManager.Instance.GetNearbyEnemies(
+    transform.position,
+    nearbyEnemies);
+
+        Debug.Log(nearbyEnemies.Count);
+
+        int touching = 0;
+        float radiusSq = damageRadius * damageRadius;
+
+        foreach (GameObject enemy in nearbyEnemies)
+        {
+            if (!enemy.activeInHierarchy)
+                continue;
+
+            if ((enemy.transform.position - transform.position).sqrMagnitude
+                <= radiusSq)
+            {
+                touching++;
+            }
+        }
+
+        if (touching > 0)
+        {
+            _entityHealth.LoseHealth(
+                touching * contactDPS * Time.deltaTime);
+        }
     }
 
     private void HandlePlayerMovement()

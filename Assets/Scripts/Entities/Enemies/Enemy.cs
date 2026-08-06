@@ -67,6 +67,7 @@ public class Enemy : MonoBehaviour, IEnemyAI
         
         AudioManager.Instance.PlayEnemyDeath();
         GameManager.Instance.RegisterKill();
+        EnemyManager.Instance.UnregisterEnemy(gameObject);
         _agent.ResetPath();
         gameObject.SetActive(false);
     }

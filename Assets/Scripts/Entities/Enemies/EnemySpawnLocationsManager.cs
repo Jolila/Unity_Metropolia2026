@@ -28,8 +28,8 @@ public class EnemySpawnLocationsManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-        
+
+
     }
 
     public void Initialize()
@@ -80,6 +80,9 @@ public class EnemySpawnLocationsManager : MonoBehaviour
 
     void SetEnemySpawnPositions()
     {
+
+
+
         foreach(Vector3Int position in _groundTiles.cellBounds.allPositionsWithin)
         {
             if(_groundTiles.HasTile(position))

@@ -2725,26 +2725,6 @@ MonoBehaviour:
     prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
     size: 200
     objects: []
-  - type: 2
-    prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}
-    size: 20
-    objects: []
-  - type: 3
-    prefab: {fileID: 6394731116622321747, guid: 1168d5182e719f5409e0fe8afc4f801d, type: 3}
-    size: 200
-    objects: []
-  - type: 7
-    prefab: {fileID: 8231525188190148662, guid: 9a0c15124a279884a8a50aea8a8a8f9b, type: 3}
-    size: 50
-    objects: []
-  - type: 4
-    prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
-    size: 20
-    objects: []
-  - type: 5
-    prefab: {fileID: 179021077290864179, guid: 1d9876313f8d5b94c99095faad368488, type: 3}
-    size: 200
-    objects: []
 --- !u!114 &474080290
 MonoBehaviour:
   m_ObjectHideFlags: 0

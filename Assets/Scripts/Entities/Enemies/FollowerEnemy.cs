@@ -37,6 +37,7 @@ public class FollowerEnemy : MonoBehaviour, IEnemyAI
     private void Death()
     {
         GameManager.Instance.RegisterKill();
+        EnemyManager.Instance.UnregisterEnemy(gameObject);
         gameObject.SetActive(false);
     }
 
