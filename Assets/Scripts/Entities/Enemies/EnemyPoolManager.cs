@@ -53,7 +53,7 @@ public class EnemyPoolManager : MonoBehaviour
     {
         if(!_poolLookup.TryGetValue(type, out Pool pool))
         {
-            Debug.Log($"No pool for object {type} !");
+            //Debug.Log($"No pool for object {type} !");
             return null;
         }
 

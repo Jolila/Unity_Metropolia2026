@@ -50,7 +50,6 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
     {
         cachedTarget = playerPosition;
         sprite.flipX = playerPosition.x < transform.position.x;
-        Debug.Log(_agent.isOnNavMesh);
         _agent.SetDestination(playerPosition);
     }
 

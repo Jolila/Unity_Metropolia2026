@@ -2716,35 +2716,35 @@ MonoBehaviour:
   pools:
   - type: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
-    size: 10
+    size: 30
     objects: []
   - type: 1
     prefab: {fileID: 6394731116622321747, guid: 92d11bfeec98fce4da1b76e48b9f17cf, type: 3}
-    size: 100
+    size: 300
     objects: []
   - type: 6
     prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
-    size: 200
+    size: 300
     objects: []
   - type: 2
     prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}
-    size: 10
+    size: 30
     objects: []
   - type: 3
     prefab: {fileID: 6394731116622321747, guid: 1168d5182e719f5409e0fe8afc4f801d, type: 3}
-    size: 100
+    size: 300
     objects: []
   - type: 4
     prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
-    size: 5
+    size: 10
     objects: []
   - type: 5
     prefab: {fileID: 179021077290864179, guid: 1d9876313f8d5b94c99095faad368488, type: 3}
-    size: 50
+    size: 100
     objects: []
   - type: 7
     prefab: {fileID: 8231525188190148662, guid: 9a0c15124a279884a8a50aea8a8a8f9b, type: 3}
-    size: 40
+    size: 50
     objects: []
 --- !u!114 &474080290
 MonoBehaviour:
