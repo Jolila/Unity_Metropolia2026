@@ -56,14 +56,13 @@ public class PlayerController : MonoBehaviour
 
     void HandleContactDamage()
     {
-        EnemyManager.Instance.GetEnemiesInCell(
-        transform.position,
-        nearbyEnemies);
+       
 
         int touching = 0;
         float radiusSq = damageRadius * damageRadius;
 
-        foreach (GameObject enemy in nearbyEnemies)
+        foreach (GameObject enemy in EnemyManager.Instance.GetEnemiesInCell(
+                    transform.position))
         {
             if (!enemy.activeInHierarchy)
                 continue;

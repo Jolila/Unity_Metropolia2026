@@ -10,7 +10,6 @@ public class Projectile : MonoBehaviour
     Vector2 direction;
     Vector2 position;
     float radius = 0.04f; // this matches the colliders radius
-    private readonly List<GameObject> nearbyEnemies = new();
 
     public void InitializeProjectile(Vector3 spawnPoint, Vector2 dir)
     {
@@ -33,14 +32,9 @@ public class Projectile : MonoBehaviour
             DestroyProjectileOnTerrain();
             return;
         }
-
-
-        EnemyManager.Instance.GetEnemiesInCell(
-            transform.position,
-            nearbyEnemies);
-
         
-        foreach (GameObject enemy in nearbyEnemies)
+        foreach (GameObject enemy in EnemyManager.Instance.GetEnemiesInCell(
+            transform.position))
         {
             if ((enemy.transform.position - transform.position).sqrMagnitude < radius)
             {

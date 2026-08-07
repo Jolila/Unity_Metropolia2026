@@ -241,12 +241,14 @@ public class EnemyManager : MonoBehaviour
         enemyCells[enemy] = newCell;
     }
 
-    public void GetEnemiesInCell(Vector3 position, List<GameObject> results)
+    public List<GameObject> GetEnemiesInCell(Vector3 position)
     {
 
-        results.Clear();
-        if (enemyGrid.TryGetValue(GetCell(position), out var list)) results.AddRange(list);
-   
+        if (enemyGrid.TryGetValue(GetCell(position), out var list))
+            return list;
+
+        return new List<GameObject>();
+
     }
 
     public void GetNeighboringEnemies(Vector3 position, List<GameObject> results)

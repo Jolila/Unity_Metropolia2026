@@ -37,6 +37,7 @@ public class EnemySpawnLocationsManager : MonoBehaviour
 
         SetEnemySpawnPositions();
         BuildSpatialGrid();
+        Debug.Log("initialize was called before asking for spawn points");
 
     }
 
@@ -156,6 +157,7 @@ public class EnemySpawnLocationsManager : MonoBehaviour
 
     public Vector3 GetRandomOuterGroundSpawn()
     {
+        Debug.Log(outerGroundCandidates.Count + " of outer ground candidates");
         return outerGroundCandidates[
             Random.Range(0, outerGroundCandidates.Count)];   
     }

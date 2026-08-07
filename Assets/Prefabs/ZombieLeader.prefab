@@ -137,7 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   _deathSound: {fileID: 8300000, guid: 78b5b2931f63eda4da03efceceafeab2, type: 3}
-  player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
   sprite: {fileID: 1952910094458462963}
 --- !u!114 &2855840870429806729
 MonoBehaviour:
@@ -260,7 +259,6 @@ GameObject:
   - component: {fileID: 6882394208059747565}
   - component: {fileID: 1952910094458462963}
   - component: {fileID: 2070116231868114615}
-  - component: {fileID: 2451240332259202243}
   m_Layer: 0
   m_Name: ZombieVisual
   m_TagString: Untagged
@@ -364,19 +362,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!111 &2451240332259202243
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3976788067572970219}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 115c74c883805b9449728526d8aef09f, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
