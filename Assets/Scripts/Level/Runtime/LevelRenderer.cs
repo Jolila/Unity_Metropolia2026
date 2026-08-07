@@ -37,8 +37,6 @@ public class LevelRenderer : MonoBehaviour
 
   
 
-        Debug.Log(GroundsTilemap.transform.root.name);
-
         RenderGeometry(level);
         RenderDecorations(level);
         RenderOutline(level);
@@ -71,11 +69,7 @@ public class LevelRenderer : MonoBehaviour
             }
         }
 
-        Debug.Log($"Placed grounds={grounds}, walls={walls}");
 
-
-        Debug.Log($"Used grounds={GroundsTilemap.cellBounds}");
-        Debug.Log($"Used walls={WallsTilemap.cellBounds}");
     }
 
     void RenderDecorations(LevelData level)

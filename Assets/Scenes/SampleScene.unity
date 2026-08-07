@@ -7374,7 +7374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelGamePlayLoader
   WallsTilemapCollider: {fileID: 48758573}
   surface: {fileID: 390938079}
-  spawnLocationsManager: {fileID: 474080290}
+  _spawnLocationsManager: {fileID: 0}
 --- !u!114 &2135727151
 MonoBehaviour:
   m_ObjectHideFlags: 0

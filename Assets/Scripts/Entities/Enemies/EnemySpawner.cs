@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
                 SpawnBats();
                 break;
             case 2:
-                SpawnZombiSquad();
+                SpawnZombieSquad();
                 break;
             case 3:
                 SpawnSlimeSquad();
@@ -134,7 +134,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void SpawnZombiSquad()
+    void SpawnZombieSquad()
     {
         Vector3 leaderPos = _locationsManager.GetRandomOuterGroundSpawn();
 

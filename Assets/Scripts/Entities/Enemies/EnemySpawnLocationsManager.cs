@@ -38,6 +38,9 @@ public class EnemySpawnLocationsManager : MonoBehaviour
         SetEnemySpawnPositions();
         BuildSpatialGrid();
         Debug.Log("initialize was called before asking for spawn points");
+        Debug.Log("initialize was called before asking for spawn points");
+        Debug.Log("initialize was called before asking for spawn points");
+        
 
     }
 
