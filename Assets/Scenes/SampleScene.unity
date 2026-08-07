@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_OverrideArea: 0
   m_Area: 0
   m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
+  m_AffectedAgents: 00000000
 --- !u!1 &265702729
 GameObject:
   m_ObjectHideFlags: 0
@@ -2662,6 +2662,7 @@ MonoBehaviour:
   retargetDistance: 1.5
   _poolManager: {fileID: 474080289}
   _spawner: {fileID: 474080291}
+  cellSize: 12.5
   defaultUpdatePass:
     ratLeaders: 2
     slimeLeaders: 2
@@ -7306,6 +7307,8 @@ GameObject:
   - component: {fileID: 2135727147}
   - component: {fileID: 2135727148}
   - component: {fileID: 2135727149}
+  - component: {fileID: 2135727151}
+  - component: {fileID: 2135727150}
   m_Layer: 0
   m_Name: LevelSystem
   m_TagString: Untagged
@@ -7342,22 +7345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643f5fec4313b6945b6097d4a7dc1de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelRenderer
-  LevelOutlineTilemap: {fileID: 1664170286}
-  GroundsTilemap: {fileID: 250842215}
-  WallsTilemap: {fileID: 48758572}
-  WallsTilemapCollider: {fileID: 48758573}
-  surface: {fileID: 390938079}
-  spawnLocationsManager: {fileID: 0}
-  DecorationsTilemap: {fileID: 124837380}
-  dinoSingularTile: {fileID: 11400000, guid: 0435bd9a9439f7d4bae07b38fe44d77c, type: 2}
-  SkullTile: {fileID: 11400000, guid: b9a1f11c82a89824cb98ee62946dd32e, type: 2}
-  OutlineDecorationsTilemap: {fileID: 971539867}
-  outlineTile: {fileID: 11400000, guid: f68e818bd8e186648ba56b6e21ab92e7, type: 2}
-  RandomDinoBoneRuleTile: {fileID: 11400000, guid: b97bd22a071bdf14a899729bab1cd9ac, type: 2}
-  RandomShroomClusterRuleTile: {fileID: 11400000, guid: 20ccfeec54877fb41924455e60dc0e3b, type: 2}
-  RandomSingleShroomRuleTile: {fileID: 11400000, guid: 36e4b3e5ac343d2468be0d3c68d5eab0, type: 2}
-  GroundTile: {fileID: 11400000, guid: 9960be546838f31488a60ce6fba86b3c, type: 2}
-  WallTile: {fileID: 11400000, guid: ba63d890360c68144b43a1a22fbac6b7, type: 2}
+  _renderer: {fileID: 2135727151}
+  _gameplayloader: {fileID: 2135727150}
   player: {fileID: 1861740455}
 --- !u!114 &2135727149
 MonoBehaviour:
@@ -7371,6 +7360,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dda29dd787d1b534eacd004671bc6d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileCleaner
+--- !u!114 &2135727150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135727146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b44bb9fdbdc9cc4f907bd85037a6488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelGamePlayLoader
+  WallsTilemapCollider: {fileID: 48758573}
+  surface: {fileID: 390938079}
+  spawnLocationsManager: {fileID: 474080290}
+--- !u!114 &2135727151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135727146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94d3b5466a24e746aa08f80ccd305aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelRenderer
+  DecorationsTilemap: {fileID: 124837380}
+  dinoSingularTile: {fileID: 11400000, guid: 0435bd9a9439f7d4bae07b38fe44d77c, type: 2}
+  SkullTile: {fileID: 11400000, guid: b9a1f11c82a89824cb98ee62946dd32e, type: 2}
+  OutlineDecorationsTilemap: {fileID: 971539867}
+  outlineTile: {fileID: 11400000, guid: f68e818bd8e186648ba56b6e21ab92e7, type: 2}
+  LevelOutlineTilemap: {fileID: 1664170286}
+  GroundsTilemap: {fileID: 250842215}
+  WallsTilemap: {fileID: 48758572}
+  RandomDinoBoneRuleTile: {fileID: 11400000, guid: b97bd22a071bdf14a899729bab1cd9ac, type: 2}
+  RandomShroomClusterRuleTile: {fileID: 11400000, guid: 20ccfeec54877fb41924455e60dc0e3b, type: 2}
+  RandomSingleShroomRuleTile: {fileID: 11400000, guid: 36e4b3e5ac343d2468be0d3c68d5eab0, type: 2}
+  GroundTile: {fileID: 11400000, guid: 9960be546838f31488a60ce6fba86b3c, type: 2}
+  WallTile: {fileID: 11400000, guid: ba63d890360c68144b43a1a22fbac6b7, type: 2}
 --- !u!1001 &6470544246313188329
 PrefabInstance:
   m_ObjectHideFlags: 0

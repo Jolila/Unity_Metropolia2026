@@ -241,7 +241,15 @@ public class EnemyManager : MonoBehaviour
         enemyCells[enemy] = newCell;
     }
 
-    public void GetNearbyEnemies(Vector3 position, List<GameObject> results)
+    public void GetEnemiesInCell(Vector3 position, List<GameObject> results)
+    {
+
+        results.Clear();
+        if (enemyGrid.TryGetValue(GetCell(position), out var list)) results.AddRange(list);
+   
+    }
+
+    public void GetNeighboringEnemies(Vector3 position, List<GameObject> results)
     {
         results.Clear();
 
@@ -258,8 +266,6 @@ public class EnemyManager : MonoBehaviour
                     results.AddRange(list);
             }
         }
-
-   
     }
 
     //void OnDrawGizmosSelected()

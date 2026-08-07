@@ -1,72 +1,61 @@
-using NavMeshPlus.Components;
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-public class LevelRenderer : MonoBehaviour
+
+public class LevelLoader : MonoBehaviour
 {
 
+    public static LevelLoader Instance { get; private set; }
+
+    public LevelData CurrentLevel { get; private set; }
+
+    [SerializeField] LevelRenderer _renderer;
+    [SerializeField] LevelGamePlayLoader _gameplayloader;
+
+    void Awake()
+    {
+        Instance = this;
+        CurrentLevel = new LevelData();
+        StartCoroutine(LoadLevel());
+    }
+
+
     private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath, OutlineFilePath;
-    int levelWidth, levelHeight, playerX, playerY, outlineWidth, outlineHeight;
-    char[,] GeometryGrid;
-    char[,] DecorationGrid;
-    char[,] OutlineGrid;
-    int OutlinePadding = 10;
+    int levelWidth, levelHeight, playerX, playerY;
 
-    [SerializeField] Tilemap LevelOutlineTilemap;
-    [SerializeField] Tilemap GroundsTilemap;
-    [SerializeField] Tilemap WallsTilemap;
-    [SerializeField] TilemapCollider2D WallsTilemapCollider;
-    [SerializeField] NavMeshSurface surface;
-    [SerializeField] EnemySpawnLocationsManager spawnLocationsManager;
-    [SerializeField] Tilemap DecorationsTilemap;
-    [SerializeField] TileBase dinoSingularTile;
-    [SerializeField] TileBase SkullTile;
-    [SerializeField] Tilemap OutlineDecorationsTilemap;
-    [SerializeField] TileBase outlineTile;
-
-    [SerializeField] RuleTile RandomDinoBoneRuleTile;
-    [SerializeField] RuleTile RandomShroomClusterRuleTile;
-    [SerializeField] RuleTile RandomSingleShroomRuleTile;
-
-    [SerializeField] RuleTile GroundTile;
-    [SerializeField] RuleTile WallTile;
     [SerializeField] GameObject player;
 
 
     private int width;
     private int height;
 
-    private void Awake()
-    {
-        StartCoroutine(LoadRoutine());
-    }
 
-    private IEnumerator LoadRoutine()
+    private IEnumerator LoadLevel()
     {
-        LoadLevel();
+        _renderer.ClearTilemaps();
+        LoadNewLevel();
+        yield return null;
+        _renderer.RenderLevel(CurrentLevel);
         yield return null;
 
-        RebuildColliders();
-        surface.BuildNavMesh();
-        spawnLocationsManager = FindAnyObjectByType<EnemySpawnLocationsManager>();
-        spawnLocationsManager.Initialize();
+        yield return StartCoroutine(
+       _gameplayloader.InitializeGamePlayLayer());
+
 
     }
 
-    private void LoadLevel()
+    private void LoadNewLevel()
     {
 
+
+        // runtime asset management
         string readyFolder = Path.Combine(
         Application.streamingAssetsPath,
         "Levels");
 
         string[] levelFolders = Directory.GetDirectories(readyFolder);
-
-        string levelFolder = levelFolders[3];
-
-
+        string levelFolder = levelFolders[Random.Range(0, levelFolders.Length)];
 
         GeometryFilePath = Path.Combine(levelFolder, "geometry.txt");
         DecorationsFilePath = Path.Combine(levelFolder, "decorations.txt");
@@ -74,29 +63,22 @@ public class LevelRenderer : MonoBehaviour
         OutlineFilePath = Path.Combine(levelFolder, "outline.txt");
 
 
-        GroundsTilemap.ClearAllTiles();
-        WallsTilemap.ClearAllTiles();
-        DecorationsTilemap.ClearAllTiles();
-        LevelOutlineTilemap.ClearAllTiles();
+
+        // Loading -> load to struct
+
         ReadInfo();
-        GeometryGrid = new char[levelWidth, levelHeight];
-        DecorationGrid = new char[levelWidth, levelHeight];
+        CurrentLevel.Width = levelWidth;
+        CurrentLevel.Height = levelHeight;
+        CurrentLevel.PlayerX = playerX;
+        CurrentLevel.PlayerY = playerY;
+
         LoadGeometryGrid();
         LoadDecorationGrid();
         LoadOutlineGrid();
         player.transform.position = new Vector3(playerX, playerY, 0);
-        RenderOutline();
-        RenderGeometry();
-        RenderDecorations();
+        CurrentLevel.PlayerX = playerX;
+        CurrentLevel.PlayerY = playerY;
 
-
-    }
-
-    void RebuildColliders()
-    {
-        // this should force cache refresh
-        WallsTilemapCollider.enabled = false;
-        WallsTilemapCollider.enabled = true;
     }
 
 
@@ -137,55 +119,22 @@ public class LevelRenderer : MonoBehaviour
         }
     }
 
-    void RenderOutline()
-    {
-        
 
-        for (int y = 0; y < outlineHeight; y++)
-        {
-            for (int x = 0; x < outlineWidth; x++)
-            {
-                Vector3Int cell = new Vector3Int(x - OutlinePadding, y - OutlinePadding, 0);
-                LevelOutlineTilemap.SetTile(cell, outlineTile);
-            }
-        }
-
-        for (int y = 0; y < outlineHeight; y++)
-        {
-            for (int x = 0; x < outlineWidth; x++)
-            {
-                Vector3Int cell = new Vector3Int(x - OutlinePadding, y - OutlinePadding, 0);
-                if (OutlineGrid[x, y] == 'C')
-                {
-                    OutlineDecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
-                }
-                else if (OutlineGrid[x, y] == 'S')
-                {
-                    OutlineDecorationsTilemap.SetTile(cell, RandomSingleShroomRuleTile);
-                }
-            }
-        }
-
-
-
-
-
-    }
 
     void LoadOutlineGrid()
     {
         string[] lines = File.ReadAllLines(OutlineFilePath);
 
-        outlineHeight = lines.Length;
-        outlineWidth = lines[0].Length;
+        CurrentLevel.OutlineHeight = lines.Length;
+        CurrentLevel.OutlineWidth = lines[0].Length;
 
-        OutlineGrid = new char[outlineWidth, outlineHeight];
+        CurrentLevel.Outline = new char[CurrentLevel.OutlineWidth, CurrentLevel.OutlineHeight];
 
-        for (int y = 0; y < outlineHeight; y++)
+        for (int y = 0; y < CurrentLevel.OutlineHeight; y++)
         {
-            for (int x = 0; x < outlineWidth; x++)
+            for (int x = 0; x < CurrentLevel.OutlineWidth; x++)
             {
-                OutlineGrid[x, y] = lines[y][x];
+                CurrentLevel.Outline[x, y] = lines[y][x];
             }
         }
     }
@@ -194,81 +143,34 @@ public class LevelRenderer : MonoBehaviour
 
     void LoadGeometryGrid()
     {
+        CurrentLevel.Geometry = new char[levelWidth, levelHeight];
+
         string[] lines = File.ReadAllLines(GeometryFilePath);
         for (int y = 0; y < levelHeight; ++y)
         {
            for (int x = 0; x < levelWidth; ++x)
            {
-              GeometryGrid[x, y] = lines[y][x];
+              CurrentLevel.Geometry[x, y] = lines[y][x];
            }
         }
     }
 
     void LoadDecorationGrid()
     {
+
+
+        CurrentLevel.Decorations = new char[levelWidth, levelHeight];
         string[] lines = File.ReadAllLines(DecorationsFilePath);
         for (int y = 0; y < levelHeight; ++y)
         {
             for (int x = 0; x < levelWidth; ++x)
             {
-                DecorationGrid[x, y] = lines[y][x];
+                CurrentLevel.Decorations[x, y] = lines[y][x];
             }
         }
     }
 
-    void RenderGeometry()
-    {
 
-        for (int y = 0; y < levelHeight; ++y)
-        {
-            for (int x = 0; x < levelWidth; ++x)
-            {
-                Vector3Int cell = new Vector3Int(x, y, 0);
-                if (GeometryGrid[x, y] == '*')
-                {
-                    GroundsTilemap.SetTile(cell, GroundTile);
-                }
-                else if (GeometryGrid[x, y] == '#')
-                {
-                    WallsTilemap.SetTile(cell, WallTile);
-                }
-
-            }
-        }
-    }
-
-    void RenderDecorations()
-    {
-
-        for (int y = 0; y < levelHeight; ++y)
-        {
-            for (int x = 0; x < levelWidth; ++x)
-            {
-                Vector3Int cell = new Vector3Int(x, y, 0);
-                if (DecorationGrid[x, y] == 'd')
-                {
-                    DecorationsTilemap.SetTile(cell, RandomDinoBoneRuleTile);
-                }
-                else if (DecorationGrid[x, y] == 'h')
-                {
-                    DecorationsTilemap.SetTile(cell, dinoSingularTile);
-                }
-                else if (DecorationGrid[x, y] == 'C')
-                {
-                    DecorationsTilemap.SetTile(cell, RandomShroomClusterRuleTile);
-                }
-                else if (DecorationGrid[x, y] == 'S')
-                {
-                    DecorationsTilemap.SetTile(cell, RandomSingleShroomRuleTile);
-                }
-                else if (DecorationGrid[x, y] == 'X')
-                {
-                    DecorationsTilemap.SetTile(cell, SkullTile);
-                }
-
-            }
-        }
-    }
 
 
 }

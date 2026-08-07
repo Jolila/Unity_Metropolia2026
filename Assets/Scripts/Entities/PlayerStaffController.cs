@@ -86,7 +86,7 @@ public class PlayerStaffController : MonoBehaviour
             Projectile projectile1 = go1.GetComponent<Projectile>();
             projectile1.transform.position = _tip.position;
             projectile1.transform.rotation = Quaternion.identity;
-            projectile1.InitializeProjectile(
+            projectile1.InitializeProjectile(_tip.position,
                     Quaternion.Euler(0, 0, randomizedSpread - doubleSpread) * _lookDirection);
             
             GameObject go2 = _projectilePool.GetPooledObject();
@@ -94,7 +94,7 @@ public class PlayerStaffController : MonoBehaviour
                 projectile2.transform.position = _tip.position;
                 projectile2.transform.rotation = Quaternion.identity;
 
-                projectile2.InitializeProjectile(
+                projectile2.InitializeProjectile(_tip.position,
                     Quaternion.Euler(0, 0, randomizedSpread + doubleSpread) * _lookDirection);
             
         }
@@ -104,7 +104,8 @@ public class PlayerStaffController : MonoBehaviour
             Projectile projectile = go1.GetComponent<Projectile>();
             projectile.transform.position = _tip.position;
             projectile.transform.rotation = Quaternion.identity;
-            projectile.InitializeProjectile(Quaternion.Euler(0,0, randomizedSpread) * _lookDirection);
+            projectile.InitializeProjectile(_tip.position,
+                Quaternion.Euler(0,0, randomizedSpread) * _lookDirection);
         }
  
         AudioManager.Instance.PlayProjectileShoot();

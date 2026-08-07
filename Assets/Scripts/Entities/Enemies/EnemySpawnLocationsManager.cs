@@ -81,8 +81,6 @@ public class EnemySpawnLocationsManager : MonoBehaviour
     void SetEnemySpawnPositions()
     {
 
-
-
         foreach(Vector3Int position in _groundTiles.cellBounds.allPositionsWithin)
         {
             if(_groundTiles.HasTile(position))

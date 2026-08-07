@@ -14,35 +14,35 @@ public class EnemySpawner : MonoBehaviour
     public void SpawnCountDownEnemies()
     {
 
-            SpawnRatSquad();
-            SpawnBats();
+            //SpawnRatSquad();
+            //SpawnBats();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.GetState() != GameState.Playing) return;
+        //if (GameManager.Instance.GetState() != GameState.Playing) return;
 
-        // do some interesting logic here
+        //// do some interesting logic here
 
-        switch (Time.frameCount % 6)
-        {
-            case 0:
-                SpawnRatSquad();
-                break;
-            case 1:
-                SpawnBats();
-                break;
-            case 2:
-                SpawnZombiSquad();
-                break;
-            case 3:
-                SpawnSlimeSquad();
-                break;
+        //switch (Time.frameCount % 6)
+        //{
+        //    case 0:
+        //        SpawnRatSquad();
+        //        break;
+        //    case 1:
+        //        SpawnBats();
+        //        break;
+        //    case 2:
+        //        SpawnZombiSquad();
+        //        break;
+        //    case 3:
+        //        SpawnSlimeSquad();
+        //        break;
 
         
-        }
+        //}
 
 
     }

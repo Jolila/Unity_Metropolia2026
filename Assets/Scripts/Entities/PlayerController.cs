@@ -56,11 +56,9 @@ public class PlayerController : MonoBehaviour
 
     void HandleContactDamage()
     {
-        EnemyManager.Instance.GetNearbyEnemies(
-    transform.position,
-    nearbyEnemies);
-
-        Debug.Log(nearbyEnemies.Count);
+        EnemyManager.Instance.GetEnemiesInCell(
+        transform.position,
+        nearbyEnemies);
 
         int touching = 0;
         float radiusSq = damageRadius * damageRadius;

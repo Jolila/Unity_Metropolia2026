@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -6,36 +7,56 @@ public class Projectile : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] float _travelSpeed;
     [SerializeField] float _damage;
-    [SerializeField] Rigidbody2D _rb;
-    Vector2 d;
+    Vector2 direction;
+    Vector2 position;
+    float radius = 0.04f; // this matches the colliders radius
+    private readonly List<GameObject> nearbyEnemies = new();
 
-    public void InitializeProjectile(Vector2 direction)
+    public void InitializeProjectile(Vector3 spawnPoint, Vector2 dir)
     {
         gameObject.SetActive(true);
-        d = direction;
-        Launch(direction);
+        transform.position = spawnPoint;
+        direction = dir.normalized;
     }
 
-    void Launch(Vector2 direction)
-    {
-        Vector2 movement = direction.normalized * _travelSpeed;
-        _rb.linearVelocity = movement;
-    }
 
-    void OnTriggerEnter2D(Collider2D collision)
+
+
+    private void Update()
     {
-        if (collision.gameObject.CompareTag("Terrain"))
+        float distance = _travelSpeed * Time.deltaTime;
+
+        transform.position += (Vector3)(direction * distance);
+
+        if (LevelLoader.Instance.CurrentLevel.IsWall(transform.position))
         {
             DestroyProjectileOnTerrain();
+            return;
         }
-        if(collision.gameObject.CompareTag("Enemy"))
+
+
+        EnemyManager.Instance.GetEnemiesInCell(
+            transform.position,
+            nearbyEnemies);
+
+        
+        foreach (GameObject enemy in nearbyEnemies)
         {
-            GameObject enemy = collision.gameObject;
-            DealDamage(enemy);
-            enemy.transform.position += new Vector3(d.x, d.y, 0) * 0.15f;
-            DestroyProjectileOnEnemy();
+            if ((enemy.transform.position - transform.position).sqrMagnitude < radius)
+            {
+                DealDamage(enemy);
+
+                enemy.transform.position +=
+                    (Vector3)direction * 0.15f;
+
+                DestroyProjectileOnEnemy();
+                return;
+            }
         }
+
+
     }
+
 
     void DealDamage(GameObject target)
     {
@@ -51,14 +72,12 @@ public class Projectile : MonoBehaviour
 
     void DestroyProjectileOnTerrain()
     {
-        _rb.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);
         GameManager.Instance.RegisterMiss();
     }
 
     void DestroyProjectileOnEnemy()
     {
-        _rb.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);
         GameManager.Instance.RegisterHit();
     }
