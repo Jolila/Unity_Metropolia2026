@@ -29,9 +29,21 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
 
-    [SerializeField] float cellSize = 12.5f;
+    [SerializeField] float cellSize = 7.5f;
     private readonly Dictionary<Vector2Int, List<GameObject>> enemyGrid = new();
     private readonly Dictionary<GameObject, Vector2Int> enemyCells = new();
+
+    private readonly List<GameObject> fireRingCache = new();
+
+    public List<GameObject> GetEnemiesForFireRing(Vector3 position)
+    {
+        fireRingCache.Clear();
+
+        if (enemyGrid.TryGetValue(GetCell(position), out var list))
+            fireRingCache.AddRange(list);
+
+        return fireRingCache;
+    }
 
     [System.Serializable]
     public struct UpdatePass
@@ -251,12 +263,13 @@ public class EnemyManager : MonoBehaviour
 
     }
 
-    public void GetNeighboringEnemies(Vector3 position, List<GameObject> results)
+    public List<GameObject> GetNeighboringEnemies(Vector3 position)
     {
-        results.Clear();
+       
 
 
         Vector2Int center = GetCell(position);
+        var results = new List<GameObject>();
 
         for (int x = -1; x <= 1; x++)
         {
@@ -268,19 +281,25 @@ public class EnemyManager : MonoBehaviour
                     results.AddRange(list);
             }
         }
+        return results;
     }
 
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (!Application.isPlaying)
-    //        return;
+    void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying)
+            return;
 
-    //    Gizmos.color = Color.purple;
-    //    Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
+        Gizmos.color = Color.purple;
+        Gizmos.DrawSphere(cachedPlayerPosition, retargetDistance);
+
+
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawCube(GameManager.Instance.GetPlayerReference().transform.position, new Vector3(cellSize, cellSize, 0));
 
 
 
-    //}
+    }
 
 
 }

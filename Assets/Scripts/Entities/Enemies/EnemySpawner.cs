@@ -26,7 +26,7 @@ public class EnemySpawner : MonoBehaviour
 
         // do some interesting logic here
 
-        switch (Time.frameCount % 6)
+        switch (Time.frameCount % 8)
         {
             case 0:
                 SpawnRatSquad();
@@ -39,6 +39,18 @@ public class EnemySpawner : MonoBehaviour
                 break;
             case 3:
                 SpawnSlimeSquad();
+                break;
+            case 4:
+                SpawnGhosts();
+                break;
+            case 5:
+                SpawnRenegadeRats();
+                break;
+            case 6:
+                SpawnRenegadeSlimes();
+                break;
+            case 7:
+                SpawnRenegadeZombies();
                 break;
 
 
@@ -62,7 +74,7 @@ public class EnemySpawner : MonoBehaviour
         if (leader == null)
             return;
         EnemyManager.Instance.RegisterEnemy(leader);
-        Enemy leaderEnemy = leader.GetComponent<Enemy>();
+        LeaderEnemy leaderEnemy = leader.GetComponent<LeaderEnemy>();
 
         for (int i = 0; i < 10; i++)
         {
@@ -81,6 +93,30 @@ public class EnemySpawner : MonoBehaviour
                 leaderEnemy.transform;
             
         }
+
+    }
+
+    void SpawnGhosts()
+    {
+        EnemyPoolManager.Instance.Get(EnemyType.Ghost,
+            _locationsManager.GetRandomInnerWallSpawn(),
+            Quaternion.identity,
+            GameManager.Instance.GetPlayerReference().transform.position);
+
+    }
+
+    void SpawnRenegadeRats()
+    {
+
+    }
+
+    void SpawnRenegadeSlimes()
+    {
+
+    }
+
+    void SpawnRenegadeZombies()
+    {
 
     }
 
@@ -113,7 +149,7 @@ public class EnemySpawner : MonoBehaviour
         if (leader == null)
             return;
 
-        Enemy leaderEnemy = leader.GetComponent<Enemy>();
+        LeaderEnemy leaderEnemy = leader.GetComponent<LeaderEnemy>();
 
         for (int i = 0; i < 10; i++)
         {
@@ -150,7 +186,7 @@ public class EnemySpawner : MonoBehaviour
             return;
         EnemyManager.Instance.RegisterEnemy(leader);
 
-        Enemy leaderEnemy = leader.GetComponent<Enemy>();
+        LeaderEnemy leaderEnemy = leader.GetComponent<LeaderEnemy>();
 
         for (int i = 0; i < 10; i++)
         {

@@ -4,6 +4,7 @@ using UnityEngine.U2D;
 public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 {
     public Vector3 targetDirection;
+    public Vector3 personalTargetOffset;
     public float speed = 3.5f;
     private EntityHealth health;
     public SpriteRenderer sprite;
@@ -21,6 +22,7 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
     private void OnEnable()
     {
         health.OnDeath += Death;
+        personalTargetOffset = Random.insideUnitCircle * 0.15f;
     }
 
     private void OnDisable()
@@ -42,7 +44,7 @@ public class NonWallCollidingEnemy : MonoBehaviour, IEnemyAI
 
     public void Tick(Vector3 playerPosition)
     {
-        targetDirection = (playerPosition - transform.position).normalized;
+        targetDirection = (playerPosition + personalTargetOffset - transform.position).normalized;
     }
 
 }
