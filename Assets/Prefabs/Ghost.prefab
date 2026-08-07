@@ -183,9 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5987867876892207353}
   - component: {fileID: 4009321488832182411}
-  - component: {fileID: 235876547473664169}
   - component: {fileID: 6017159155671308588}
-  - component: {fileID: 8180637282049128689}
   - component: {fileID: 927367561909092988}
   m_Layer: 15
   m_Name: Ghost
@@ -227,42 +225,6 @@ MonoBehaviour:
   _currentHealth: 0
   _healthRegen: 0
   _isDead: 0
---- !u!58 &235876547473664169
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8231525188190148662}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
 --- !u!114 &6017159155671308588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,38 +237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b31aa54255e084a9d8513e822f5341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ghost
-  player: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
   targetDirection: {x: 0, y: 0, z: 0}
   speed: 3
   sprite: {fileID: 2536003338476956258}
-  frozen: 0
---- !u!50 &8180637282049128689
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8231525188190148662}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &927367561909092988
 MonoBehaviour:
   m_ObjectHideFlags: 0
