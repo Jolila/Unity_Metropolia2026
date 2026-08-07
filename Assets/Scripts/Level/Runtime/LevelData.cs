@@ -29,8 +29,8 @@ public class LevelData
 
     public bool IsWall(Vector3 worldPos)
     {
-        int x = Mathf.RoundToInt(worldPos.x);
-        int y = Mathf.RoundToInt(worldPos.y);
+        int x = Mathf.FloorToInt(worldPos.x);
+        int y = Mathf.FloorToInt(worldPos.y);
 
         if (x < 0 || y < 0 || x >= Width || y >= Height)
             return true;

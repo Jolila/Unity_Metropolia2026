@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 545060600768551697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &4949564755466446461
 Animator:
   serializedVersion: 7
@@ -343,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 2974824821760234103}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -395,6 +395,8 @@ MonoBehaviour:
   _characterBody: {fileID: 5206972489622863278}
   _animator: {fileID: 4949564755466446461}
   _footstep: {fileID: 8300000, guid: b80107c534a1e2e4b95a420be9c6e197, type: 3}
+  hopDuration: 0.1
+  tileSize: 0.7
 --- !u!58 &7437102445447723579
 CircleCollider2D:
   m_ObjectHideFlags: 0

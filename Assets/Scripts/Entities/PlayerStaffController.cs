@@ -110,8 +110,8 @@ public class PlayerStaffController : MonoBehaviour
  
         AudioManager.Instance.PlayProjectileShoot();
         // Add recoil to player
-        Vector2 playerOffset = new Vector2(0.1f, 0.1f) * _lookDirection;
-        player.transform.position -= new Vector3(playerOffset.x, playerOffset.y, 0);
+        //Vector2 playerOffset = new Vector2(0.1f, 0.1f) * _lookDirection;
+        //player.transform.position -= new Vector3(playerOffset.x, playerOffset.y, 0);
     }
 
     void UseFireRing()

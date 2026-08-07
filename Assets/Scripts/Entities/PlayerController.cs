@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     Color color;
     private bool isDead; // I guess we can keep this for the animator
 
-    float damageRadius = 0.6f;
+    float damageRadius = 0.4f;
     float contactDPS = 1.0f;
     private readonly List<GameObject> nearbyEnemies = new();
 
@@ -35,12 +35,11 @@ public class PlayerController : MonoBehaviour
         _entityHealth.OnDeath += PlayDeathAnimation;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
 
-        if (GameManager.Instance.GetState() == GameState.Playing)
+
+        if (!isDead)
         {
             HandlePlayerMovement();
             HandleContactDamage();
@@ -48,7 +47,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             _rb.linearVelocity = Vector2.zero;
-           
+
         }
 
     }
@@ -93,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
         bool characterIsWalking = movement.magnitude > 0.0f;
         _animator.SetBool("isWalking", characterIsWalking);
-        if(characterIsWalking)
+        if (characterIsWalking)
         {
             HandleWalkingSounds();
         }
