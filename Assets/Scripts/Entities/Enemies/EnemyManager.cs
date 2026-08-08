@@ -28,6 +28,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] float retargetDistance = 1.5f;
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
+    [SerializeField] EnemySpawnLocationsManager _spawnlocationsmanager;
 
     [SerializeField] float cellSize = 7.5f;
     private readonly Dictionary<Vector2Int, List<GameObject>> enemyGrid = new();
@@ -83,6 +84,17 @@ public class EnemyManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     { }
+
+    public void Initialize()
+    {
+
+        _spawnlocationsmanager = FindAnyObjectByType<EnemySpawnLocationsManager>();
+        _spawnlocationsmanager.Initialize();
+        _poolManager = FindAnyObjectByType<EnemyPoolManager>();
+        _poolManager.Initialize();
+        _spawner = FindAnyObjectByType<EnemySpawner>();
+        
+    }
 
 
     public void OnStartGame()
@@ -297,9 +309,23 @@ public class EnemyManager : MonoBehaviour
 
         Gizmos.DrawCube(GameManager.Instance.GetPlayerReference().transform.position, new Vector3(cellSize, cellSize, 0));
 
-
-
     }
 
+    public EnemyPoolManager GetPoolManager()
+    {
+        return _poolManager;
+    }
+
+
+    public EnemySpawner GetEnemySpawner()
+    {
+        return _spawner;
+    }
+
+
+   public EnemySpawnLocationsManager GetEnemySpawnLocationsManager()
+    {
+        return _spawnlocationsmanager;
+    }
 
 }

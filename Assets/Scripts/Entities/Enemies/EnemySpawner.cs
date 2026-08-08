@@ -4,7 +4,6 @@ public class EnemySpawner : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    [SerializeField] EnemySpawnLocationsManager _locationsManager;
     void Start()
     {
         
@@ -63,7 +62,8 @@ public class EnemySpawner : MonoBehaviour
     void SpawnRatSquad()
     {
 
-        Vector3 leaderPos = _locationsManager.GetRandomOuterGroundSpawn();
+        Vector3 leaderPos = EnemyManager.Instance.GetEnemySpawnLocationsManager()
+            .GetRandomOuterGroundSpawn();
 
         GameObject leader =
             EnemyPoolManager.Instance.Get(
@@ -99,7 +99,8 @@ public class EnemySpawner : MonoBehaviour
     void SpawnGhosts()
     {
         EnemyPoolManager.Instance.Get(EnemyType.Ghost,
-            _locationsManager.GetRandomInnerWallSpawn(),
+            EnemyManager.Instance.GetEnemySpawnLocationsManager()
+            .GetRandomInnerWallSpawn(),
             Quaternion.identity,
             GameManager.Instance.GetPlayerReference().transform.position);
 
@@ -127,7 +128,8 @@ public class EnemySpawner : MonoBehaviour
         for(int i = 0; i < amount; ++i)
         {
             GameObject bat  = EnemyPoolManager.Instance.Get(EnemyType.Bat,
-                _locationsManager.GetRandomInnerWallSpawn(),
+                EnemyManager.Instance.GetEnemySpawnLocationsManager()
+                .GetRandomInnerWallSpawn(),
                 Quaternion.identity,
                 GameManager.Instance.GetPlayerReference().transform.position);
             if(bat != null) EnemyManager.Instance.RegisterEnemy(bat);
@@ -138,7 +140,8 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnSlimeSquad()
     {
-        Vector3 leaderPos = _locationsManager.GetRandomOuterGroundSpawn();
+        Vector3 leaderPos = EnemyManager.Instance.GetEnemySpawnLocationsManager()
+            .GetRandomOuterGroundSpawn();
 
         GameObject leader =
             EnemyPoolManager.Instance.Get(
@@ -172,7 +175,9 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnZombieSquad()
     {
-        Vector3 leaderPos = _locationsManager.GetRandomOuterGroundSpawn();
+        Vector3 leaderPos = 
+            EnemyManager.Instance.GetEnemySpawnLocationsManager().
+            GetRandomOuterGroundSpawn();
 
         GameObject leader =
             EnemyPoolManager.Instance.Get(

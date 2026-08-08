@@ -14,18 +14,7 @@ public class InGameUIManager : MonoBehaviour
 
     [SerializeField] private TMP_Text finalTimeText;
     [SerializeField] private TMP_Text killCountText;
-    [SerializeField] TMP_Text accuracyText;
-    [SerializeField] PostGameScreenController _postScreenAnimator;
 
-    private void Awake()
-    {
-   
-    }
-
-    private void Update()
-    {
-
-    }
 
     private void Start()
     {
@@ -71,24 +60,29 @@ public class InGameUIManager : MonoBehaviour
         finalTimeText.text = $"Time: {minutes:00}:{seconds:00}:{h:000}";
         killCountText.text = "Kills : " + finalKills;
 
-        double acc = accuracyP * 100;
-        string accuracyString;
 
-        if (acc == double.NaN) accuracyString = $"Accuracy : 0 %";
-        else if (acc < 10) accuracyString = $"Accuracy : {acc:0}%";
-        else accuracyString = $"Accuracy : {acc:00}%";
-        accuracyText.text = accuracyString;
-
-        _postScreenAnimator.PrepareAnimation();
-        StartCoroutine(_postScreenAnimator.PlayAnimations());
+    }
 
 
+
+    public void HideGameOverPanel()
+    {
+        _gameOverPanelCG.alpha = 0;
+        _gameOverPanelCG.interactable = false;
+        _gameOverPanelCG.blocksRaycasts = false;
+
+    }
+
+    public void RequestNewGame()
+    {
+        HideGameOverPanel();
+        GameManager.Instance.OnNewGameRequested();
     }
 
     public void ReturnToMainMenu()
     {
-        
-        GameManager.Instance.ResetGame();
+        HideGameOverPanel();
+        GameManager.Instance.OnMainMenuRequested();
        
     }
 }

@@ -19,7 +19,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] EnemyManager _enemyManager;
     [SerializeField] Timer timer;
     [SerializeField] Player player;
+    [SerializeField] LevelLoader _loader;
     public static GameManager Instance { get; private set; }
+    bool startGameOnSceneLoad = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public GameState State { get; private set; }
@@ -27,9 +29,7 @@ public class GameManager : MonoBehaviour
     int kills = 0;
     double hits = 0;
     double misses = 0;
-    private float _spawnAccumulator;
 
-    private float _countDownSpawnRate = 90f;
 
     [SerializeField] MainMenuManager _mainMenuManager;
 
@@ -55,17 +55,51 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    public void StartNewGame()
+    {
+        kills = 0;
+        hits = 0;
+        misses = 0;
+        startGameOnSceneLoad = true;
+        SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator InitializeLevel()
+    {
+        _mainMenuManager.CloseMainMenu();
+        yield return StartCoroutine(_loader.LoadLevel());
+        
+        _enemyManager.Initialize();
+
+        if (startGameOnSceneLoad)
+        {
+            StartGame();
+            startGameOnSceneLoad = false;
+
+        }
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _enemyManager = FindFirstObjectByType<EnemyManager>();
-        _inGameUIManager = FindFirstObjectByType<InGameUIManager>();
-        timer = FindFirstObjectByType<Timer>();
+
+       
+        player = FindAnyObjectByType<Player>();
+        _loader = FindAnyObjectByType<LevelLoader>();
+        _inGameUIManager = FindAnyObjectByType<InGameUIManager>();
+        _mainMenuManager = FindAnyObjectByType<MainMenuManager>();
+        timer = FindAnyObjectByType<Timer>();
+        _enemyManager = FindAnyObjectByType<EnemyManager>();
+        StartCoroutine(InitializeLevel());
+
     }
 
 
+
+    // On application start, the gamestate is in menu
     void Start()
     {
         State = GameState.InMenu;
+        _mainMenuManager.OpenMainMenu();
     }
 
     public void RegisterMiss()
@@ -83,17 +117,6 @@ public class GameManager : MonoBehaviour
         ++kills;
     }
 
-    public void ResetGame()
-    {
-        
-        SceneManager.LoadScene(0);
-        kills = 0;
-        hits = 0;
-        misses = 0;
-        timer.StartTimer();
-        State = GameState.InMenu;
-
-    }
 
     public void StopGameTimer()
     {
@@ -108,13 +131,12 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
 
-
         // apply countdown of three seconds, then apply timescale and then start playing song
         Time.timeScale = 1f;
         AudioManager.Instance.StopMusic();
         State = GameState.Countdown;
         StartCoroutine(StartRoundCountdown());
-        player = FindAnyObjectByType<Player>();
+
     }
 
     // Update is called once per frame
@@ -171,6 +193,19 @@ public class GameManager : MonoBehaviour
     public Player GetPlayerReference()
     {
         return player;
+    }
+
+    public void OnNewGameRequested()
+    {
+       
+        StartNewGame();
+    }
+
+    public void OnMainMenuRequested()
+    {
+        State = GameState.InMenu;
+        _inGameUIManager = FindAnyObjectByType<InGameUIManager>();
+        _mainMenuManager.OpenMainMenu();
     }
 
 

@@ -8,13 +8,11 @@ public class HoverEffect : MonoBehaviour,
         IPointerDownHandler
 {
 
-    [SerializeField] float _hoverScaleIncrease = 1.1f;
-    [SerializeField] float _clickScaleIncrease = 1.3f;
+    [SerializeField] float _hoverScaleIncrease = 1.3f;
+    [SerializeField] float _clickScaleIncrease = 1.5f;
     [SerializeField] float _tweenEffectDuration = 0.1f;
 
     [SerializeField] Image _image;
-    Color _onNotHoveredColor = new Color(0.3f, 0.3f, 0.3f, 0.8f); // roughly 0.3 
-    Color _onHoverColor = new Color(1.0f, 0.05f, 0.05f, 1.0f);
 
     [SerializeField] AudioClip _hoverAudio;
     [SerializeField] AudioClip _clickAudio;
@@ -25,7 +23,6 @@ public class HoverEffect : MonoBehaviour,
         if(_image == null)
         {
             _image = GetComponent<Image>();
-            _onNotHoveredColor = _image.color;
         }
     }
 
@@ -44,7 +41,6 @@ public class HoverEffect : MonoBehaviour,
        
         LeanTween.scale(gameObject, Vector2.one * _hoverScaleIncrease,
             _tweenEffectDuration).setIgnoreTimeScale(true);
-        _image.color = _onHoverColor;
         AudioManager.Instance.PlaySFX(_hoverAudio, 1.0f);
     }
 
@@ -52,7 +48,6 @@ public class HoverEffect : MonoBehaviour,
     {
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, Vector2.one, _tweenEffectDuration).setIgnoreTimeScale(true);
-        _image.color = _onNotHoveredColor;
         AudioManager.Instance.PlaySFX(_exitHoverAudio, 1.0f);
     }
 

@@ -16,23 +16,16 @@ public class LevelLoader : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        CurrentLevel = new LevelData();
-        StartCoroutine(LoadLevel());
     }
 
 
     private string GeometryFilePath, DecorationsFilePath, LevelInfoFilePath, OutlineFilePath;
     int levelWidth, levelHeight, playerX, playerY;
 
-    [SerializeField] GameObject player;
 
-
-    private int width;
-    private int height;
-
-
-    private IEnumerator LoadLevel()
+    public IEnumerator LoadLevel()
     {
+        CurrentLevel = new LevelData();
         _renderer.ClearTilemaps();
         LoadNewLevel();
         yield return null;
@@ -41,7 +34,6 @@ public class LevelLoader : MonoBehaviour
 
         yield return StartCoroutine(
        _gameplayloader.InitializeGamePlayLayer());
-
 
     }
 
@@ -75,7 +67,7 @@ public class LevelLoader : MonoBehaviour
         LoadGeometryGrid();
         LoadDecorationGrid();
         LoadOutlineGrid();
-        player.transform.position = new Vector3(playerX, playerY, 0);
+        GameManager.Instance.GetPlayerReference().transform.position = new Vector3(playerX, playerY, 0);
         CurrentLevel.PlayerX = playerX;
         CurrentLevel.PlayerY = playerY;
 

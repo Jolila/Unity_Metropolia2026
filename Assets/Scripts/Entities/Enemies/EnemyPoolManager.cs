@@ -29,16 +29,16 @@ public class EnemyPoolManager : MonoBehaviour
 
     private Dictionary<EnemyType, Pool> _poolLookup;
 
-    void Awake()
+    public void Initialize()
     {
         Instance = this;
 
         _poolLookup = new Dictionary<EnemyType, Pool>();
-        foreach(var pool in pools)
+        foreach (var pool in pools)
         {
             pool.objects = new List<GameObject>();
 
-            for(int i = 0; i < pool.size; i++)
+            for (int i = 0; i < pool.size; i++)
             {
                 GameObject go = Instantiate(pool.prefab);
                 go.SetActive(false);

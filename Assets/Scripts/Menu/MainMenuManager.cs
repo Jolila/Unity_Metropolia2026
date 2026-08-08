@@ -15,8 +15,6 @@ public class MainMenuManager : MonoBehaviour
     void Awake()
     {
         _mainMenuCG = GetComponent<CanvasGroup>();
-
-        OpenMainMenu();
     }
 
     private void Start()
@@ -46,6 +44,8 @@ public class MainMenuManager : MonoBehaviour
 
         _fadeOverlay.alpha = 0f;
     }
+
+
     public void OpenMainMenu()
     {
         CanvasGroupSetState(_mainMenuCG, true);
@@ -59,7 +59,7 @@ public class MainMenuManager : MonoBehaviour
     public void Play()
     {
         CloseMainMenu();
-        GameManager.Instance.StartGame();
+        GameManager.Instance.OnNewGameRequested();
     }
 
 

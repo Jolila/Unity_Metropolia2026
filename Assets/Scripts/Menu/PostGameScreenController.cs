@@ -57,4 +57,6 @@ public class PostGameScreenController : MonoBehaviour
         rect.localScale = Vector3.one;
     }
 
+
+
 }
