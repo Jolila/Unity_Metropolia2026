@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         Time.timeScale = 0f;
+        State = GameState.InMenu;
     }
 
     void OnEnable()
@@ -55,24 +56,39 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public void StartNewGame()
+    public IEnumerator StartNewGame()
     {
         kills = 0;
         hits = 0;
         misses = 0;
         startGameOnSceneLoad = true;
+        // querying the previous state here, a bit smelly
+        if (State == GameState.InMenu)
+        {
+            yield return TransitionsManager.Instance.FadeToBloodMoon(0.5f);
+            yield return _mainMenuManager.CloseMainMenu(0.5f);
+        }
+        else if (State == GameState.GameOver)
+        {
+            yield return TransitionsManager.Instance.FadeToBloodMoon(0.5f);
+            yield return _inGameUIManager.HideGameOverPanel(0.5f);
+        }
+
+        
         SceneManager.LoadScene(0);
     }
 
     private IEnumerator InitializeLevel()
     {
-        _mainMenuManager.CloseMainMenu();
+        
         yield return StartCoroutine(_loader.LoadLevel());
         
         _enemyManager.Initialize();
-
+       
         if (startGameOnSceneLoad)
         {
+            yield return new WaitForSecondsRealtime(1.5f);
+            yield return TransitionsManager.Instance.FadeFromBloodMoon(1.0f);
             StartGame();
             startGameOnSceneLoad = false;
 
@@ -152,7 +168,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         timer.StopTimer();
         double accP = hits / (hits + misses);
-
+        State = GameState.GameOver;
         _inGameUIManager.ShowGameOverPanel(timer.ElapsedTime, kills, accP);
     }
 
@@ -197,8 +213,8 @@ public class GameManager : MonoBehaviour
 
     public void OnNewGameRequested()
     {
-       
-        StartNewGame();
+
+        StartCoroutine(StartNewGame());
     }
 
     public void OnMainMenuRequested()

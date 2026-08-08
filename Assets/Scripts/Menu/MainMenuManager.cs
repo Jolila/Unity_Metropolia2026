@@ -15,6 +15,7 @@ public class MainMenuManager : MonoBehaviour
     void Awake()
     {
         _mainMenuCG = GetComponent<CanvasGroup>();
+        CanvasGroupSetState(_mainMenuCG, false);
     }
 
     private void Start()
@@ -51,14 +52,31 @@ public class MainMenuManager : MonoBehaviour
         CanvasGroupSetState(_mainMenuCG, true);
     }
 
-    public void CloseMainMenu()
+    public IEnumerator CloseMainMenu(float duration)
     {
-        CanvasGroupSetState(_mainMenuCG, false);
+
+        float elapsed = 0f;
+        _mainMenuCG.interactable = false;
+        _mainMenuCG.blocksRaycasts = false;
+        float startingAlpha = _mainMenuCG.alpha;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+
+            _mainMenuCG.alpha =
+                Mathf.Lerp(startingAlpha, 0f, elapsed / duration);
+
+            yield return null;
+        }
+
+        _mainMenuCG.alpha = 0f;
+
     }
+
+
 
     public void Play()
     {
-        CloseMainMenu();
         GameManager.Instance.OnNewGameRequested();
     }
 

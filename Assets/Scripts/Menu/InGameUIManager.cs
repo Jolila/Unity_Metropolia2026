@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -14,12 +15,6 @@ public class InGameUIManager : MonoBehaviour
 
     [SerializeField] private TMP_Text finalTimeText;
     [SerializeField] private TMP_Text killCountText;
-
-
-    private void Start()
-    {
-        GameManager.Instance.SetUI(this);
-    }
 
     public void updateTimerText(float time)
     {
@@ -65,23 +60,49 @@ public class InGameUIManager : MonoBehaviour
 
 
 
-    public void HideGameOverPanel()
+    public IEnumerable HideGameOverPanel(float duration)
     {
-        _gameOverPanelCG.alpha = 0;
+
+        float elapsed = 0f;
+
+       
         _gameOverPanelCG.interactable = false;
         _gameOverPanelCG.blocksRaycasts = false;
+
+        float startingAlpha = _gameOverPanelCG.alpha;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+
+            _gameOverPanelCG.alpha =
+                Mathf.Lerp(startingAlpha, 0f, elapsed / duration);
+
+            yield return null;
+        }
+
+        _gameOverPanelCG.alpha = 0f;
+
 
     }
 
     public void RequestNewGame()
     {
-        HideGameOverPanel();
+
         GameManager.Instance.OnNewGameRequested();
     }
 
+    private void HideGameOverPanelImmediate()
+    {
+        _gameOverPanelCG.interactable = false;
+        _gameOverPanelCG.blocksRaycasts = false;
+        _gameOverPanelCG.alpha = 0f;
+    }
+
+
+
     public void ReturnToMainMenu()
     {
-        HideGameOverPanel();
+        HideGameOverPanelImmediate();
         GameManager.Instance.OnMainMenuRequested();
        
     }
