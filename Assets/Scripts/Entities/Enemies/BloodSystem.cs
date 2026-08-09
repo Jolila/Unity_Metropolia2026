@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.UIElements;
 
 public enum BloodDropletTier
 {
@@ -20,16 +21,35 @@ public class BloodDropWeight
 
 public class BloodSystem : MonoBehaviour
 {
-    public Dictionary<BloodDropletTier, double> ContributionsToTotalBloodCount = 
-        new Dictionary<BloodDropletTier, double> 
+
+    private static BloodSystem _instance;
+    public static BloodSystem Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<BloodSystem>();
+                if (_instance == null)
+                {
+                    Debug.Log(" Error : no enemy manager instance");
+                }
+            }
+            return _instance;
+        }
+    }
+
+
+    public Dictionary<BloodDropletTier, float> ContributionToTotalBloodCount = 
+        new Dictionary<BloodDropletTier, float> 
     {
             {BloodDropletTier.Small, 0.5f },
             {BloodDropletTier.Medium, 1.0f },
             {BloodDropletTier.Large, 2.5f }
     };
 
-    public Dictionary<BloodDropletTier, double> ContributionToPlayerHealthIncrease =
-        new Dictionary<BloodDropletTier, double>
+    public Dictionary<BloodDropletTier, float> ContributionToPlayerHealthIncrease =
+        new Dictionary<BloodDropletTier, float>
         {
         { BloodDropletTier.Small, 1.5f},
         { BloodDropletTier.Medium, 4.5f},
@@ -37,13 +57,13 @@ public class BloodSystem : MonoBehaviour
         };
 
 
-    double totalBloodCollected = 0f;
-    double bloodMoonVisibleQuota = 100f;
-    double bloodMoonFullQuota = 250f;
+    float totalBloodCollected = 0f;
+    float bloodMoonVisibleQuota = 100f;
+    float bloodMoonFullQuota = 250f;
 
-    ObjectPool SmallDropletsPool;
-    ObjectPool MediumDropletsPool;
-    ObjectPool LargeDropletsPool;
+    [SerializeField] ObjectPool SmallDropletPool;
+    [SerializeField] ObjectPool MediumDropletPool;
+    [SerializeField] ObjectPool LargeDropletPool;
 
     private float smallEnemyDropChance = 0.10f;
     private float mediumEnemyDropChance = 0.40f;
@@ -169,11 +189,43 @@ public class BloodSystem : MonoBehaviour
 
     private void SpawnDroplet(BloodDropletTier tier, Vector3 pos)
     {
-        Debug.Log("Spawned " + tier + " to : " + pos);
+
+        GameObject droplet = GetDropletFromPool(tier);
+
+        if (droplet == null)
+            return;
+
+        droplet.transform.position = pos;
+        droplet.SetActive(true);
     }
 
-   
+    public void CollectBlood(BloodDropletTier tier)
+    {
+        totalBloodCollected +=
+    ContributionToTotalBloodCount[tier];
 
-    
+        float healthIncrease =
+            ContributionToPlayerHealthIncrease[tier];
+
+        PlayerHealthSystem.Instance.Heal(
+            healthIncrease);
+    }
+
+
+
+    private GameObject GetDropletFromPool(BloodDropletTier tier)
+    {
+        return tier switch
+        {
+            BloodDropletTier.Small => SmallDropletPool.GetPooledObject(),
+            BloodDropletTier.Medium => MediumDropletPool.GetPooledObject(),
+            BloodDropletTier.Large => LargeDropletPool.GetPooledObject(),
+            _ => null
+        };
+    }
+
+
+
+
 }
 

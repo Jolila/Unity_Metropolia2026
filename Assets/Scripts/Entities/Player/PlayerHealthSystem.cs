@@ -33,6 +33,23 @@ public class PlayerHealthSystem : MonoBehaviour
     public Action OnBloodStarvedStarted;
     public Action OnBloodStarvedEnded;
 
+    private static PlayerHealthSystem _instance;
+    public static PlayerHealthSystem Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<PlayerHealthSystem>();
+                if (_instance == null)
+                {
+                    Debug.Log(" Error : no enemy manager instance");
+                }
+            }
+            return _instance;
+        }
+    }
+
 
     void Start()
     {
@@ -52,6 +69,8 @@ public class PlayerHealthSystem : MonoBehaviour
         HandleAmbientDamage();
         HandleContactDamage();
 
+
+
         if (CurrentHealth <= 0f)
         {
             Die();
@@ -60,6 +79,7 @@ public class PlayerHealthSystem : MonoBehaviour
        
     }
 
+  
     void HandleAmbientDamage()
     {
         _currentHealth -= ambientBloodLoss * Time.deltaTime;
@@ -89,6 +109,11 @@ public class PlayerHealthSystem : MonoBehaviour
         {
             _currentHealth -= touching * contactDPS * Time.deltaTime;
         }
+    }
+
+    public void Heal(float value)
+    {
+        _currentHealth += value;
     }
 
 

@@ -4967,6 +4967,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1228808266}
   - component: {fileID: 1228808265}
+  - component: {fileID: 1228808269}
+  - component: {fileID: 1228808268}
+  - component: {fileID: 1228808267}
   m_Layer: 0
   m_Name: BloodSystem
   m_TagString: Untagged
@@ -4986,12 +4989,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8876849a579d03d4aa715ea82add2e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BloodSystem
-  smallEnemyDropChance: 0
-  mediumEnemyDropChance: 0
-  largeEnemyDropChance: 0
-  smallEnemyWeights: []
-  mediumEnemyWeights: []
-  largeEnemyWeights: []
+  SmallDropletPool: {fileID: 1228808269}
+  MediumDropletPool: {fileID: 1228808268}
+  LargeDropletPool: {fileID: 0}
 --- !u!4 &1228808266
 Transform:
   m_ObjectHideFlags: 0
@@ -5007,6 +5007,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1228808267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228808264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add19bf7867b9f447b93ede3683106e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
+  pooledObjects: []
+  objectToPool: {fileID: 0}
+  amountToPool: 0
+--- !u!114 &1228808268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228808264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add19bf7867b9f447b93ede3683106e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
+  pooledObjects: []
+  objectToPool: {fileID: 8582852194146006185, guid: c207ba17151d07c47afd98b484a5e97f, type: 3}
+  amountToPool: 10
+--- !u!114 &1228808269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228808264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add19bf7867b9f447b93ede3683106e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
+  pooledObjects: []
+  objectToPool: {fileID: 8582852194146006185, guid: 27490c2c145bc024eb421c92ba8e2620, type: 3}
+  amountToPool: 10
 --- !u!1 &1232412815
 GameObject:
   m_ObjectHideFlags: 0
