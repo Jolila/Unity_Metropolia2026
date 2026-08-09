@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 545060600768551697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &4949564755466446461
 Animator:
   serializedVersion: 7
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 1910557338500991947}
   - component: {fileID: 8245374138684779797}
   - component: {fileID: 7437102445447723579}
-  - component: {fileID: 5930592563504855770}
+  - component: {fileID: 3833155191796550076}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -343,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 2974824821760234103}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -395,6 +395,7 @@ MonoBehaviour:
   _characterBody: {fileID: 5206972489622863278}
   _animator: {fileID: 4949564755466446461}
   _footstep: {fileID: 8300000, guid: b80107c534a1e2e4b95a420be9c6e197, type: 3}
+  _healthSystem: {fileID: 0}
 --- !u!58 &7437102445447723579
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -429,9 +430,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.04, y: -0.27}
-  m_Radius: 0.45
---- !u!114 &5930592563504855770
+  m_Offset: {x: 0, y: -0.24}
+  m_Radius: 0.3
+--- !u!114 &3833155191796550076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -440,12 +441,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2974824821760234103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78b9b9bda62431941a2024f7e2114774, type: 3}
+  m_Script: {fileID: 11500000, guid: 32a2f2159b7e52a48823be3b1bebc10d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EntityHealth
-  _maxHealth: 5
-  _currentHealth: 0
-  _healthRegen: 0
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthSystem
 --- !u!1 &6334571388243027728
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,8 +583,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStaffController
   _projectile: {fileID: 1853368783819410024, guid: 3d0a9e76a50fb61469acaa7b97154f4d, type: 3}
   _fireRing: {fileID: 8482557836818539912, guid: 58448d8ab857ef34eae459fa6d3a3e3b, type: 3}
-  _shootSound: {fileID: 8300000, guid: abc9ce60d78b48f4eb0d8a95c5063ce7, type: 3}
-  _fireRingSound: {fileID: 8300000, guid: ee48f8b5f865ee348879ae979aee837a, type: 3}
   _tip: {fileID: 2160502468637218513}
   _fireRate: 2
   _fireRingRate: 0.1
+  player: {fileID: 0}
+  _projectilePool: {fileID: 0}
