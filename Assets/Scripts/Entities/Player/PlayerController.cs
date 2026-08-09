@@ -12,19 +12,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] SpriteRenderer _characterBody;
     [SerializeField] private Animator _animator;
     [SerializeField] AudioClip _footstep;
-    EntityHealth _entityHealth;
+    [SerializeField] PlayerHealthSystem _healthSystem;
     Color color;
     private bool isDead; // I guess we can keep this for the animator
 
-    float damageRadius = 0.4f;
-    float contactDPS = 1.0f;
+
     private readonly List<GameObject> nearbyEnemies = new();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
     {
-        _entityHealth = GetComponent<EntityHealth>();
+        _healthSystem = GetComponent<PlayerHealthSystem>();
     }
 
     void Start()
@@ -32,7 +31,7 @@ public class PlayerController : MonoBehaviour
         _rb = gameObject.GetComponent<Rigidbody2D>();
         color = _characterBody.color;
         isDead = false;
-        _entityHealth.OnDeath += PlayDeathAnimation;
+        _healthSystem.OnPlayerDeath += PlayDeathAnimation;
     }
 
     void Update()
@@ -42,7 +41,6 @@ public class PlayerController : MonoBehaviour
         if (!isDead)
         {
             HandlePlayerMovement();
-            HandleContactDamage();
         }
         else
         {
@@ -53,32 +51,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void HandleContactDamage()
-    {
-       
 
-        int touching = 0;
-        float radiusSq = damageRadius * damageRadius;
-
-        foreach (GameObject enemy in EnemyManager.Instance.GetEnemiesInCell(
-                    transform.position))
-        {
-            if (!enemy.activeInHierarchy)
-                continue;
-
-            if ((enemy.transform.position - transform.position).sqrMagnitude
-                <= radiusSq)
-            {
-                touching++;
-            }
-        }
-
-        if (touching > 0)
-        {
-            _entityHealth.LoseHealth(
-                touching * contactDPS * Time.deltaTime);
-        }
-    }
 
     private void HandlePlayerMovement()
     {

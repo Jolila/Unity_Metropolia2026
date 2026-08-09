@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnemyPoolManager;
 
+enum BloodDropletTier
+{
+    Small,Medium,Large
+}
+
 public class EnemyManager : MonoBehaviour
 {
 

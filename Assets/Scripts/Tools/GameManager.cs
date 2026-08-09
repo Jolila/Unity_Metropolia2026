@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] InGameUIManager _inGameUIManager;
     [SerializeField] EnemyManager _enemyManager;
     [SerializeField] Timer timer;
-    [SerializeField] Player player;
+    [SerializeField] PlayerController player;
     [SerializeField] LevelLoader _loader;
     public static GameManager Instance { get; private set; }
     bool startGameOnSceneLoad = false;
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     {
 
        
-        player = FindAnyObjectByType<Player>();
+        player = FindAnyObjectByType<PlayerController>();
         _loader = FindAnyObjectByType<LevelLoader>();
         _inGameUIManager = FindAnyObjectByType<InGameUIManager>();
         _mainMenuManager = FindAnyObjectByType<MainMenuManager>();
@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public Player GetPlayerReference()
+    public PlayerController GetPlayerReference()
     {
         return player;
     }

@@ -12,7 +12,7 @@ public class PlayerStaffController : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] ObjectPool _projectilePool;
     private Light2D staffLight;
-    private EntityHealth playerHealth;
+    private PlayerHealthSystem playerHealth;
     private bool controlStaff;
     float _nextFireRingTime;
     Vector2 _lookDirection;
@@ -30,9 +30,10 @@ public class PlayerStaffController : MonoBehaviour
 
     void Start()
     {
-        playerHealth = player.GetComponent<EntityHealth>();
-        playerHealth.OnDeath += StopStaffControl;
+        playerHealth = player.GetComponent<PlayerHealthSystem>();
+        playerHealth.OnPlayerDeath += StopStaffControl;
         controlStaff = true;
+        staffLight.intensity = 0f;
 
     }
     void Update()
@@ -45,7 +46,7 @@ public class PlayerStaffController : MonoBehaviour
         RotateStaff();
 
         if (GameManager.Instance.GetState() == GameState.Countdown) return;
-
+        staffLight.intensity = 1f;
         if (Input.GetButton("Fire1") && Time.time >= _nextFireTime)
         {
             _nextFireTime = Time.time + 1f / _fireRate;
