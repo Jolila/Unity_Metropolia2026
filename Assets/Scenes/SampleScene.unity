@@ -2670,6 +2670,7 @@ MonoBehaviour:
   _poolManager: {fileID: 474080289}
   _spawner: {fileID: 474080291}
   _spawnlocationsmanager: {fileID: 0}
+  _bloodSystem: {fileID: 0}
   cellSize: 12.5
   defaultUpdatePass:
     ratLeaders: 2
@@ -2724,35 +2725,11 @@ MonoBehaviour:
   pools:
   - type: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
-    size: 30
+    size: 10
     objects: []
   - type: 1
     prefab: {fileID: 6394731116622321747, guid: 92d11bfeec98fce4da1b76e48b9f17cf, type: 3}
-    size: 300
-    objects: []
-  - type: 6
-    prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
-    size: 300
-    objects: []
-  - type: 2
-    prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}
-    size: 30
-    objects: []
-  - type: 3
-    prefab: {fileID: 6394731116622321747, guid: 1168d5182e719f5409e0fe8afc4f801d, type: 3}
-    size: 300
-    objects: []
-  - type: 4
-    prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
-    size: 10
-    objects: []
-  - type: 5
-    prefab: {fileID: 179021077290864179, guid: 1d9876313f8d5b94c99095faad368488, type: 3}
     size: 100
-    objects: []
-  - type: 7
-    prefab: {fileID: 8231525188190148662, guid: 9a0c15124a279884a8a50aea8a8a8f9b, type: 3}
-    size: 50
     objects: []
 --- !u!114 &474080290
 MonoBehaviour:
@@ -4980,6 +4957,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1228808264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1228808266}
+  - component: {fileID: 1228808265}
+  m_Layer: 0
+  m_Name: BloodSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1228808265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228808264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8876849a579d03d4aa715ea82add2e95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BloodSystem
+  smallEnemyDropChance: 0
+  mediumEnemyDropChance: 0
+  largeEnemyDropChance: 0
+  smallEnemyWeights: []
+  mediumEnemyWeights: []
+  largeEnemyWeights: []
+--- !u!4 &1228808266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228808264}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 932.3232, y: 482.95547, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1232412815
 GameObject:
   m_ObjectHideFlags: 0
@@ -6684,17 +6711,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TimerUpdater
   textbox: {fileID: 2016341766}
   player: {fileID: 1861740455}
---- !u!114 &1861740462 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5930592563504855770, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
-  m_PrefabInstance: {fileID: 6506244965204465635}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1861740455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78b9b9bda62431941a2024f7e2114774, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EntityHealth
 --- !u!114 &1861740467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6708,19 +6724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthBar
   _hpBarFill: {fileID: 1807452811}
-  entityHealth: {fileID: 1861740462}
---- !u!114 &1861740472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1861740455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14af89dafa1202941bb4d0218a53e717, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player
+  playerHealth: {fileID: 0}
 --- !u!1 &1863520511
 GameObject:
   m_ObjectHideFlags: 0
@@ -7824,9 +7828,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2974824821760234103, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1861740467}
-    - targetCorrespondingSourceObject: {fileID: 2974824821760234103, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1861740472}
     - targetCorrespondingSourceObject: {fileID: 6978535814337503609, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       insertIndex: -1
       addedObject: {fileID: 690569167}
@@ -7846,3 +7847,4 @@ SceneRoots:
   - {fileID: 1222266518}
   - {fileID: 2135727147}
   - {fileID: 474080287}
+  - {fileID: 1228808266}

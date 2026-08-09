@@ -1,0 +1,179 @@
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public enum BloodDropletTier
+{
+    Small, Medium, Large
+}
+
+[Serializable]
+public class BloodDropWeight
+{
+    public BloodDropletTier tier;
+
+    [Min(0f)]
+    public float weight;
+}
+
+
+
+public class BloodSystem : MonoBehaviour
+{
+    public Dictionary<BloodDropletTier, double> ContributionsToTotalBloodCount = 
+        new Dictionary<BloodDropletTier, double> 
+    {
+            {BloodDropletTier.Small, 0.5f },
+            {BloodDropletTier.Medium, 1.0f },
+            {BloodDropletTier.Large, 2.5f }
+    };
+
+    public Dictionary<BloodDropletTier, double> ContributionToPlayerHealthIncrease =
+        new Dictionary<BloodDropletTier, double>
+        {
+        { BloodDropletTier.Small, 1.5f},
+        { BloodDropletTier.Medium, 4.5f},
+        { BloodDropletTier.Large, 9.0f},
+        };
+
+
+    double totalBloodCollected = 0f;
+    double bloodMoonVisibleQuota = 100f;
+    double bloodMoonFullQuota = 250f;
+
+    ObjectPool SmallDropletsPool;
+    ObjectPool MediumDropletsPool;
+    ObjectPool LargeDropletsPool;
+
+    private float smallEnemyDropChance = 0.10f;
+    private float mediumEnemyDropChance = 0.40f;
+    private float largeEnemyDropChance = 0.80f;
+
+    private BloodDropWeight[] smallEnemyWeights =
+    {
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Small,
+            weight = 1f
+        }
+    };
+
+
+    private BloodDropWeight[] mediumEnemyWeights =
+    {
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Small,
+            weight = 0.6f
+        },
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Medium,
+            weight = 0.4f
+        }
+    };
+
+    private BloodDropWeight[] largeEnemyWeights =
+    {
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Small,
+            weight = 0.3f
+        },
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Medium,
+            weight = 0.3f
+        },
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Large,
+            weight = 0.4f
+        }
+    };
+
+
+
+    public void Initialize()
+    {
+        totalBloodCollected = 0f;
+
+    }
+
+
+    private float GetDropChance(BloodDropletTier maxTier)
+    {
+        return maxTier switch
+        {
+            BloodDropletTier.Small => smallEnemyDropChance,
+            BloodDropletTier.Medium => mediumEnemyDropChance,
+            BloodDropletTier.Large => largeEnemyDropChance,
+            _ => 0f
+        };
+    }
+
+
+
+    public void TrySpawnDroplet(
+        BloodDropletTier maxTier, Vector3 position)
+        {
+
+        if (UnityEngine.Random.value > GetDropChance(maxTier)) return;
+        BloodDropletTier tier = RollForDropletTier(maxTier);
+
+        SpawnDroplet(tier, position);
+        
+    }
+
+
+    private BloodDropletTier RollForDropletTier(BloodDropletTier maxTier)
+    {
+
+        BloodDropWeight[] activeWeights = maxTier switch
+        {
+            BloodDropletTier.Small => smallEnemyWeights,
+            BloodDropletTier.Medium => mediumEnemyWeights,
+            BloodDropletTier.Large => largeEnemyWeights
+        };
+
+        float totalWeight = 0f;
+
+        foreach (BloodDropWeight entry in activeWeights) totalWeight += entry.weight;
+
+        float roll = UnityEngine.Random.value * totalWeight;
+
+        foreach (BloodDropWeight entry in activeWeights)
+        {
+            roll -= entry.weight;
+
+            if (roll <= 0f)
+                return entry.tier;
+        }
+
+        return BloodDropletTier.Small;
+
+
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void SpawnDroplet(BloodDropletTier tier, Vector3 pos)
+    {
+        Debug.Log("Spawned " + tier + " to : " + pos);
+    }
+
+   
+
+    
+}
+

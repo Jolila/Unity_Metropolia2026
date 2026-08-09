@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnemyPoolManager;
 
-enum BloodDropletTier
-{
-    Small,Medium,Large
-}
 
 public class EnemyManager : MonoBehaviour
 {
@@ -34,6 +30,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] EnemyPoolManager _poolManager;
     [SerializeField] EnemySpawner _spawner;
     [SerializeField] EnemySpawnLocationsManager _spawnlocationsmanager;
+    [SerializeField] BloodSystem _bloodSystem;
 
     [SerializeField] float cellSize = 7.5f;
     private readonly Dictionary<Vector2Int, List<GameObject>> enemyGrid = new();
@@ -98,7 +95,8 @@ public class EnemyManager : MonoBehaviour
         _poolManager = FindAnyObjectByType<EnemyPoolManager>();
         _poolManager.Initialize();
         _spawner = FindAnyObjectByType<EnemySpawner>();
-        
+        _bloodSystem = FindAnyObjectByType<BloodSystem>();
+        _bloodSystem.Initialize();
     }
 
 
@@ -331,6 +329,11 @@ public class EnemyManager : MonoBehaviour
    public EnemySpawnLocationsManager GetEnemySpawnLocationsManager()
     {
         return _spawnlocationsmanager;
+    }
+
+    public BloodSystem GetBloodSystem()
+    {
+        return _bloodSystem;
     }
 
 }

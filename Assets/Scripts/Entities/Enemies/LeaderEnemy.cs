@@ -11,7 +11,7 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
     public SpriteRenderer sprite;
     UnityEngine.AI.NavMeshAgent _agent;
     Vector3 cachedTarget;
-
+    BloodDropletTier maxDropTier = BloodDropletTier.Medium;
 
     void OnEnable()
     {
@@ -70,6 +70,7 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
         EnemyManager.Instance.UnregisterEnemy(gameObject);
         _agent.ResetPath();
         gameObject.SetActive(false);
+        EnemyManager.Instance.GetBloodSystem().TrySpawnDroplet(maxDropTier, transform.position);
     }
 
 
