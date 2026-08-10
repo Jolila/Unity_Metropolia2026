@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     [SerializeField] float movementSpeed = 10.0f;
     [SerializeField] SpriteRenderer _characterBody;
+    [SerializeField] ParticleSystem _overdriveParticles;
     [SerializeField] private Animator _animator;
     [SerializeField] AudioClip _footstep;
     [SerializeField] PlayerHealthSystem _healthSystem;
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
         playerMaterial = playerSprite.material;
         playerMaterial.SetFloat(OverdriveAmount, 0f);
         isOverdrive = false;
+        _overdriveParticles.Stop();
     }
 
     void Update()
@@ -62,16 +64,18 @@ public class PlayerController : MonoBehaviour
             if (isOverdrive)
             {
                 SetOverdrive(0.0f);
+                _overdriveParticles.Stop();
                 isOverdrive = false;
             }
             else
             {
                 SetOverdrive(0.7f);
                 isOverdrive = true;
+                _overdriveParticles.Play();
             }
 
-             
-            
+
+
         }
 
     }
