@@ -13,6 +13,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] AudioClip _footstep;
     [SerializeField] PlayerHealthSystem _healthSystem;
+
+    private Material playerMaterial;
+    private static readonly int OverdriveAmount =
+    Shader.PropertyToID("_OverdriveAmount");
+    [SerializeField] private SpriteRenderer playerSprite;
+    bool isOverdrive;
     Color color;
     private bool isDead; // I guess we can keep this for the animator
 
@@ -32,6 +38,9 @@ public class PlayerController : MonoBehaviour
         color = _characterBody.color;
         isDead = false;
         _healthSystem.OnPlayerDeath += PlayDeathAnimation;
+        playerMaterial = playerSprite.material;
+        playerMaterial.SetFloat(OverdriveAmount, 0f);
+        isOverdrive = false;
     }
 
     void Update()
@@ -48,6 +57,28 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isOverdrive)
+            {
+                SetOverdrive(0.0f);
+                isOverdrive = false;
+            }
+            else
+            {
+                SetOverdrive(0.7f);
+                isOverdrive = true;
+            }
+
+             
+            
+        }
+
+    }
+
+    public void SetOverdrive(float amount)
+    {
+        playerMaterial.SetFloat(OverdriveAmount, amount);
     }
 
 

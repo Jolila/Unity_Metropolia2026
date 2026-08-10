@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
         State = GameState.InMenu;
     }
 

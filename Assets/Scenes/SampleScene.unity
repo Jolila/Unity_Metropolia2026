@@ -5319,6 +5319,11 @@ Transform:
   - {fileID: 1664170284}
   m_Father: {fileID: 2135727147}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1385582818 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5206972489622863278, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+  m_PrefabInstance: {fileID: 6506244965204465635}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1417580663
 GameObject:
   m_ObjectHideFlags: 0
@@ -7611,6 +7616,7 @@ MonoBehaviour:
   timer: {fileID: 2030963770}
   player: {fileID: 0}
   _loader: {fileID: 0}
+  _bloodSystem: {fileID: 0}
   _mainMenuManager: {fileID: 2127928815}
 --- !u!4 &2030963769
 Transform:
@@ -8193,11 +8199,29 @@ PrefabInstance:
       propertyPath: _projectilePool
       value: 
       objectReference: {fileID: 690569167}
+    - target: {fileID: 4519564552527627364, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519564552527627364, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5206972489622863278, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ec16c01304daa624baa147a1b98df0da, type: 2}
+    - target: {fileID: 8245374138684779797, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      propertyPath: playerSprite
+      value: 
+      objectReference: {fileID: 1385582818}
     - target: {fileID: 8245374138684779797, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: movementSpeed
       value: 9
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8727882934524084861, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+    - {fileID: 1838576511906671270, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
