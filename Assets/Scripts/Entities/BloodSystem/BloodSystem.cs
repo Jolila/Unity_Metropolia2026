@@ -122,7 +122,7 @@ public class BloodSystem : MonoBehaviour
     public void Initialize()
     {
         totalBloodCollected = 0f;
-
+        _moonController.Initialize();
     }
 
 

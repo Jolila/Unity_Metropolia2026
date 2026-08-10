@@ -18,28 +18,19 @@ public class BloodMoonController : MonoBehaviour
         0f,
         316f); // top
 
-
-   
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void OnEnable()
-    {
-       
-        
-        BloodMoonGlowMask.padding = maskPaddingVector;
-        FaintBloodMoonCanvasGroup.alpha = 0f;
-       
-        BloodSystem.Instance.OnBloodCollected += UpdateBloodMoon;
-    }
-
-    private void OnDisable()
-    {
-        BloodSystem.Instance.OnBloodCollected -= UpdateBloodMoon;
-    }
-
     // Update is called once per frame
     void Update()
     {
     
+    }
+
+    public void Initialize()
+    {
+
+        BloodMoonGlowMask.padding = maskPaddingVector;
+        FaintBloodMoonCanvasGroup.alpha = 0f;
+
+        BloodSystem.Instance.OnBloodCollected += UpdateBloodMoon;
     }
 
     private void UpdateBloodMoon()

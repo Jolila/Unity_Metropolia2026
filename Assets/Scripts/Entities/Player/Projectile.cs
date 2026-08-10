@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _damage;
     Vector2 direction;
     Vector2 position;
-    float radius = 0.04f; // this matches the colliders radius
+    float radius = 0.075f; // updated value to match new visual
 
     public void InitializeProjectile(Vector3 spawnPoint, Vector2 dir)
     {

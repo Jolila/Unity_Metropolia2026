@@ -42,8 +42,18 @@ public class EnemyManager : MonoBehaviour
     {
         fireRingCache.Clear();
 
-        if (enemyGrid.TryGetValue(GetCell(position), out var list))
-            fireRingCache.AddRange(list);
+        Vector2Int center = GetCell(position);
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                Vector2Int cell = center + new Vector2Int(x, y);
+
+                if (enemyGrid.TryGetValue(cell, out var list))
+                    fireRingCache.AddRange(list);
+            }
+        }
 
         return fireRingCache;
     }

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Timer timer;
     [SerializeField] PlayerController player;
     [SerializeField] LevelLoader _loader;
+    [SerializeField] BloodSystem _bloodSystem;
     public static GameManager Instance { get; private set; }
     bool startGameOnSceneLoad = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
         State = GameState.InMenu;
     }
 
@@ -105,6 +106,8 @@ public class GameManager : MonoBehaviour
         _mainMenuManager = FindAnyObjectByType<MainMenuManager>();
         timer = FindAnyObjectByType<Timer>();
         _enemyManager = FindAnyObjectByType<EnemyManager>();
+        _bloodSystem = FindAnyObjectByType<BloodSystem>();
+        _bloodSystem.Initialize();
         StartCoroutine(InitializeLevel());
 
     }
@@ -165,7 +168,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
         timer.StopTimer();
         double accP = hits / (hits + misses);
         State = GameState.GameOver;
