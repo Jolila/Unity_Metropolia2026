@@ -21,12 +21,19 @@ public class BloodMoonController : MonoBehaviour
 
    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
        
-        StartCoroutine(RevealBloodMoon());
+        
         BloodMoonGlowMask.padding = maskPaddingVector;
         FaintBloodMoonCanvasGroup.alpha = 0f;
+       
+        BloodSystem.Instance.OnBloodCollected += UpdateBloodMoon;
+    }
+
+    private void OnDisable()
+    {
+        BloodSystem.Instance.OnBloodCollected -= UpdateBloodMoon;
     }
 
     // Update is called once per frame
@@ -35,50 +42,37 @@ public class BloodMoonController : MonoBehaviour
     
     }
 
-    private IEnumerator RevealBloodMoon()
+    private void UpdateBloodMoon()
     {
 
-
-        float elapsed = 0f;
-        while (elapsed < 5f)
-        {
-            elapsed += Time.deltaTime;
-
-            float t = elapsed / 5f;
-
-            FaintBloodMoonCanvasGroup.alpha =
-                Mathf.Lerp(0f, 0.5f, t);
-
-            yield return null;
-        }
-
-        FaintBloodMoonCanvasGroup.alpha = 0.5f;
+        float total = BloodSystem.Instance.TotalBloodCollected;
+        float quotaFirst = BloodSystem.Instance.BloodMoonVisibleQuota;
 
 
+        float FaintMoonAlpha =
+            (BloodSystem.Instance.TotalBloodCollected / BloodSystem.Instance.BloodMoonVisibleQuota)
+        *0.5f; // for normalizing the alpha to 0.5f;
 
-        elapsed = 0f;
-        while (elapsed < 10f)
-        {
-            elapsed += Time.deltaTime;
+        FaintBloodMoonCanvasGroup.alpha =
+            Mathf.Lerp(0f, 0.5f, FaintMoonAlpha);
 
-            float t = elapsed / 10f;
+        if (total <= quotaFirst) return;
 
-            float topPadding = Mathf.Lerp(316f, 0f, t);
-            BloodMoonGlowMask.padding = new Vector4(
-                0f,
-                0f,
-                0f,
-                topPadding
-            );
+        float quotaSecond = BloodSystem.Instance.BloodMoonFullQuota;
 
-            yield return null;
-        }
-
-        BloodMoonGlowMask.padding = new Vector4(
+        float paddingMod = BloodSystem.Instance.TotalBloodCollected / BloodSystem.Instance.BloodMoonFullQuota;
+        paddingMod = Mathf.Min(1.0f, paddingMod);
+        
+        BloodMoonGlowMask.padding =
+        new Vector4(
             0f,
             0f,
             0f,
-            0f
-        );
+            (316f - 316f * paddingMod));
+
+
+
     }
+
+
 }

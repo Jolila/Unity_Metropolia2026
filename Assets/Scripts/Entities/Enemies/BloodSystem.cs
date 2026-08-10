@@ -58,8 +58,12 @@ public class BloodSystem : MonoBehaviour
 
 
     float totalBloodCollected = 0f;
-    float bloodMoonVisibleQuota = 100f;
-    float bloodMoonFullQuota = 250f;
+    float bloodMoonVisibleQuota = 10f; // test values for POC blood collecting
+    float bloodMoonFullQuota = 25f;
+
+    public float TotalBloodCollected => totalBloodCollected;
+    public float BloodMoonVisibleQuota => bloodMoonVisibleQuota;
+    public float BloodMoonFullQuota => bloodMoonFullQuota;
 
     [SerializeField] ObjectPool SmallDropletPool;
     [SerializeField] ObjectPool MediumDropletPool;
@@ -112,7 +116,8 @@ public class BloodSystem : MonoBehaviour
         }
     };
 
-
+    [SerializeField] BloodMoonController _moonController;
+    public event Action OnBloodCollected;
 
     public void Initialize()
     {
@@ -209,6 +214,8 @@ public class BloodSystem : MonoBehaviour
 
         PlayerHealthSystem.Instance.Heal(
             healthIncrease);
+
+        OnBloodCollected?.Invoke();
     }
 
 
