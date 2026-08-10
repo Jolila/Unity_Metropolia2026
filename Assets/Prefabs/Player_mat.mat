@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerMaterialWithOverdrive
+  m_Name: Player_mat
   m_Shader: {fileID: -6465566751694194690, guid: e329b12d0fd8af74fba765c19a4cee3c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -41,13 +41,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _OverdriveAmount: 0
+    - _NoiseSpeed: 1
+    - _OverdriveAmount: 0.7
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _TintColor: {r: 0.7811319, g: 0.12822345, b: 0.12822345, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &1644629933685414886
+--- !u!114 &6050411486078612165
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
