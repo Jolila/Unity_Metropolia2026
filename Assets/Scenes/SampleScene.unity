@@ -1262,6 +1262,8 @@ GameObject:
   - component: {fileID: 223341748}
   - component: {fileID: 223341747}
   - component: {fileID: 223341751}
+  - component: {fileID: 223341753}
+  - component: {fileID: 223341752}
   m_Layer: 5
   m_Name: InGameCanvas
   m_TagString: Untagged
@@ -1372,6 +1374,44 @@ MonoBehaviour:
   CountdownText: {fileID: 1920314691}
   finalTimeText: {fileID: 1701904083}
   killCountText: {fileID: 1813391571}
+--- !u!114 &223341752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223341746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &223341753
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223341746}
+  m_CullTransparentMesh: 1
 --- !u!1 &230227220
 GameObject:
   m_ObjectHideFlags: 0
@@ -4840,7 +4880,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847529251}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -6689,6 +6729,7 @@ MonoBehaviour:
   _normalHpBarFill: {fileID: 1099159489}
   _underdriveHpBarFill: {fileID: 672571027}
   _overdriveHpBarFill: {fileID: 866886562}
+  _transitionFlash: {fileID: 223341752}
 --- !u!1 &1460022853
 GameObject:
   m_ObjectHideFlags: 0
@@ -7564,7 +7605,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667572223}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

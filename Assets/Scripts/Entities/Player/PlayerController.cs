@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
         playerMaterial.SetFloat(OverdriveAmount, 0f);
         isOverdrive = false;
         _overdriveParticles.Stop();
+        _healthSystem.OnHealthStateChanged += HandleHealthStateChanged;
     }
 
     void Update()
@@ -56,27 +57,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             _rb.linearVelocity = Vector2.zero;
-
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isOverdrive)
-            {
-                SetOverdrive(0.0f);
-                _overdriveParticles.Stop();
-                isOverdrive = false;
-            }
-            else
-            {
-                SetOverdrive(0.7f);
-                isOverdrive = true;
-                _overdriveParticles.Play();
-            }
-
-
-
-        }
+       
+   
 
     }
 
@@ -151,5 +135,25 @@ public class PlayerController : MonoBehaviour
     public bool getIsDead()
     {
         return isDead;
+    }
+
+    public void HandleHealthStateChanged(HealthState newState)
+    {
+        if(newState == HealthState.Underdrive) movementSpeed = 5.0f;
+        else if(newState == HealthState.Overdrive)
+        {
+            movementSpeed = 12.5f;
+            SetOverdrive(0.7f);
+            _overdriveParticles.Play();
+            isOverdrive = true;
+        }
+        else if(newState == HealthState.Normal)
+        {
+            isOverdrive = false;
+            SetOverdrive(0.0f);
+            _overdriveParticles.Stop();
+            movementSpeed = 10.0f;
+        }
+
     }
 }

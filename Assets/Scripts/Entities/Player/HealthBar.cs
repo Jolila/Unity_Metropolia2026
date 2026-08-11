@@ -1,17 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
-public enum HealthBarMode
-{
-    Normal,Underdrive,Overdrive
-}
+
 
 public class HealthBar : MonoBehaviour
 {
 
     [SerializeField] PlayerHealthSystem playerHealth;
-
 
     [SerializeField] CanvasGroup _normalBar;
     [SerializeField] CanvasGroup _underdriveBar;
@@ -21,44 +19,38 @@ public class HealthBar : MonoBehaviour
     [SerializeField] Image _underdriveHpBarFill;
     [SerializeField] Image _overdriveHpBarFill;
 
-    HealthBarMode _currentHealtMode;
+    HealthState _currentHealthState;
 
-    private void Awake()
-    {
-        Debug.Log($"NORMAL: {_normalBar}");
-        Debug.Log($"UNDERDRIVE: {_underdriveBar}");
-        Debug.Log($"OVERDRIVE: {_overdriveBar}");
-    }
+    [SerializeField] Image _transitionFlash;
+    Color NormalToOverdrive = new Color(0.6f, 0.0f, 0.0f, 0.7f);
+    Color OverdriveToNormal = new Color(0.4f, 0.4f, 0.4f, 0.3f);
+    Color NormalToUnderdrive = new Color(0.4f, 0.4f, 0.4f, 0.3f);
+    Color UnderDriveToNormal = new Color(0.6f, 0.0f, 0.0f, 0.5f);
 
 
     void OnEnable()
     {
-        
+        playerHealth.OnHealthStateChanged += HandleHealthStateChanged;
     }
 
     void OnDisable()
     {
-       
+        playerHealth.OnHealthStateChanged -= HandleHealthStateChanged;
     }
     void Start()
     {
         playerHealth = FindAnyObjectByType<PlayerHealthSystem>();
-        Debug.Log($"HealthBar instance: {gameObject.name}");
-        Debug.Log($"NormalBar: {_normalBar}");
-        Debug.Log($"UnderdriveBar: {_underdriveBar}");
-        Debug.Log($"OverdriveBar: {_overdriveBar}");
-        Debug.Log($"PlayerHealth: {playerHealth}");
-
-       
-        _currentHealtMode = HealthBarMode.Normal;
-        SetHealthBarMode(_currentHealtMode);
+    
+        
+        _transitionFlash.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        _currentHealthState = playerHealth.CurrentHealthState;
+        SetHealthBar(_currentHealthState, 1f);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        TestInput();
         UpdateHealthFill();
         
 
@@ -68,49 +60,130 @@ public class HealthBar : MonoBehaviour
     {
         float fillAmount = playerHealth.CurrentHealth / playerHealth.CurrentMaxHealth;
 
-        switch (_currentHealtMode)
+        switch (_currentHealthState)
         {
-            case HealthBarMode.Normal:
+            case HealthState.Normal:
                 _normalHpBarFill.fillAmount = fillAmount;
                 break;
 
-            case HealthBarMode.Underdrive:
+            case HealthState.Underdrive:
                 _underdriveHpBarFill.fillAmount = fillAmount;
                 break;
 
-            case HealthBarMode.Overdrive:
+            case HealthState.Overdrive:
                 _overdriveHpBarFill.fillAmount = fillAmount;
                 break;
         }
     }
 
-    private void TestInput()
+    private void HandleHealthStateChanged(HealthState newState)
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        HealthState previousState = _currentHealthState;
+
+        _currentHealthState = newState;
+
+        PlayTransition(previousState, newState);
+        SetHealthBar(previousState, 0);
+        SetHealthBar(newState, 1f);
+    }
+
+    private void PlayTransition(
+       HealthState previousState,
+       HealthState newState)
+    {
+
+        if (previousState == newState) return;
+
+        if (previousState == HealthState.Normal &&
+            newState == HealthState.Overdrive)
         {
-            SetHealthBarMode(HealthBarMode.Normal);
+            StartCoroutine(PlayFlash(NormalToOverdrive));
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (previousState == HealthState.Overdrive &&
+            newState == HealthState.Normal)
         {
-            SetHealthBarMode(HealthBarMode.Underdrive);
+            StartCoroutine(PlayFlash(OverdriveToNormal));
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (previousState == HealthState.Normal &&
+            newState == HealthState.Underdrive)
         {
-            SetHealthBarMode(HealthBarMode.Overdrive);
+            StartCoroutine(PlayFlash(NormalToUnderdrive));
+            return;
+        }
+        if(previousState == HealthState.Underdrive &&
+            newState == HealthState.Normal)
+        {
+            StartCoroutine(PlayFlash(UnderDriveToNormal));
+            return;
+        }
+        
+    }
+
+
+    private void SetHealthBar(HealthState state, float alpha)
+    {
+       
+        switch (state)
+        {
+            case HealthState.Normal:
+                _normalBar.alpha = alpha;
+                break;
+
+            case HealthState.Underdrive:
+                _underdriveBar.alpha = alpha;
+                break;
+
+            case HealthState.Overdrive:
+                _overdriveBar.alpha = alpha;
+                break;
         }
     }
 
 
-    private void SetHealthBarMode(HealthBarMode newMode)
-    {
-        _currentHealtMode = newMode;
 
-        _normalBar.alpha = newMode == HealthBarMode.Normal ? 1f : 0f;
-        _underdriveBar.alpha = newMode == HealthBarMode.Underdrive ? 1f : 0f;
-        _overdriveBar.alpha = newMode == HealthBarMode.Overdrive ? 1f : 0f;
+
+    private IEnumerator PlayFlash(Color flashColor)
+    {
+        _transitionFlash.color = flashColor;
+
+        yield return new WaitForSeconds(0.08f);
+
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            float alpha = Mathf.Lerp(
+                flashColor.a,
+                0f,
+                elapsed / duration
+            );
+
+            _transitionFlash.color =
+                new Color(
+                    flashColor.r,
+                    flashColor.g,
+                    flashColor.b,
+                    alpha
+                );
+
+            yield return null;
+        }
+
+        _transitionFlash.color =
+            new Color(
+                flashColor.r,
+                flashColor.g,
+                flashColor.b,
+                0f
+            );
     }
 
-   
+
 }

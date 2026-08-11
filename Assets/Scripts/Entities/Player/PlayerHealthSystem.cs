@@ -2,11 +2,17 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+
+public enum HealthState
+{
+    Underdrive, Normal, Overdrive
+}
+
 public class PlayerHealthSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    float DefaultMaxHealth = 100f;
+    float NormalMaxHealth = 100f;
     float MaxHealthOnOverDrive = 300f;
     float _currentHealth;
     float _currentMaxHealth;
@@ -24,14 +30,15 @@ public class PlayerHealthSystem : MonoBehaviour
     float BloodLostOnShot = 1f;
     float BloodLostOnShotOnOverdrive = 2f;
 
+    float UnderdriveThreshHold = 0.2f;
+    float OverdriveTreshHold = 0.85f;
+    float OverdriveToNormalThreshHold = 0.4f;
+
     bool IsDead;
     public Action OnPlayerDeath;
 
-    public Action OnOverDriveStarted;
-    public Action OnOverDriveEnded;
-
-    public Action OnBloodStarvedStarted;
-    public Action OnBloodStarvedEnded;
+    public Action<HealthState> OnHealthStateChanged;
+    public HealthState CurrentHealthState { get; private set; }
 
     private static PlayerHealthSystem _instance;
     public static PlayerHealthSystem Instance
@@ -50,11 +57,55 @@ public class PlayerHealthSystem : MonoBehaviour
         }
     }
 
-
+    
     void Start()
     {
         _currentHealth = 40f;
-        _currentMaxHealth = DefaultMaxHealth;
+        _currentMaxHealth = NormalMaxHealth;
+        CurrentHealthState = HealthState.Normal;
+    }
+
+    private void EvaluateHealthState()
+    {
+        float healthPercentage = CurrentHealth / NormalMaxHealth;
+        HealthState newState = CurrentHealthState;
+
+        switch(CurrentHealthState)
+        {
+            case HealthState.Normal:
+                if (healthPercentage <= UnderdriveThreshHold) newState = HealthState.Underdrive;
+                else if (healthPercentage >= OverdriveTreshHold) newState = HealthState.Overdrive;
+                break;
+
+            case HealthState.Underdrive:
+                if (healthPercentage > UnderdriveThreshHold) newState = HealthState.Normal;
+                break;
+            case HealthState.Overdrive:
+                if (healthPercentage <=  OverdriveToNormalThreshHold) newState = HealthState.Normal;
+                break;
+        }
+
+        if (newState == CurrentHealthState) return;
+        
+        CurrentHealthState = newState;
+        UpdateMaxHealthForState();
+        OnHealthStateChanged?.Invoke(CurrentHealthState);
+
+    }
+
+    private void UpdateMaxHealthForState()
+    {
+        switch (CurrentHealthState)
+        {
+            case HealthState.Normal:
+            case HealthState.Underdrive:
+                _currentMaxHealth = 100f;
+                break;
+
+            case HealthState.Overdrive:
+                _currentMaxHealth = 300f;
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -66,6 +117,8 @@ public class PlayerHealthSystem : MonoBehaviour
         // check for bloodstarved and overdrive and upstream events for subsystems
 
         if (GameManager.Instance.GetState() != GameState.Playing) return;
+        DevInputFunctions();
+        EvaluateHealthState();
         HandleAmbientDamage();
         HandleContactDamage();
 
@@ -77,6 +130,18 @@ public class PlayerHealthSystem : MonoBehaviour
         }
 
        
+    }
+
+    public void DevInputFunctions()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            _currentHealth -= 10f;
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _currentHealth += 15f;
+        }
     }
 
   
