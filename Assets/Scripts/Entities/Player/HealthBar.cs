@@ -27,7 +27,10 @@ public class HealthBar : MonoBehaviour
     Color NormalToUnderdrive = new Color(0.4f, 0.4f, 0.4f, 0.3f);
     Color UnderDriveToNormal = new Color(0.6f, 0.0f, 0.0f, 0.5f);
 
-
+    private void Awake()
+    {
+        playerHealth = FindAnyObjectByType<PlayerHealthSystem>();
+    }
     void OnEnable()
     {
         playerHealth.OnHealthStateChanged += HandleHealthStateChanged;
@@ -39,12 +42,10 @@ public class HealthBar : MonoBehaviour
     }
     void Start()
     {
-        playerHealth = FindAnyObjectByType<PlayerHealthSystem>();
-    
-        
-        _transitionFlash.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         _currentHealthState = playerHealth.CurrentHealthState;
+        _transitionFlash.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         SetHealthBar(_currentHealthState, 1f);
+       
     }
 
     // Update is called once per frame
@@ -52,7 +53,6 @@ public class HealthBar : MonoBehaviour
     {
 
         UpdateHealthFill();
-        
 
     }
 
@@ -141,6 +141,9 @@ public class HealthBar : MonoBehaviour
                 _overdriveBar.alpha = alpha;
                 break;
         }
+        _normalBar.gameObject.SetActive(state == HealthState.Normal);
+        _underdriveBar.gameObject.SetActive(state == HealthState.Underdrive);
+        _overdriveBar.gameObject.SetActive(state == HealthState.Overdrive);
     }
 
 

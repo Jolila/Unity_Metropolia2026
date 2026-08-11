@@ -19,23 +19,51 @@ public class PlayerStaffController : MonoBehaviour
     float _nextFireTime;
     private Camera mainCamera;
 
-   
+
+    float _defaultFireRate = 15f;
+    float _overdriveFireRate = 25f;
+    float _underdriveFirerate = 10f;
+
+
+    Vector2 defaultSpread = new Vector2(-7.5f, 7.5f);
+    Vector2 underdriveSpread = new Vector2(-3f, 3f);
+    Vector2 overdriveSpread = new Vector2(-11.5f, 11.5f);
+
+    Color defaultStafflightColor = new Color(0.2f, 0.45f, 0.2f);
+    Color overdriveStaffLightColor = new Color(0.6f, 0.15f, 0.15f);
+
+    Vector2 currentSpread;
+
+
     // Update is called once per frame
 
     void Awake()
     {
         staffLight = GetComponentInChildren<Light2D>();
         mainCamera = Camera.main;
+        _fireRate = _defaultFireRate;
+        currentSpread = defaultSpread;
     }
 
     void Start()
     {
         playerHealth = player.GetComponent<PlayerHealthSystem>();
+
         playerHealth.OnPlayerDeath += StopStaffControl;
+        playerHealth.OnHealthStateChanged += HandleHealthStateChanged;
         controlStaff = true;
         staffLight.intensity = 0f;
-
+        staffLight.color = defaultStafflightColor;
+    
     }
+
+    public void OnGameStarted()
+    {
+      
+        staffLight.intensity = 1.0f;
+    }
+
+
     void Update()
     {
 
@@ -46,7 +74,7 @@ public class PlayerStaffController : MonoBehaviour
         RotateStaff();
 
         if (GameManager.Instance.GetState() == GameState.Countdown) return;
-        staffLight.intensity = 1f;
+        
         if (Input.GetButton("Fire1") && Time.time >= _nextFireTime)
         {
             _nextFireTime = Time.time + 1f / _fireRate;
@@ -75,8 +103,10 @@ public class PlayerStaffController : MonoBehaviour
     {
 
         // add some amount of spread
-        float randomizedSpread = Random.Range(-7f, 7f);
-        float doubleSpread = 9f;
+
+        
+        float randomizedSpread = Random.Range(currentSpread.x, currentSpread.y);
+        float doubleSpread = currentSpread.x * 1.33f;
         //Vector2 spreadDirection = Quaternion.Euler(0, 0, Random.Range(-7.5f, 7.5f)) * _lookDirection;
 
       
@@ -126,6 +156,29 @@ public class PlayerStaffController : MonoBehaviour
     {
         controlStaff = false;
         staffLight.intensity = 0f;
+    }
+
+    public void HandleHealthStateChanged(HealthState newState)
+    {
+        if (newState == HealthState.Underdrive)
+        {
+            _fireRate = _underdriveFirerate;
+            currentSpread = underdriveSpread;
+            staffLight.intensity = 0.4f;
+        }
+        else if (newState == HealthState.Overdrive)
+        {
+            _fireRate = _overdriveFireRate;
+            currentSpread = overdriveSpread;
+            staffLight.color = overdriveStaffLightColor;
+        }
+        else if (newState == HealthState.Normal)
+        {
+            _fireRate = _defaultFireRate;
+            currentSpread = defaultSpread;
+            staffLight.color = defaultStafflightColor;
+            staffLight.intensity = 1f;
+        }
     }
 
 

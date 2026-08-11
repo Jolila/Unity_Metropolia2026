@@ -57,12 +57,17 @@ public class PlayerHealthSystem : MonoBehaviour
         }
     }
 
-    
-    void Start()
+    private void Awake()
     {
         _currentHealth = 40f;
         _currentMaxHealth = NormalMaxHealth;
         CurrentHealthState = HealthState.Normal;
+    }
+
+
+    void Start()
+    {
+        
     }
 
     private void EvaluateHealthState()
@@ -134,13 +139,14 @@ public class PlayerHealthSystem : MonoBehaviour
 
     public void DevInputFunctions()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKey(KeyCode.Alpha0))
         {
-            _currentHealth -= 10f;
+            _currentHealth -= 10f * Time.deltaTime;
         }
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+
+        if (Input.GetKey(KeyCode.Alpha1))
         {
-            _currentHealth += 15f;
+            _currentHealth += 10f * Time.deltaTime;
         }
     }
 

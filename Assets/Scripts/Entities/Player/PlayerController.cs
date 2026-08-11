@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] AudioClip _footstep;
     [SerializeField] PlayerHealthSystem _healthSystem;
+    [SerializeField] PlayerStaffController _staffController;
 
     private Material playerMaterial;
     private static readonly int OverdriveAmount =
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         _healthSystem = GetComponent<PlayerHealthSystem>();
+
     }
 
     void Start()
@@ -44,6 +46,8 @@ public class PlayerController : MonoBehaviour
         isOverdrive = false;
         _overdriveParticles.Stop();
         _healthSystem.OnHealthStateChanged += HandleHealthStateChanged;
+        _staffController = FindAnyObjectByType<PlayerStaffController>();
+        _staffController.OnGameStarted();
     }
 
     void Update()
