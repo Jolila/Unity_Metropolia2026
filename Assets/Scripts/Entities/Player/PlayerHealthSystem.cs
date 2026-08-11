@@ -24,11 +24,14 @@ public class PlayerHealthSystem : MonoBehaviour
     float damageRadius = 0.4f;
     float contactDPS = 1.0f;
 
-    float ambientBloodLoss = 1.0f;
-    float ambientBloodLossOnOverdrive = 2f;
-    float BloodLostOnFireRing = 66.6f;
-    float BloodLostOnShot = 1f;
-    float BloodLostOnShotOnOverdrive = 2f;
+    float ambientBloodLoss = 1.5f;
+    float ambientBloodLossOnOverdrive = 5f;
+    float ambientBloodLossOnUnderdrive = 1.0f;
+
+
+    float BloodLostOnFireRing = 20.0f;
+
+
 
     float UnderdriveThreshHold = 0.2f;
     float OverdriveTreshHold = 0.85f;
@@ -153,7 +156,9 @@ public class PlayerHealthSystem : MonoBehaviour
   
     void HandleAmbientDamage()
     {
-        _currentHealth -= ambientBloodLoss * Time.deltaTime;
+        if (CurrentHealthState == HealthState.Underdrive) _currentHealth -= ambientBloodLossOnUnderdrive * Time.deltaTime;
+        else if (CurrentHealthState == HealthState.Overdrive) _currentHealth -= ambientBloodLossOnOverdrive * Time.deltaTime;
+        else _currentHealth -= ambientBloodLoss * Time.deltaTime;
     }
 
     void HandleContactDamage()
@@ -185,6 +190,16 @@ public class PlayerHealthSystem : MonoBehaviour
     public void Heal(float value)
     {
         _currentHealth += value;
+    }
+
+    public bool TryRequestFireRing()
+    {
+        if (_currentHealth > 30.0f)
+        {
+            _currentHealth -= 20f;
+            return true;
+        }
+        else return false;
     }
 
 
