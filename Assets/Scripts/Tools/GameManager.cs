@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     double hits = 0;
     double misses = 0;
 
+    public bool ShowBloodEffects { get; private set; }
 
     [SerializeField] MainMenuManager _mainMenuManager;
 
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Time.timeScale = 0f;
         State = GameState.InMenu;
+        LoadGameplaySettings();
     }
 
     void OnEnable()
@@ -96,10 +98,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
-       
         player = FindAnyObjectByType<PlayerController>();
         _loader = FindAnyObjectByType<LevelLoader>();
         _inGameUIManager = FindAnyObjectByType<InGameUIManager>();
@@ -109,9 +111,14 @@ public class GameManager : MonoBehaviour
         _bloodSystem = FindAnyObjectByType<BloodSystem>();
         _bloodSystem.Initialize();
         StartCoroutine(InitializeLevel());
-
     }
 
+
+    private void LoadGameplaySettings()
+    {
+        ShowBloodEffects =
+            PlayerPrefs.GetInt("ShowBloodEffects", 1) == 1;
+    }
 
 
     // On application start, the gamestate is in menu
@@ -163,7 +170,7 @@ public class GameManager : MonoBehaviour
     {
         if (State != GameState.Playing) return;
         _inGameUIManager.updateTimerText(timer.ElapsedTime);
-          
+     
     }
 
     public void GameOver()
@@ -225,6 +232,12 @@ public class GameManager : MonoBehaviour
         State = GameState.InMenu;
         _inGameUIManager = FindAnyObjectByType<InGameUIManager>();
         _mainMenuManager.OpenMainMenu();
+    }
+
+    public void OnIntroDialogueRequested()
+    {
+        Debug.Log("intro dialogue requested");
+        StartCoroutine(StartNewGame());
     }
 
 

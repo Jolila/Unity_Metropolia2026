@@ -16,10 +16,21 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] CanvasGroup _GameplaySettingsCG;
     float _fadeDuration = 12f;
 
+    public bool PromptForIntroDialogue { get; private set; }
+    [SerializeField] CanvasGroup _introPromptCG;
+
     void Awake()
     {
         _mainMenuCG = GetComponent<CanvasGroup>();
         CanvasGroupSetState(_mainMenuCG, false);
+        CanvasGroupSetState(_introPromptCG, false);
+        LoagDialoguePromptSetting();
+    }
+
+    private void LoagDialoguePromptSetting()
+    {
+        PromptForIntroDialogue =
+            PlayerPrefs.GetInt("PromptForIntroDialogue", 1) == 1;
     }
 
     private void Start()
@@ -81,6 +92,32 @@ public class MainMenuManager : MonoBehaviour
 
     public void Play()
     {
+        Debug.Log($"Play clicked. PromptForIntroDialogue = {PromptForIntroDialogue}");
+
+        if (PromptForIntroDialogue)
+        {
+            ShowIntroPrompt();
+            return;
+        }
+        else GameManager.Instance.OnNewGameRequested();
+    }
+
+    private void ShowIntroPrompt()
+    {
+        CanvasGroupSetState(_mainMenuButtonsCG, false);
+        CanvasGroupSetState(_introPromptCG, true);
+    }
+
+    public void IntroPromptYes()
+    {
+        CanvasGroupSetState(_introPromptCG, false);
+
+        GameManager.Instance.OnIntroDialogueRequested();
+    }
+
+public void IntroPromptNo()
+    {
+        CanvasGroupSetState(_introPromptCG, false);
         GameManager.Instance.OnNewGameRequested();
     }
 

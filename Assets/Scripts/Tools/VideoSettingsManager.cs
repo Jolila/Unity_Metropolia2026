@@ -1,4 +1,3 @@
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -23,16 +22,27 @@ public class VideoSettingsManager : MonoBehaviour
     public void Set1280x960() {
         Screen.SetResolution(1280, 960, Screen.fullScreenMode);
         useHighResolution = false;
+        SaveSettings();
     }
 
     public void Set1920x1440() {
         Screen.SetResolution(1920, 1440, Screen.fullScreenMode);
         useHighResolution = true;
+        SaveSettings();
     }
 
-    public void SetWindowed() { Screen.fullScreenMode = FullScreenMode.Windowed; }
+    public void SetWindowed() {
+        fullscreen = false;
+        Screen.fullScreenMode = FullScreenMode.Windowed;
+        SaveSettings();
 
-    public void SetFullscreen() { Screen.fullScreenMode = FullScreenMode.FullScreenWindow; }
+    }
+
+    public void SetFullscreen() {
+        fullscreen = true;
+        Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+        SaveSettings();
+    }
 
 
     private void Awake()
@@ -45,13 +55,15 @@ public class VideoSettingsManager : MonoBehaviour
 
     public void ApplySettings()
     {
-        if (useHighResolution) Set1920x1440();
-        else Set1280x960();
+
 
         if (fullscreen)
             Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
         else
             Screen.fullScreenMode = FullScreenMode.Windowed;
+
+        if (useHighResolution) Set1920x1440();
+        else Set1280x960();
 
         filmGrain.active = filmGrainEnabled;
     }
