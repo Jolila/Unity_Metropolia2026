@@ -32,7 +32,7 @@ public class BloodSystem : MonoBehaviour
                 _instance = FindObjectOfType<BloodSystem>();
                 if (_instance == null)
                 {
-                    Debug.Log(" Error : no enemy manager instance");
+                    Debug.Log(" Error : no blood system instance");
                 }
             }
             return _instance;
@@ -58,7 +58,7 @@ public class BloodSystem : MonoBehaviour
 
 
     float totalBloodCollected = 0f;
-    float bloodMoonVisibleQuota = 10f; // test values for POC blood collecting
+    float bloodMoonVisibleQuota = 10f; // dummy test values for POC blood collecting
     float bloodMoonFullQuota = 25f;
 
     public float TotalBloodCollected => totalBloodCollected;
