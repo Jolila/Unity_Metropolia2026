@@ -10,6 +10,10 @@ public class MainMenuManager : MonoBehaviour
     CanvasGroup _mainMenuCG;
     [SerializeField] CanvasGroup _settingsMenuCG;
     [SerializeField] CanvasGroup _fadeOverlay;
+
+    [SerializeField] CanvasGroup _AudioSettingsCG;
+    [SerializeField] CanvasGroup _VideoSettingsCG;
+    [SerializeField] CanvasGroup _GameplaySettingsCG;
     float _fadeDuration = 12f;
 
     void Awake()
@@ -106,6 +110,28 @@ public class MainMenuManager : MonoBehaviour
     {
         CanvasGroupSetState(_mainMenuButtonsCG, !open);
         CanvasGroupSetState(_settingsMenuCG, open);
+        ToAudioSettings();
+    }
+
+    public void ToAudioSettings()
+    {
+        CanvasGroupSetState(_AudioSettingsCG, true);
+        CanvasGroupSetState(_VideoSettingsCG, false);
+        CanvasGroupSetState(_GameplaySettingsCG, false);
+    }
+
+    public void ToVideoSettings()
+    {
+        CanvasGroupSetState(_AudioSettingsCG, false);
+        CanvasGroupSetState(_VideoSettingsCG, true);
+        CanvasGroupSetState(_GameplaySettingsCG, false);
+    }
+
+    public void ToGameplaySettings()
+    {
+        CanvasGroupSetState(_AudioSettingsCG, false);
+        CanvasGroupSetState(_VideoSettingsCG, false);
+        CanvasGroupSetState(_GameplaySettingsCG, true);
     }
 
     public void Quit()

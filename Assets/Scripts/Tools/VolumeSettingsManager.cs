@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsManager : MonoBehaviour
+public class VolumeSettingsManager: MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -17,12 +17,6 @@ public class SettingsManager : MonoBehaviour
         _mainSlider.value = PlayerPrefs.GetFloat("Settings.MasterVolume", DEFAULT_MAIN_VOLUME);
         _musicSlider.value = PlayerPrefs.GetFloat("Settings.MusicVolume", DEFAULT_MUSIC_VOLUME);
         _sfxSlider.value = PlayerPrefs.GetFloat("Settings.SFXVolume", DEFAULT_SFX_VOLUME);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void ChangeMainVolume(float newVol)
