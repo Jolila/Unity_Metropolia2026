@@ -69,52 +69,11 @@ public class BloodSystem : MonoBehaviour
     [SerializeField] ObjectPool MediumDropletPool;
     [SerializeField] ObjectPool LargeDropletPool;
 
-    private float smallEnemyDropChance = 0.10f;
-    private float mediumEnemyDropChance = 0.40f;
+    private float smallEnemyDropChance = 0.20f;
+    private float mediumEnemyDropChance = 0.50f;
     private float largeEnemyDropChance = 0.80f;
 
-    private BloodDropWeight[] smallEnemyWeights =
-    {
-        new BloodDropWeight
-        {
-            tier = BloodDropletTier.Small,
-            weight = 1f
-        }
-    };
-
-
-    private BloodDropWeight[] mediumEnemyWeights =
-    {
-        new BloodDropWeight
-        {
-            tier = BloodDropletTier.Small,
-            weight = 0.6f
-        },
-        new BloodDropWeight
-        {
-            tier = BloodDropletTier.Medium,
-            weight = 0.4f
-        }
-    };
-
-    private BloodDropWeight[] largeEnemyWeights =
-    {
-        new BloodDropWeight
-        {
-            tier = BloodDropletTier.Small,
-            weight = 0.3f
-        },
-        new BloodDropWeight
-        {
-            tier = BloodDropletTier.Medium,
-            weight = 0.3f
-        },
-        new BloodDropWeight
-        {
-            tier = BloodDropletTier.Large,
-            weight = 0.4f
-        }
-    };
+    
 
     [SerializeField] BloodMoonController _moonController;
     public event Action OnBloodCollected;
@@ -129,13 +88,14 @@ public class BloodSystem : MonoBehaviour
 
     private float GetDropChance(BloodDropletTier maxTier)
     {
-        return maxTier switch
+        float baseChance = maxTier switch
         {
             BloodDropletTier.Small => smallEnemyDropChance,
             BloodDropletTier.Medium => mediumEnemyDropChance,
             BloodDropletTier.Large => largeEnemyDropChance,
             _ => 0f
         };
+        return baseChance + GetRoundDropChanceBonus();
     }
 
 
@@ -157,9 +117,9 @@ public class BloodSystem : MonoBehaviour
 
         BloodDropWeight[] activeWeights = maxTier switch
         {
-            BloodDropletTier.Small => smallEnemyWeights,
-            BloodDropletTier.Medium => mediumEnemyWeights,
-            BloodDropletTier.Large => largeEnemyWeights
+            BloodDropletTier.Small => GetSmallEnemyWeights(),
+            BloodDropletTier.Medium => GetMediumEnemyWeights(),
+            BloodDropletTier.Large => GetLargeEnemyWeights()
         };
 
         float totalWeight = 0f;
@@ -180,6 +140,25 @@ public class BloodSystem : MonoBehaviour
 
 
     }
+
+    private const float MaxRoundDropChanceBonus = 0.2f;
+    private const float MaxDropWeightTransfer = 0.20f;
+
+    private float GetRoundDropChanceBonus()
+    {
+        float normalizedRound =
+      (float)GameProgressionManager.Instance.CurrentRound /
+        12f; // stupid hard coded shit, but working with enums was not aseasy as I had hoped lol
+
+        return normalizedRound * MaxRoundDropChanceBonus;
+    }
+
+    private float GetRoundProgression()
+    {
+        return (int)GameProgressionManager.Instance.CurrentRound / 12f;
+    }
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -217,6 +196,70 @@ public class BloodSystem : MonoBehaviour
             healthIncrease);
 
         OnBloodCollected?.Invoke();
+    }
+
+    private BloodDropWeight[] GetSmallEnemyWeights()
+    {
+        float transfer =
+            MaxDropWeightTransfer * GetRoundProgression();
+
+        return new[]
+        {
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Small,
+            weight = 0.8f - transfer
+        },
+
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Medium,
+            weight = 0.2f + transfer
+        }
+        };
+    }
+
+    private BloodDropWeight[] GetMediumEnemyWeights()
+    {
+        float transfer =
+            MaxDropWeightTransfer * GetRoundProgression();
+
+        return new[]
+        {
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Small,
+            weight = 0.6f - transfer
+        },
+
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Medium,
+            weight = 0.4f + transfer
+        }
+    };
+    }
+
+    private BloodDropWeight[] GetLargeEnemyWeights()
+    {
+        float transfer =
+            MaxDropWeightTransfer * GetRoundProgression();
+
+        return new[]
+        {
+
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Medium,
+            weight = 0.4f - transfer
+        },
+
+        new BloodDropWeight
+        {
+            tier = BloodDropletTier.Large,
+            weight = 0.4f + transfer
+        }
+    };
     }
 
 

@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-
-
-
-
 
 
 public class GameProgressionManager : MonoBehaviour
@@ -49,7 +44,7 @@ public class GameProgressionManager : MonoBehaviour
     public void Initialize()
     {
         CalculateRoundBloodThresholds();
-        DebugRoundThresholds();
+        //DebugRoundThresholds();
         CurrentRound = GameRound.Round0;
         UpdateNextRoundThreshold();
         
@@ -103,21 +98,6 @@ public class GameProgressionManager : MonoBehaviour
         nextRoundBloodThreshold = roundBloodThresholds[nextround];
     }
 
-    private void DebugRoundThresholds()
-    {
-        Debug.Log("========== ROUND BLOOD THRESHOLDS ==========");
-
-        for (int round = 0; round < roundBloodThresholds.Length; round++)
-        {
-            Debug.Log(
-                $"Round {round}: " +
-                $"{roundBloodThresholds[round]:F2} blood"
-            );
-        }
-
-        Debug.Log("============================================");
-    }
-
 
 
     public void SetRound(GameRound round)
@@ -141,11 +121,6 @@ public class GameProgressionManager : MonoBehaviour
             CurrentRound
         );
     }
-
-
-
-
-  
 
 
 }
