@@ -58,8 +58,8 @@ public class BloodSystem : MonoBehaviour
 
 
     float totalBloodCollected = 0f;
-    float bloodMoonVisibleQuota = 10f; // dummy test values for POC blood collecting
-    float bloodMoonFullQuota = 25f;
+    float bloodMoonVisibleQuota = 125f; // dummy test values for POC blood collecting
+    float bloodMoonFullQuota = 250f;
 
     public float TotalBloodCollected => totalBloodCollected;
     public float BloodMoonVisibleQuota => bloodMoonVisibleQuota;
@@ -123,6 +123,7 @@ public class BloodSystem : MonoBehaviour
     {
         totalBloodCollected = 0f;
         _moonController.Initialize();
+        GameProgressionManager.Instance.Initialize();
     }
 
 
