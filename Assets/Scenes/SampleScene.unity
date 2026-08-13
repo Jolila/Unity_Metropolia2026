@@ -982,7 +982,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1280, y: 960}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &118441585
 GameObject:
@@ -1668,10 +1668,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 640, y: 480}
   m_ScreenMatchMode: 2
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -8405,7 +8405,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 190, y: 316}
+  m_SizeDelta: {x: 95, y: 158}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1117773089
 MonoBehaviour:
@@ -8427,7 +8427,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5050010331686691580, guid: d1e6bc4693b101147933f7504381ee33, type: 3}
+  m_Sprite: {fileID: -7829648082494821487, guid: 1f3c9036c1b20544c98c3118a67445e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9562,6 +9562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8876849a579d03d4aa715ea82add2e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BloodSystem
+  GlobalLight: {fileID: 619394801}
   SmallDropletPool: {fileID: 1228808269}
   MediumDropletPool: {fileID: 1228808268}
   LargeDropletPool: {fileID: 1228808267}
@@ -10707,8 +10708,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 152}
-  m_SizeDelta: {x: 563, y: 130}
+  m_AnchoredPosition: {x: 0, y: -180}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1421107927
 CanvasRenderer:
@@ -13369,7 +13370,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7, y: 274}
+  m_AnchoredPosition: {x: 0, y: 170}
   m_SizeDelta: {x: 190, y: 316}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1827718274
@@ -13394,8 +13395,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BloodMoonController
   FaintBloodMoonCanvasGroup: {fileID: 1837302985}
   BloodMoonGlowMask: {fileID: 292053557}
-  faintMoonDuration: 5
-  revealDuration: 10
 --- !u!1 &1837302981
 GameObject:
   m_ObjectHideFlags: 0
@@ -13432,7 +13431,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 190, y: 316}
+  m_SizeDelta: {x: 95, y: 158}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1837302983
 MonoBehaviour:
@@ -13454,7 +13453,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5050010331686691580, guid: d1e6bc4693b101147933f7504381ee33, type: 3}
+  m_Sprite: {fileID: -7829648082494821487, guid: 1f3c9036c1b20544c98c3118a67445e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13479,7 +13478,7 @@ CanvasGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837302981}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Alpha: 0.5
   m_Interactable: 1
   m_BlocksRaycasts: 1
@@ -13683,6 +13682,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a2f2159b7e52a48823be3b1bebc10d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthSystem
+--- !u!114 &1861740471 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8245374138684779797, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+  m_PrefabInstance: {fileID: 6506244965204465635}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861740455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453597a8a94e71d4b8d05192252c037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &1863520511
 GameObject:
   m_ObjectHideFlags: 0
@@ -14416,9 +14426,9 @@ MonoBehaviour:
   _inGameUIManager: {fileID: 223341751}
   _enemyManager: {fileID: 474080288}
   timer: {fileID: 2030963770}
-  player: {fileID: 0}
-  _loader: {fileID: 0}
-  _bloodSystem: {fileID: 0}
+  player: {fileID: 1861740471}
+  _loader: {fileID: 2135727148}
+  _bloodSystem: {fileID: 1228808265}
   _mainMenuManager: {fileID: 2127928815}
 --- !u!4 &2030963769
 Transform:
