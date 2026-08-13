@@ -69,8 +69,8 @@ public class BloodSystem : MonoBehaviour
     [SerializeField] ObjectPool MediumDropletPool;
     [SerializeField] ObjectPool LargeDropletPool;
 
-    private float smallEnemyDropChance = 0.20f;
-    private float mediumEnemyDropChance = 0.50f;
+    private float smallEnemyDropChance = 0.30f;
+    private float mediumEnemyDropChance = 0.60f;
     private float largeEnemyDropChance = 0.80f;
 
     

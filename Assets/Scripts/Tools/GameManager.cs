@@ -102,14 +102,15 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        _bloodSystem = FindAnyObjectByType<BloodSystem>();
+        _bloodSystem.Initialize();
         player = FindAnyObjectByType<PlayerController>();
         _loader = FindAnyObjectByType<LevelLoader>();
         _inGameUIManager = FindAnyObjectByType<InGameUIManager>();
         _mainMenuManager = FindAnyObjectByType<MainMenuManager>();
         timer = FindAnyObjectByType<Timer>();
         _enemyManager = FindAnyObjectByType<EnemyManager>();
-        _bloodSystem = FindAnyObjectByType<BloodSystem>();
-        _bloodSystem.Initialize();
+   
         StartCoroutine(InitializeLevel());
     }
 
