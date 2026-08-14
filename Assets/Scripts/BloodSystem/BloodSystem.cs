@@ -41,8 +41,8 @@ public class BloodSystem : MonoBehaviour
     }
 
 
-    public Dictionary<BloodDropletTier, float> ContributionToTotalBloodCount = 
-        new Dictionary<BloodDropletTier, float> 
+    public Dictionary<BloodDropletTier, float> ContributionToTotalBloodCount =
+        new Dictionary<BloodDropletTier, float>
     {
             {BloodDropletTier.Small, 0.5f },
             {BloodDropletTier.Medium, 1.0f },
@@ -76,7 +76,7 @@ public class BloodSystem : MonoBehaviour
     private float mediumEnemyDropChance = 0.60f;
     private float largeEnemyDropChance = 0.80f;
 
-    
+
 
     [SerializeField] BloodMoonController _moonController;
     public event Action OnBloodCollected;
@@ -105,13 +105,13 @@ public class BloodSystem : MonoBehaviour
 
     public void TrySpawnDroplet(
         BloodDropletTier maxTier, Vector3 position)
-        {
+    {
 
         if (UnityEngine.Random.value > GetDropChance(maxTier)) return;
         BloodDropletTier tier = RollForDropletTier(maxTier);
 
         SpawnDroplet(tier, position);
-        
+
     }
 
 
@@ -166,13 +166,13 @@ public class BloodSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void SpawnDroplet(BloodDropletTier tier, Vector3 pos)

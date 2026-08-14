@@ -95,6 +95,19 @@ public class EnemyPoolManager : MonoBehaviour
         return pool;
     }
 
+    public bool PoolHasActiveEnemies(EnemyType type)
+    {
+        if (!_poolLookup.TryGetValue(type, out Pool pool))
+            return false;
+
+        foreach (GameObject enemy in pool.objects)
+        {
+            if (enemy.activeInHierarchy)
+                return true;
+        }
+
+        return false;
+    }
 
 
 }
