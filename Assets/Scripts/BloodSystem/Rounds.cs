@@ -18,7 +18,8 @@ public enum GameRound
     Round9,
     Round10,
     Round11,
-    Round12
+    Round12,
+    Boss
 }
 
 public class RoundDefinition

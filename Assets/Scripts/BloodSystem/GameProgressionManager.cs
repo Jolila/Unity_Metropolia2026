@@ -12,6 +12,7 @@ public class GameProgressionManager : MonoBehaviour
     private const float CanonEvent2RoundProgressionExponent = 2f; // This needs tweaking, might be as high as 4, but likely needs a linear component.
 
     public Action <GameRound> OnCurrentRoundChanged;
+    public Action OnBloodMoonFull;
 
     private static GameProgressionManager _instance;
     public static GameProgressionManager Instance
@@ -108,19 +109,43 @@ public class GameProgressionManager : MonoBehaviour
     private void HandleBloodCollected()
     {
 
-        if (CurrentRound == GameRound.Round12) return;
+        if (CurrentRound == GameRound.Boss) return;
+
+        if (CurrentRound < GameRound.Round12)
+        {
+            TryAdvanceRound();
+            return;
+        }
+        TryTriggerBoss();
+    }
+       
+
+    
+
+    private void TryAdvanceRound()
+    {
         if (BloodSystem.Instance.TotalBloodCollected <
-       nextRoundBloodThreshold)
+        nextRoundBloodThreshold)
+        {
+            return;
+        }
+        CurrentRound++;
+        UpdateNextRoundThreshold();
+        OnCurrentRoundChanged?.Invoke(CurrentRound);
+    }
+
+    private void TryTriggerBoss()
+    {
+        if (BloodSystem.Instance.TotalBloodCollected <
+            BloodSystem.Instance.BloodMoonFullQuota)
         {
             return;
         }
 
-        CurrentRound++;
+        CurrentRound = GameRound.Boss;
 
-        UpdateNextRoundThreshold();
-        OnCurrentRoundChanged?.Invoke(
-            CurrentRound
-        );
+        OnBloodMoonFull?.Invoke();
+        OnCurrentRoundChanged?.Invoke(CurrentRound);
     }
 
 
