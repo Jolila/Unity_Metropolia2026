@@ -40,8 +40,7 @@ public class MusicProgressionManager : MonoBehaviour
 {
     private static MusicProgressionManager _instance;
     private MusicTrack currentTrack;
-    private MusicTrack nextTrack;
-    private MusicTransition pendingTransition;
+
 
     public static MusicProgressionManager Instance
     {
@@ -80,7 +79,8 @@ public class MusicProgressionManager : MonoBehaviour
 
         MusicTrack nextTrack = (MusicTrack)round;
         MusicTransition transition =
-            (MusicTransition)(int)currentTrack;
+            GetMusicTransition(
+                round);
 
         AudioManager.Instance.QueueMusicTransition(
             transition,
@@ -89,6 +89,28 @@ public class MusicProgressionManager : MonoBehaviour
 
         currentTrack = nextTrack;
 
+    }
+
+    private MusicTransition GetMusicTransition(GameRound round)
+    {
+        return round switch
+        {
+            GameRound.Round1 => MusicTransition.Round0To1,
+            GameRound.Round2 => MusicTransition.Round1To2,
+            GameRound.Round3 => MusicTransition.Round2To3,
+            GameRound.Round4 => MusicTransition.Round3To4,
+            GameRound.Round5 => MusicTransition.Round4To5,
+            GameRound.Round6 => MusicTransition.Round5To6,
+            GameRound.Round7 => MusicTransition.Round6To7,
+            GameRound.Round8 => MusicTransition.Round7To8,
+            GameRound.Round9 => MusicTransition.Round8To9,
+            GameRound.Round10 => MusicTransition.Round9To10,
+            GameRound.Round11 => MusicTransition.Round10To11,
+            GameRound.Round12 => MusicTransition.Round11To12,
+            GameRound.Boss => MusicTransition.Round12ToBoss,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(round))
+        };
     }
 
 

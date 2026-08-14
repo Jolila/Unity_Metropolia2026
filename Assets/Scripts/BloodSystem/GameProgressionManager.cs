@@ -145,6 +145,7 @@ public class GameProgressionManager : MonoBehaviour
         CurrentRound = GameRound.Boss;
 
         OnBloodMoonFull?.Invoke();
+        Debug.Log("BloodMoon Is full...");
         OnCurrentRoundChanged?.Invoke(CurrentRound);
     }
 

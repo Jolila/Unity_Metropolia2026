@@ -318,8 +318,8 @@ public class AudioManager : MonoBehaviour
     }
 
     public void QueueMusicTransition(
-    MusicTransition transition,
-    MusicTrack nextTrack)
+        MusicTransition transition,
+        MusicTrack nextTrack)
     {
         AudioClip transitionClip =
             GetMusicTransition(transition);
@@ -327,9 +327,9 @@ public class AudioManager : MonoBehaviour
         AudioClip nextTrackClip =
             GetMusicTrack(nextTrack);
         Debug.Log(
-    $"[Audio] Queueing music transition: " +
-    $"{transition} -> {nextTrack}"
-);
+        $"[Audio] Queueing music transition: " +
+        $"{transition} -> {nextTrack}"
+        );
 
         Debug.Log(
             $"[Audio] Transition clip: " +
