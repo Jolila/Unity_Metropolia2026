@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class BloodMoonController : MonoBehaviour
@@ -7,10 +8,6 @@ public class BloodMoonController : MonoBehaviour
 
     [SerializeField] private CanvasGroup FaintBloodMoonCanvasGroup;
     [SerializeField] private RectMask2D BloodMoonGlowMask;
-
-    [SerializeField] private float faintMoonDuration = 5f;
-    [SerializeField] private float revealDuration = 10f;
-
 
     Vector4 maskPaddingVector = new Vector4(
         0f,
@@ -61,8 +58,7 @@ public class BloodMoonController : MonoBehaviour
             0f,
             (316f - 316f * paddingMod));
 
-
-
+        
     }
 
 

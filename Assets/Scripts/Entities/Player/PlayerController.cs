@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using static UnityEngine.Input;
 using NUnit.Framework;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip _footstep;
     [SerializeField] PlayerHealthSystem _healthSystem;
     [SerializeField] PlayerStaffController _staffController;
+    [SerializeField] Light2D moonlight;
+    BloodSystem bloodSystem;
+
 
     private Material playerMaterial;
     private static readonly int OverdriveAmount =
@@ -32,7 +36,8 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         _healthSystem = GetComponent<PlayerHealthSystem>();
-
+        moonlight.intensity = 0f;
+        BloodSystem.Instance.OnBloodCollected += HandleMoonLightIntensity;
     }
 
     void Start()
@@ -159,5 +164,12 @@ public class PlayerController : MonoBehaviour
             movementSpeed = 10.0f;
         }
 
+    }
+
+    private void HandleMoonLightIntensity()
+    {
+        // min is 0f, max is 10f. Lerping needs to happen between 0 and bloodmoonfull.
+        float intensity = Mathf.Lerp(0f, 10.0f, BloodSystem.Instance.TotalBloodCollected / BloodSystem.Instance.BloodMoonFullQuota);
+        moonlight.intensity = intensity;
     }
 }

@@ -47,7 +47,7 @@ public class GameProgressionManager : MonoBehaviour
         //DebugRoundThresholds();
         CurrentRound = GameRound.Round0;
         UpdateNextRoundThreshold();
-        
+        MusicProgressionManager.Instance.Initialize();
     }
 
     private void CalculateRoundBloodThresholds()
@@ -107,6 +107,8 @@ public class GameProgressionManager : MonoBehaviour
 
     private void HandleBloodCollected()
     {
+
+        if (CurrentRound == GameRound.Round12) return;
         if (BloodSystem.Instance.TotalBloodCollected <
        nextRoundBloodThreshold)
         {
@@ -116,7 +118,6 @@ public class GameProgressionManager : MonoBehaviour
         CurrentRound++;
 
         UpdateNextRoundThreshold();
-        Debug.Log("Updated round to " + CurrentRound);
         OnCurrentRoundChanged?.Invoke(
             CurrentRound
         );

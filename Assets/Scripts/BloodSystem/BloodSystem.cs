@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public enum BloodDropletTier
@@ -58,8 +59,10 @@ public class BloodSystem : MonoBehaviour
 
 
     float totalBloodCollected = 0f;
-    float bloodMoonVisibleQuota = 125f; // dummy test values for POC blood collecting
-    float bloodMoonFullQuota = 250f;
+    float bloodMoonVisibleQuota = 10f; // dummy test values for POC blood collecting
+    float bloodMoonFullQuota = 20f;
+
+    [SerializeField] Light2D GlobalLight;
 
     public float TotalBloodCollected => totalBloodCollected;
     public float BloodMoonVisibleQuota => bloodMoonVisibleQuota;
@@ -194,6 +197,14 @@ public class BloodSystem : MonoBehaviour
 
         PlayerHealthSystem.Instance.Heal(
             healthIncrease);
+
+        float redness = Mathf.Lerp(0f, 1.0f, TotalBloodCollected / BloodMoonFullQuota);
+        Color newColor = new Color(
+                1.0f,
+                1.0f - redness,
+                1.0f - redness
+            );
+        GlobalLight.color = newColor;
 
         OnBloodCollected?.Invoke();
     }
