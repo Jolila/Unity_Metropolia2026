@@ -56,8 +56,15 @@ public class MusicProgressionManager : MonoBehaviour
 
     private void OnEnable()
     {
+       
+      
+    }
+
+    public void Initialize()
+    {
         GameProgressionManager.Instance.OnCurrentRoundChanged
-            += HandleRoundChanged;
+           += HandleRoundChanged;
+        currentTrack = MusicTrack.Round0;
     }
 
     private void OnDisable()
@@ -66,52 +73,23 @@ public class MusicProgressionManager : MonoBehaviour
             -= HandleRoundChanged;
     }
 
+   
+
     private void HandleRoundChanged(GameRound round)
     {
-        MusicTrack newTrack = GetMusicTrack(round);
 
-        pendingTransition = GetTransition(
-            currentTrack,
-            newTrack
+        MusicTrack nextTrack = (MusicTrack)round;
+        MusicTransition transition =
+            (MusicTransition)(int)currentTrack;
+
+        AudioManager.Instance.QueueMusicTransition(
+            transition,
+            nextTrack
         );
 
-        nextTrack = newTrack;
+        currentTrack = nextTrack;
 
     }
 
-    private MusicTransition GetTransition(
-        MusicTrack from, MusicTrack to)
-    {
-        return (from, to) switch
-        {
-            (MusicTrack.Round0, MusicTrack.Round1)
-                => MusicTransition.Round0To1,
-
-            (MusicTrack.Round1, MusicTrack.Round2)
-                => MusicTransition.Round1To2,
-
-        };
-    }
-
-    private MusicTrack GetMusicTrack(GameRound round)
-    {
-        return round switch
-        {
-            GameRound.Round0 => MusicTrack.Round0,
-            GameRound.Round1 => MusicTrack.Round1,
-            GameRound.Round2 => MusicTrack.Round2,
-            GameRound.Round3 => MusicTrack.Round3,
-            GameRound.Round4 => MusicTrack.Round4,
-            GameRound.Round5 => MusicTrack.Round5,
-            GameRound.Round6 => MusicTrack.Round6,
-            GameRound.Round7 => MusicTrack.Round7,
-            GameRound.Round8 => MusicTrack.Round8,
-            GameRound.Round9 => MusicTrack.Round9,
-            GameRound.Round10 => MusicTrack.Round10,
-            GameRound.Round11 => MusicTrack.Round11,
-            GameRound.Round12 => MusicTrack.Round12,
-            _ => throw new ArgumentOutOfRangeException(nameof(round))
-        };
-    }
 
 }

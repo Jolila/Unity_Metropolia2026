@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Rendering;
@@ -39,8 +41,36 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip _startupMusic;
     [SerializeField] private AudioClip _countdownClip;
     [SerializeField] private AudioClip[] _musicClips;
-    
 
+    [SerializeField] private AudioClip _round0Music;
+    [SerializeField] private AudioClip _round1Music;
+    [SerializeField] private AudioClip _round2Music;
+    [SerializeField] private AudioClip _round3Music;
+    [SerializeField] private AudioClip _round4Music;
+    [SerializeField] private AudioClip _round5Music;
+    [SerializeField] private AudioClip _round6Music;
+    [SerializeField] private AudioClip _round7Music;
+    [SerializeField] private AudioClip _round8Music;
+    [SerializeField] private AudioClip _round9Music;
+    [SerializeField] private AudioClip _round10Music;
+    [SerializeField] private AudioClip _round11Music;
+    [SerializeField] private AudioClip _round12Music;
+
+    [SerializeField] private AudioClip _round0To1;
+    [SerializeField] private AudioClip _round1To2;
+    [SerializeField] private AudioClip _round2To3;
+    [SerializeField] private AudioClip _round3To4;
+    [SerializeField] private AudioClip _round4To5;
+    [SerializeField] private AudioClip _round5To6;
+    [SerializeField] private AudioClip _round6To7;
+    [SerializeField] private AudioClip _round7To8;
+    [SerializeField] private AudioClip _round8To9;
+    [SerializeField] private AudioClip _round9To10;
+    [SerializeField] private AudioClip _round10To11;
+    [SerializeField] private AudioClip _round11To12;
+    [SerializeField] private AudioClip _round12ToBoss;
+
+    [SerializeField] private AudioClip _bossMusic;
 
     AudioClip _nextSong;
     AudioClip _currentSong;
@@ -66,6 +96,8 @@ public class AudioManager : MonoBehaviour
     const string MUSIC_VOLUME_NAME = "MusicVolume";
     const string SFX_VOLUME_NAME = "SFXVolume";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private readonly Queue<(AudioClip clip, bool repeat)> _musicQueue = new();
 
     void Awake()
     {
@@ -258,7 +290,113 @@ public class AudioManager : MonoBehaviour
         PlaySFX(onPlayerDeath, 1.0f);
     }
 
+    public void AddToMusicQueue(AudioClip clip, bool repeat)
+    {
+        if (clip == null)
+        {
+            Debug.LogWarning("Tried to add null music clip to queue.");
+            return;
+        }
 
+        _musicQueue.Enqueue((clip, repeat));
+
+        // If nothing is currently playing, start immediately.
+        if (!_musicSource.isPlaying)
+            PlayNextMusicInQueue();
+    }
+
+    private void PlayNextMusicInQueue()
+    {
+        if (_musicQueue.Count == 0)
+            return;
+
+        var next = _musicQueue.Dequeue();
+
+        _musicSource.clip = next.clip;
+        _musicSource.loop = next.repeat;
+        _musicSource.Play();
+    }
+
+    public void QueueMusicTransition(
+    MusicTransition transition,
+    MusicTrack nextTrack)
+    {
+        AudioClip transitionClip =
+            GetMusicTransition(transition);
+
+        AudioClip nextTrackClip =
+            GetMusicTrack(nextTrack);
+        Debug.Log(
+    $"[Audio] Queueing music transition: " +
+    $"{transition} -> {nextTrack}"
+);
+
+        Debug.Log(
+            $"[Audio] Transition clip: " +
+            $"{(transitionClip != null ? transitionClip.name : "NULL")}"
+        );
+
+        Debug.Log(
+            $"[Audio] Track clip: " +
+            $"{(nextTrackClip != null ? nextTrackClip.name : "NULL")}"
+        );
+
+
+        AddToMusicQueue(
+            transitionClip,
+            false
+        );
+
+        AddToMusicQueue(
+            nextTrackClip,
+            true
+        );
+    }
+
+    private AudioClip GetMusicTrack(MusicTrack track)
+    {
+        return track switch
+        {
+            MusicTrack.Round0 => _round0Music,
+            MusicTrack.Round1 => _round1Music,
+            MusicTrack.Round2 => _round2Music,
+            MusicTrack.Round3 => _round3Music,
+            MusicTrack.Round4 => _round4Music,
+            MusicTrack.Round5 => _round5Music,
+            MusicTrack.Round6 => _round6Music,
+            MusicTrack.Round7 => _round7Music,
+            MusicTrack.Round8 => _round8Music,
+            MusicTrack.Round9 => _round9Music,
+            MusicTrack.Round10 => _round10Music,
+            MusicTrack.Round11 => _round11Music,
+            MusicTrack.Round12 => _round12Music,
+            MusicTrack.Boss => _bossMusic,
+
+            _ => null
+        };
+    }
+
+    private AudioClip GetMusicTransition(MusicTransition transition)
+    {
+        return transition switch
+        {
+            MusicTransition.Round0To1 => _round0To1,
+            MusicTransition.Round1To2 => _round1To2,
+            MusicTransition.Round2To3 => _round2To3,
+            MusicTransition.Round3To4 => _round3To4,
+            MusicTransition.Round4To5 => _round4To5,
+            MusicTransition.Round5To6 => _round5To6,
+            MusicTransition.Round6To7 => _round6To7,
+            MusicTransition.Round7To8 => _round7To8,
+            MusicTransition.Round8To9 => _round8To9,
+            MusicTransition.Round9To10 => _round9To10,
+            MusicTransition.Round10To11 => _round10To11,
+            MusicTransition.Round11To12 => _round11To12,
+            MusicTransition.Round12ToBoss => _round12ToBoss,
+
+            _ => null
+        };
+    }
 
 }
 

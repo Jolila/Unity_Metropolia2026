@@ -12207,8 +12207,9 @@ GameObject:
   - component: {fileID: 1699024761}
   - component: {fileID: 1699024760}
   - component: {fileID: 1699024762}
+  - component: {fileID: 1699024763}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: AudioManagerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12236,6 +12237,33 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f4e7541e3c6724043b950fad6464a711, type: 3}
   - {fileID: 8300000, guid: 6672bf72e5e101047bcf162ce21834b0, type: 3}
   - {fileID: 8300000, guid: 367d17db8055257418dcaa4882f85228, type: 3}
+  _round0Music: {fileID: 0}
+  _round1Music: {fileID: 0}
+  _round2Music: {fileID: 0}
+  _round3Music: {fileID: 0}
+  _round4Music: {fileID: 0}
+  _round5Music: {fileID: 0}
+  _round6Music: {fileID: 0}
+  _round7Music: {fileID: 0}
+  _round8Music: {fileID: 0}
+  _round9Music: {fileID: 0}
+  _round10Music: {fileID: 0}
+  _round11Music: {fileID: 0}
+  _round12Music: {fileID: 0}
+  _round0To1: {fileID: 0}
+  _round1To2: {fileID: 0}
+  _round2To3: {fileID: 0}
+  _round3To4: {fileID: 0}
+  _round4To5: {fileID: 0}
+  _round5To6: {fileID: 0}
+  _round6To7: {fileID: 0}
+  _round7To8: {fileID: 0}
+  _round8To9: {fileID: 0}
+  _round9To10: {fileID: 0}
+  _round10To11: {fileID: 0}
+  _round11To12: {fileID: 0}
+  _round12ToBoss: {fileID: 0}
+  _bossMusic: {fileID: 0}
   _sfxSourceCount: 12
   projectileShoot: {fileID: 8300000, guid: 1865cb6ae31231344b64ea6be3a9606b, type: 3}
   enemyHit: {fileID: 8300000, guid: 1b0773359e168f747aa1726280f07181, type: 3}
@@ -12358,6 +12386,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1699024763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699024759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a92637c2f48dc541b72fca112a57130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicProgressionManager
 --- !u!1 &1701904081
 GameObject:
   m_ObjectHideFlags: 0
