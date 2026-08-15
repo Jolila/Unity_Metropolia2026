@@ -9588,6 +9588,9 @@ MonoBehaviour:
   SmallDropletPool: {fileID: 1228808269}
   MediumDropletPool: {fileID: 1228808268}
   LargeDropletPool: {fileID: 1228808267}
+  smallDroplet: {fileID: 8582852194146006185, guid: 27490c2c145bc024eb421c92ba8e2620, type: 3}
+  mediumDroplet: {fileID: 8582852194146006185, guid: c207ba17151d07c47afd98b484a5e97f, type: 3}
+  largeDroplet: {fileID: 8582852194146006185, guid: a9e63814695ccda4a9a9ed6b9be88114, type: 3}
   _moonController: {fileID: 1827718275}
 --- !u!4 &1228808266
 Transform:

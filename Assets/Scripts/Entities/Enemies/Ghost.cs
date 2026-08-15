@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ghost : MonoBehaviour
+public class Ghost : MonoBehaviour, IEnemyAI
 {
     private EntityHealth health;
     public Vector3 targetDirection;
@@ -21,13 +21,11 @@ public class Ghost : MonoBehaviour
     private void OnEnable()
     {
         health.OnDeath += Death;
-        health.OnDeath += PlaySound;
     }
 
     private void OnDisable()
     {
         health.OnDeath -= Death;
-        health.OnDeath -= PlaySound;
     }
 
     private void Update()
@@ -41,6 +39,7 @@ public class Ghost : MonoBehaviour
         GameManager.Instance.RegisterKill();
         EnemyManager.Instance.GetBloodSystem().TrySpawnDroplet(maxDropTier, transform.position);
         EnemyManager.Instance.UnregisterEnemy(gameObject);
+        PlaySound();
         gameObject.SetActive(false);
     }
 

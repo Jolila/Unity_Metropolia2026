@@ -105,18 +105,11 @@ public class RewardSystem : MonoBehaviour
         if(AllEnemiesAreKilled(rewardRound))
         {
             ResolveReward();
+            rewardWindowRemaining = 0f;
         }
 
-        if(rewardSpawnTimer > 0)
-        {
-            rewardSpawnTimer -= Time.deltaTime;
-        }
-        else
-        {
-            rewardWindowRemaining = 0f;
-            rewardSpawnTimer = 0f;
-            Debug.Log("Reward was dished out, reward window is over");
-        }
+
+  
 
     }
 
@@ -124,12 +117,7 @@ public class RewardSystem : MonoBehaviour
     {
         float completionTime = rewardWindowRemaining;
         float rewardScale = RewardWindowDuration / rewardWindowRemaining;
-
         BloodSystem.Instance.TrySpawnReward(rewardRound, rewardScale);
-        rewardWindowRemaining = 0f;
-        rewardSpawnTimer = rewardSpawnTime;
-
-
 
     }
 
