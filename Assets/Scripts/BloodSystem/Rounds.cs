@@ -70,7 +70,122 @@ public static class Rounds
                     { EnemyType.SlimeFollower, 0.40f }
                 }
             }
+        },
+
+        { 
+        GameRound.Round3,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                    
+                    { EnemyType.ZombieLeader, 0.60f },
+                    { EnemyType.ZombieFollower, 0.60f }
+            }
         }
+        },
+
+        {
+        GameRound.Round4,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                    { EnemyType.Bat, 0.30f },
+                    { EnemyType.SlimeLeader, 0.40f },
+                    { EnemyType.SlimeFollower, 0.40f },
+                    { EnemyType.Ghost, 0.4f }
+            }
+        }
+        },
+
+        {
+        GameRound.Round5,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                
+            }
+        }
+        },
+
+        {
+        GameRound.Round6,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                
+            }
+        }
+        },
+
+        {
+        GameRound.Round7,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+               
+            }
+        }
+        },
+
+        {
+        GameRound.Round8,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+               
+            }
+        }
+        },
+
+        {
+        GameRound.Round9,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                
+            }
+        }
+        },
+
+        {
+        GameRound.Round10,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                
+            }
+        }
+        },
+
+        {
+        GameRound.Round11,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+              
+            }
+        }
+        },
+
+        {
+        GameRound.Round12,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+          
+            }
+        }
+        },
 
 
     };

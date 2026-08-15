@@ -36,20 +36,20 @@ public class EnemySpawner : MonoBehaviour
 
     private struct SpawnTargets
     {
-        public int ratSquads;
-        public int slimeSquads;
-        public int zombieSquads;
-        public int bats;
-        public int ghosts;
+        public int RatSquads;
+        public int SlimeSquads;
+        public int ZombieSquads;
+        public int Bats;
+        public int Ghosts;
     }
 
     private struct SpawnDeficits
     {
-        public int ratSquads;
-        public int slimeSquads;
-        public int zombieSquads;
-        public int bats;
-        public int ghosts;
+        public int RatSquads;
+        public int SlimeSquads;
+        public int ZombieSquads;
+        public int Bats;
+        public int Ghosts;
     }
 
    
@@ -76,34 +76,34 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        if (spawnDeficits.ratSquads > 0)
+        if (spawnDeficits.RatSquads > 0)
         {
             SpawnRatSquad();
-            spawnDeficits.ratSquads--;
+            spawnDeficits.RatSquads--;
         }
 
-        if (spawnDeficits.slimeSquads > 0)
+        if (spawnDeficits.SlimeSquads > 0)
         {
             SpawnSlimeSquad();
-            spawnDeficits.slimeSquads--;
+            spawnDeficits.SlimeSquads--;
         }
 
-        if (spawnDeficits.zombieSquads > 0)
+        if (spawnDeficits.ZombieSquads > 0)
         {
             SpawnZombieSquad();
-            spawnDeficits.zombieSquads--;
+            spawnDeficits.ZombieSquads--;
         }
 
-        if (spawnDeficits.bats > 0)
+        if (spawnDeficits.Bats > 0)
         {
             SpawnBats();
-            spawnDeficits.bats--;
+            spawnDeficits.Bats--;
         }
 
-        if (spawnDeficits.ghosts > 0)
+        if (spawnDeficits.Ghosts > 0)
         {
             SpawnGhosts();
-            spawnDeficits.ghosts--;
+            spawnDeficits.Ghosts--;
         }
     }
 
@@ -205,7 +205,7 @@ public class EnemySpawner : MonoBehaviour
 
         LeaderEnemy leaderEnemy = leader.GetComponent<LeaderEnemy>();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 4; i++)
         {
             Vector2 offset = Random.insideUnitCircle * 2.5f;
 
@@ -277,7 +277,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void BuildSpawnTargets(GameRound newRound)
     {
-        Debug.Log("Spawn targets were built!");
+        
         maximumQuotas = new SpawnTargets();
 
         RoundDefinition definition = Rounds.Definitions[newRound];
@@ -297,23 +297,23 @@ public class EnemySpawner : MonoBehaviour
             switch (entry.Key)
             {
                 case EnemyType.RatLeader:
-                    maximumQuotas.ratSquads = maximum;
+                    maximumQuotas.RatSquads = maximum;
                     break;
 
                 case EnemyType.SlimeLeader:
-                    maximumQuotas.slimeSquads = maximum;
+                    maximumQuotas.SlimeSquads = maximum;
                     break;
 
                 case EnemyType.ZombieLeader:
-                    maximumQuotas.zombieSquads = maximum;
+                    maximumQuotas.ZombieSquads = maximum;
                     break;
 
                 case EnemyType.Bat:
-                    maximumQuotas.bats = maximum;
+                    maximumQuotas.Bats = maximum;
                     break;
 
                 case EnemyType.Ghost:
-                    maximumQuotas.ghosts = maximum;
+                    maximumQuotas.Ghosts = maximum;
                     break;
             }
         }
@@ -323,33 +323,33 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnDeficits = new SpawnTargets
         {
-            ratSquads = Mathf.Max(
+            RatSquads = Mathf.Max(
                 0,
-                maximumQuotas.ratSquads -
+                maximumQuotas.RatSquads -
                 EnemyPoolManager.Instance.GetActiveCount(EnemyType.RatLeader)
             ),
 
-            slimeSquads = Mathf.Max(
+            SlimeSquads = Mathf.Max(
                 0,
-                maximumQuotas.slimeSquads -
+                maximumQuotas.SlimeSquads -
                 EnemyPoolManager.Instance.GetActiveCount(EnemyType.SlimeLeader)
             ),
 
-            zombieSquads = Mathf.Max(
+            ZombieSquads = Mathf.Max(
                 0,
-                maximumQuotas.zombieSquads -
+                maximumQuotas.ZombieSquads -
                 EnemyPoolManager.Instance.GetActiveCount(EnemyType.ZombieLeader)
             ),
 
-            bats = Mathf.Max(
+            Bats = Mathf.Max(
                 0,
-                maximumQuotas.bats -
+                maximumQuotas.Bats -
                 EnemyPoolManager.Instance.GetActiveCount(EnemyType.Bat)
             ),
 
-            ghosts = Mathf.Max(
+            Ghosts = Mathf.Max(
                 0,
-                maximumQuotas.ghosts -
+                maximumQuotas.Ghosts -
                 EnemyPoolManager.Instance.GetActiveCount(EnemyType.Ghost)
             )
         };

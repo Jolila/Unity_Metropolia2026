@@ -4120,11 +4120,35 @@ MonoBehaviour:
   pools:
   - type: 0
     prefab: {fileID: 6394731116622321747, guid: ea34dbd654b1b8d4a9ac3f76490d874c, type: 3}
-    size: 10
+    size: 30
     objects: []
   - type: 1
     prefab: {fileID: 6394731116622321747, guid: 92d11bfeec98fce4da1b76e48b9f17cf, type: 3}
-    size: 100
+    size: 300
+    objects: []
+  - type: 6
+    prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
+    size: 300
+    objects: []
+  - type: 2
+    prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}
+    size: 50
+    objects: []
+  - type: 3
+    prefab: {fileID: 6394731116622321747, guid: 1168d5182e719f5409e0fe8afc4f801d, type: 3}
+    size: 200
+    objects: []
+  - type: 4
+    prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
+    size: 25
+    objects: []
+  - type: 5
+    prefab: {fileID: 179021077290864179, guid: 320bf991875a60e409018d259e3db177, type: 3}
+    size: 75
+    objects: []
+  - type: 7
+    prefab: {fileID: 8231525188190148662, guid: 9a0c15124a279884a8a50aea8a8a8f9b, type: 3}
+    size: 50
     objects: []
 --- !u!114 &474080290
 MonoBehaviour:
@@ -4153,6 +4177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fa45e481c5890d4f975dc3ff4f58b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  SpawnQuotaTolerance: 0.1
 --- !u!1 &480752496
 GameObject:
   m_ObjectHideFlags: 0
@@ -9543,6 +9568,7 @@ GameObject:
   - component: {fileID: 1228808268}
   - component: {fileID: 1228808267}
   - component: {fileID: 1228808270}
+  - component: {fileID: 1228808271}
   m_Layer: 0
   m_Name: BloodSystem
   m_TagString: Untagged
@@ -9649,6 +9675,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5342bd69ed7d6714e839f35421b78897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameProgressionManager
+--- !u!114 &1228808271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228808264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04e45e29c1e62984cb878afcc51026d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardSystem
 --- !u!1 &1232412815
 GameObject:
   m_ObjectHideFlags: 0
