@@ -113,6 +113,7 @@ public class EnemyManager : MonoBehaviour
     public void OnStartGame()
     {
         cachedPlayerPosition = GameManager.Instance.GetPlayerReference().transform.position;
+        _spawner.OnStartGame();
     }
 
 

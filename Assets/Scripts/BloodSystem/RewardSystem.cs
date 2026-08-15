@@ -3,7 +3,22 @@ using UnityEngine;
 public class RewardSystem : MonoBehaviour
 {
 
-    public static RewardSystem Instance { get; private set; }
+    private static RewardSystem _instance;
+    public static RewardSystem Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<RewardSystem>();
+                if (_instance == null)
+                {
+                    Debug.Log(" Error : no reward system instance");
+                }
+            }
+            return _instance;
+        }
+    }
 
     public bool IsActive => rewardWindowRemaining > 0f;
     private float StartingRewardWindow = 10f;
@@ -11,6 +26,8 @@ public class RewardSystem : MonoBehaviour
 
     private float rewardWindowRemaining;
 
+
+  
 
 
     private GameRound rewardRound;
@@ -48,7 +65,7 @@ public class RewardSystem : MonoBehaviour
 
         foreach(EnemyType e in definition.PoolFillPercent.Keys)
         {
-            if (EnemyPoolManager.Instance.PoolHasActiveEnemies(e)) return false;
+            if (EnemyPoolManager.Instance.GetActiveCount(e) != 0)  return false;
         }
 
         return true;
@@ -91,10 +108,11 @@ public class RewardSystem : MonoBehaviour
         float completionTime = rewardWindowRemaining;
         rewardWindowRemaining = 0f;
         Debug.Log("Player has received a reward!");
+        //TODO
     }
 
 
-  
+
 
 
 }
