@@ -79,8 +79,7 @@ public static class Rounds
             PoolFillPercent =
             {
                     
-                    { EnemyType.ZombieLeader, 0.60f },
-                    { EnemyType.ZombieFollower, 0.60f }
+                    { EnemyType.Zombie, 1.0f }
             }
         }
         },

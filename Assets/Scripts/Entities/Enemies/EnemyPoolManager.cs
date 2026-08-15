@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 public enum EnemyType
 {
-    RatLeader, RatFollower, SlimeLeader, SlimeFollower, ZombieLeader, ZombieFollower, Bat, Ghost
+    RatLeader, RatFollower, SlimeLeader, SlimeFollower, Zombie, Bat, Ghost
 }
 
 public class EnemyPoolManager : MonoBehaviour

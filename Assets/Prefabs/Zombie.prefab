@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2855840870429806729}
   - component: {fileID: 7306700025055461948}
   m_Layer: 0
-  m_Name: ZombieLeader
+  m_Name: Zombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b9b9bda62431941a2024f7e2114774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityHealth
-  _maxHealth: 40
+  _maxHealth: 30
   _currentHealth: 0
   _healthRegen: 2
   _isDead: 0

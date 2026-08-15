@@ -38,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
     {
         public int RatSquads;
         public int SlimeSquads;
-        public int ZombieSquads;
+        public int Zombies;
         public int Bats;
         public int Ghosts;
     }
@@ -47,7 +47,7 @@ public class EnemySpawner : MonoBehaviour
     {
         public int RatSquads;
         public int SlimeSquads;
-        public int ZombieSquads;
+        public int Zombies;
         public int Bats;
         public int Ghosts;
     }
@@ -88,10 +88,10 @@ public class EnemySpawner : MonoBehaviour
             spawnDeficits.SlimeSquads--;
         }
 
-        if (spawnDeficits.ZombieSquads > 0)
+        if (spawnDeficits.Zombies > 0)
         {
-            SpawnZombieSquad();
-            spawnDeficits.ZombieSquads--;
+            SpawnZombie();
+            spawnDeficits.Zombies--;
         }
 
         if (spawnDeficits.Bats > 0)
@@ -224,45 +224,22 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void SpawnZombieSquad()
+    void SpawnZombie()
     {
-        Vector3 leaderPos = 
+        Vector3 spawnPos = 
             EnemyManager.Instance.GetEnemySpawnLocationsManager().
-            GetRandomOuterGroundSpawn();
+            GetRandomInnerGroundSpawn();
 
-        GameObject leader =
+        GameObject zom =
             EnemyPoolManager.Instance.Get(
-                EnemyType.ZombieLeader,
-                leaderPos,
+                EnemyType.Zombie,
+                spawnPos,
                 Quaternion.identity);
 
-       
 
-        if (leader == null)
-            return;
-        EnemyManager.Instance.RegisterEnemy(leader);
-
-        LeaderEnemy leaderEnemy = leader.GetComponent<LeaderEnemy>();
-
-        for (int i = 0; i < 3; i++)
-        {
-            Vector2 offset = Random.insideUnitCircle * 2.5f;
-
-            GameObject follower =
-                EnemyPoolManager.Instance.Get(
-                    EnemyType.ZombieFollower,
-                    leaderPos + (Vector3)offset,
-                    Quaternion.identity);
-            
-
-            if (follower == null)
-                continue;
-            EnemyManager.Instance.RegisterEnemy(follower);
-
-            follower.GetComponent<FollowerEnemy>().leader =
-                leaderEnemy.transform;
-
-        }
+        if (zom == null) return;
+        EnemyManager.Instance.RegisterEnemy(zom);
+      
     }
 
 
@@ -304,8 +281,8 @@ public class EnemySpawner : MonoBehaviour
                     maximumQuotas.SlimeSquads = maximum;
                     break;
 
-                case EnemyType.ZombieLeader:
-                    maximumQuotas.ZombieSquads = maximum;
+                case EnemyType.Zombie:
+                    maximumQuotas.Zombies = maximum;
                     break;
 
                 case EnemyType.Bat:
@@ -335,10 +312,10 @@ public class EnemySpawner : MonoBehaviour
                 EnemyPoolManager.Instance.GetActiveCount(EnemyType.SlimeLeader)
             ),
 
-            ZombieSquads = Mathf.Max(
+            Zombies = Mathf.Max(
                 0,
-                maximumQuotas.ZombieSquads -
-                EnemyPoolManager.Instance.GetActiveCount(EnemyType.ZombieLeader)
+                maximumQuotas.Zombies -
+                EnemyPoolManager.Instance.GetActiveCount(EnemyType.Zombie)
             ),
 
             Bats = Mathf.Max(

@@ -59,8 +59,8 @@ public class BloodSystem : MonoBehaviour
 
 
     float totalBloodCollected = 0f;
-    float bloodMoonVisibleQuota = 50f; // dummy test values for POC blood collecting
-    float bloodMoonFullQuota = 100f;
+    float bloodMoonVisibleQuota = 400f; // dummy test values for POC blood collecting
+    float bloodMoonFullQuota = 1600f;
 
     [SerializeField] Light2D GlobalLight;
 

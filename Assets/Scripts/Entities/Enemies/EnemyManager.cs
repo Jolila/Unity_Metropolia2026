@@ -63,12 +63,13 @@ public class EnemyManager : MonoBehaviour
     {
         public int ratLeaders;
         public int slimeLeaders;
-        public int zombieLeaders;
+        
 
         public int followers;
 
         public int bats;
         public int ghosts;
+        public int zombies;
     }
 
     private readonly Dictionary<EnemyType, int> updateCursors = new();
@@ -78,7 +79,7 @@ public class EnemyManager : MonoBehaviour
     {
         ratLeaders = 2,
         slimeLeaders = 2,
-        zombieLeaders = 2,
+        zombies = 2,
 
         followers = 30,
 
@@ -151,14 +152,13 @@ public class EnemyManager : MonoBehaviour
 
         UpdatePool(EnemyType.RatLeader, pass.ratLeaders);
         UpdatePool(EnemyType.SlimeLeader, pass.slimeLeaders);
-        UpdatePool(EnemyType.ZombieLeader, pass.zombieLeaders);
-
         UpdatePool(EnemyType.RatFollower, pass.followers);
         UpdatePool(EnemyType.SlimeFollower, pass.followers);
-        UpdatePool(EnemyType.ZombieFollower, pass.followers);
+
 
         UpdatePool(EnemyType.Bat, pass.bats);
         UpdatePool(EnemyType.Ghost, pass.ghosts);
+        UpdatePool(EnemyType.Zombie, pass.zombies);
 
     }
 

@@ -16,6 +16,8 @@ public class FollowerEnemy : MonoBehaviour, IEnemyAI
     private Vector3 targetDirection;
     private Vector2 formationOffset;
 
+    BloodDropletTier maxDropTier = BloodDropletTier.Small;
+
 
     private void Awake()
     {
@@ -37,8 +39,10 @@ public class FollowerEnemy : MonoBehaviour, IEnemyAI
     private void Death()
     {
         GameManager.Instance.RegisterKill();
+        EnemyManager.Instance.GetBloodSystem().TrySpawnDroplet(maxDropTier, transform.position);
         EnemyManager.Instance.UnregisterEnemy(gameObject);
         gameObject.SetActive(false);
+        
     }
 
 
