@@ -21,7 +21,7 @@ public class RewardSystem : MonoBehaviour
     }
 
     public bool IsActive => rewardWindowRemaining > 0f;
-    private float StartingRewardWindow = 10f;
+    private float StartingRewardWindow = 5f;
     private float RewardWindowDuration;
 
     private float rewardWindowRemaining;
@@ -33,6 +33,10 @@ public class RewardSystem : MonoBehaviour
     private GameRound rewardRound;
     private float EnemyPollRate = 0.25f;
     private float enemyCheckTimer;
+
+
+    private float rewardSpawnTime = 1.5f;
+    private float rewardSpawnTimer;
 
     private void OnEnable()
     {
@@ -48,9 +52,11 @@ public class RewardSystem : MonoBehaviour
     private void HandleRoundChanged(GameRound newRound)
     {
         rewardRound = (GameRound)((int)newRound - 1);
-        rewardWindowRemaining = RewardWindowDuration;
+        RewardWindowDuration = StartingRewardWindow + 0.25f * (int)rewardRound; // I dunno, a quarter second per round?
+        rewardWindowRemaining = RewardWindowDuration; 
         enemyCheckTimer = 0f;
     }
+
 
 
 
@@ -101,14 +107,30 @@ public class RewardSystem : MonoBehaviour
             ResolveReward();
         }
 
+        if(rewardSpawnTimer > 0)
+        {
+            rewardSpawnTimer -= Time.deltaTime;
+        }
+        else
+        {
+            rewardWindowRemaining = 0f;
+            rewardSpawnTimer = 0f;
+            Debug.Log("Reward was dished out, reward window is over");
+        }
+
     }
 
     private void ResolveReward()
     {
         float completionTime = rewardWindowRemaining;
+        float rewardScale = RewardWindowDuration / rewardWindowRemaining;
+
+        BloodSystem.Instance.TrySpawnReward(rewardRound, rewardScale);
         rewardWindowRemaining = 0f;
-        Debug.Log("Player has received a reward!");
-        //TODO
+        rewardSpawnTimer = rewardSpawnTime;
+
+
+
     }
 
 

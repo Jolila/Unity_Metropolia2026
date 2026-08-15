@@ -40,6 +40,7 @@ public class Ghost : MonoBehaviour
     {
         GameManager.Instance.RegisterKill();
         EnemyManager.Instance.GetBloodSystem().TrySpawnDroplet(maxDropTier, transform.position);
+        EnemyManager.Instance.UnregisterEnemy(gameObject);
         gameObject.SetActive(false);
     }
 

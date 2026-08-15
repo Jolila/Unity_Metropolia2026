@@ -59,8 +59,8 @@ public class BloodSystem : MonoBehaviour
 
 
     float totalBloodCollected = 0f;
-    float bloodMoonVisibleQuota = 400f; // dummy test values for POC blood collecting
-    float bloodMoonFullQuota = 1600f;
+    float bloodMoonVisibleQuota = 200f; // dummy test values for POC blood collecting
+    float bloodMoonFullQuota = 800f;
 
     [SerializeField] Light2D GlobalLight;
 
@@ -72,11 +72,13 @@ public class BloodSystem : MonoBehaviour
     [SerializeField] ObjectPool MediumDropletPool;
     [SerializeField] ObjectPool LargeDropletPool;
 
-    private float smallEnemyDropChance = 0.30f;
-    private float mediumEnemyDropChance = 0.60f;
-    private float largeEnemyDropChance = 0.80f;
+    [SerializeField] GameObject smallDroplet;
+    [SerializeField] GameObject mediumDroplet;
+    [SerializeField] GameObject largeDroplet;
 
-
+    private float smallEnemyDropChance = 0.20f;
+    private float mediumEnemyDropChance = 0.50f;
+    private float largeEnemyDropChance = 0.70f;
 
     [SerializeField] BloodMoonController _moonController;
     public event Action OnBloodCollected;
@@ -284,6 +286,38 @@ public class BloodSystem : MonoBehaviour
             BloodDropletTier.Large => LargeDropletPool.GetPooledObject(),
             _ => null
         };
+    }
+
+    public void TrySpawnReward(GameRound round, float percentage)
+    {
+        int permille = (int)Mathf.Round(percentage * 1000f);
+
+        int bigs = permille / 100;
+        int meds = (permille % 100) / 10;
+        int smalls = permille % 10;
+
+        Vector2 playerpos = 
+            new Vector2(GameManager.Instance.GetPlayerReference().transform.position.x,
+            GameManager.Instance.GetPlayerReference().transform.position.y);
+
+       
+        for(int i = 0; i < bigs; ++i)
+        {
+            Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
+            Instantiate(largeDroplet, new Vector3(pos.x,pos.y, 0), Quaternion.identity);
+        }
+
+        for (int i = 0; i < meds; ++i)
+        {
+            Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
+            Instantiate(mediumDroplet, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+        }
+
+        for (int i = 0; i < smalls; ++i)
+        {
+            Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
+            Instantiate(smallDroplet, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+        }
     }
 
 
