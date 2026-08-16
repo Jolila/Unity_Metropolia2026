@@ -35,8 +35,7 @@ public class RewardSystem : MonoBehaviour
     private float enemyCheckTimer;
 
 
-    private float rewardSpawnTime = 1.5f;
-    private float rewardSpawnTimer;
+
 
     private void OnEnable()
     {
@@ -52,9 +51,10 @@ public class RewardSystem : MonoBehaviour
     private void HandleRoundChanged(GameRound newRound)
     {
         rewardRound = (GameRound)((int)newRound - 1);
-        RewardWindowDuration = StartingRewardWindow + 0.25f * (int)rewardRound; // I dunno, a quarter second per round?
+        RewardWindowDuration = StartingRewardWindow; // add calculation here
         rewardWindowRemaining = RewardWindowDuration; 
         enemyCheckTimer = 0f;
+        Debug.Log("Start reward system!");
     }
 
 
@@ -91,25 +91,27 @@ public class RewardSystem : MonoBehaviour
         if (!IsActive) return;
 
         rewardWindowRemaining -= Time.deltaTime;
+        enemyCheckTimer -= Time.deltaTime;
+        if (enemyCheckTimer <= 0f)
+        {
+            enemyCheckTimer = EnemyPollRate;
+
+            if (AllEnemiesAreKilled(rewardRound))
+            {
+                ResolveReward();
+                rewardWindowRemaining = 0f;
+                return;
+            }
+        }
+
 
         if (rewardWindowRemaining <= 0f)
         {
             rewardWindowRemaining = 0f;
-            return;
-        }
-
-        enemyCheckTimer -= Time.deltaTime;
-        if (enemyCheckTimer > 0f) return;
-
-        enemyCheckTimer = EnemyPollRate;
-        if(AllEnemiesAreKilled(rewardRound))
-        {
-            ResolveReward();
-            rewardWindowRemaining = 0f;
+            Debug.Log("End reward system");
         }
 
 
-  
 
     }
 

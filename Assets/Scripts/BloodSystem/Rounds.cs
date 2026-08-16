@@ -80,7 +80,7 @@ public static class Rounds
             {
                     
                     { EnemyType.Zombie, 1.0f },
-                    { EnemyType.Bat , 0.4f }
+                    { EnemyType.Bat , 0.2f }
             }
         }
         },

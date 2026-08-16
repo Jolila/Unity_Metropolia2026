@@ -52,8 +52,8 @@ public class BloodSystem : MonoBehaviour
     public Dictionary<BloodDropletTier, float> ContributionToPlayerHealthIncrease =
         new Dictionary<BloodDropletTier, float>
         {
-        { BloodDropletTier.Small, 1.5f},
-        { BloodDropletTier.Medium, 4.5f},
+        { BloodDropletTier.Small, 1.0f},
+        { BloodDropletTier.Medium, 3.0f},
         { BloodDropletTier.Large, 9.0f},
         };
 
@@ -291,6 +291,9 @@ public class BloodSystem : MonoBehaviour
     public void TrySpawnReward(GameRound round, float percentage)
     {
         int permille = (int)Mathf.Round(percentage * 1000f);
+
+
+        // get the percentage. A better ratio would be : for 25% a big one, for 5% medium one, 1% small one.
 
         int bigs = permille / 100;
         int meds = (permille % 100) / 10;
