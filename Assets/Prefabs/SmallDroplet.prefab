@@ -61,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1d0108bf7653d0a488df83f5c6ceb155, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -169,4 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef97e0ecb4203e0458a11ea028518664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BloodDroplet
-  tier: 0
+  tier: 1
+  _renderer: {fileID: 1237136914779814792}
