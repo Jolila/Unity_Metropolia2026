@@ -24,6 +24,8 @@ public class PlayerStaffController : MonoBehaviour
     float _overdriveFireRate = 25f;
     float _underdriveFirerate = 10f;
 
+    float doubleShotChance = 0.2f;
+
 
     Vector2 defaultSpread = new Vector2(-7.5f, 7.5f);
     Vector2 underdriveSpread = new Vector2(-3f, 3f);
@@ -75,7 +77,8 @@ public class PlayerStaffController : MonoBehaviour
 
         if (GameManager.Instance.GetState() == GameState.Countdown) return;
         
-        if (Input.GetButton("Fire1") && Time.time >= _nextFireTime)
+        if (Input.GetButton("Fire1") && Time.time >= _nextFireTime
+            && playerHealth.TryRequestProjectile())
         {
             _nextFireTime = Time.time + 1f / _fireRate;
             Shoot();
@@ -110,7 +113,7 @@ public class PlayerStaffController : MonoBehaviour
 
       
         // roll for doubleshot
-        if (Random.Range(0, 1.0f) > 0.8f)
+        if (Random.Range(0, 1.0f) > 1.0f - doubleShotChance)
         {
             GameObject go1 = _projectilePool.GetPooledObject();
             Projectile projectile1 = go1.GetComponent<Projectile>();
@@ -164,12 +167,14 @@ public class PlayerStaffController : MonoBehaviour
             _fireRate = _underdriveFirerate;
             currentSpread = underdriveSpread;
             staffLight.intensity = 0.4f;
+            doubleShotChance = 0.2f;
         }
         else if (newState == HealthState.Overdrive)
         {
             _fireRate = _overdriveFireRate;
             currentSpread = overdriveSpread;
             staffLight.color = overdriveStaffLightColor;
+            doubleShotChance = 0.45f;
         }
         else if (newState == HealthState.Normal)
         {
@@ -177,6 +182,7 @@ public class PlayerStaffController : MonoBehaviour
             currentSpread = defaultSpread;
             staffLight.color = defaultStafflightColor;
             staffLight.intensity = 1f;
+            doubleShotChance = 0f;
         }
     }
 

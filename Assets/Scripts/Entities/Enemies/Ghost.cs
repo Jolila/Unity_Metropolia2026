@@ -45,7 +45,7 @@ public class Ghost : MonoBehaviour, IEnemyAI
 
     public void Tick(Vector3 playerPosition)
     {
-        targetDirection = playerPosition.normalized;
+        targetDirection = (playerPosition - transform.position).normalized;
     }
 
    

@@ -76,9 +76,9 @@ public class BloodSystem : MonoBehaviour
     [SerializeField] GameObject mediumDroplet;
     [SerializeField] GameObject largeDroplet;
 
-    private float smallEnemyDropChance = 0.20f;
-    private float mediumEnemyDropChance = 0.50f;
-    private float largeEnemyDropChance = 0.70f;
+    private float smallEnemyDropChance = 0.175f;
+    private float mediumEnemyDropChance = 0.4f;
+    private float largeEnemyDropChance = 0.60f;
 
     [SerializeField] BloodMoonController _moonController;
     public event Action OnBloodCollected;
@@ -146,8 +146,8 @@ public class BloodSystem : MonoBehaviour
 
     }
 
-    private const float MaxRoundDropChanceBonus = 0.2f;
-    private const float MaxDropWeightTransfer = 0.20f;
+    private const float MaxRoundDropChanceBonus = 0.15f;
+    private const float MaxDropWeightTransfer = 0.15f;
 
     private float GetRoundDropChanceBonus()
     {

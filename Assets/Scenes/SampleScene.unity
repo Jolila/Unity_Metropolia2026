@@ -3978,7 +3978,7 @@ MonoBehaviour:
     objects: []
   - type: 5
     prefab: {fileID: 6394731116622321747, guid: b27522b2879b7434781c8de99a0e281e, type: 3}
-    size: 300
+    size: 100
     objects: []
   - type: 2
     prefab: {fileID: 6394731116622321747, guid: 3f2edf52642e32e4aaf6a45c270d7e32, type: 3}

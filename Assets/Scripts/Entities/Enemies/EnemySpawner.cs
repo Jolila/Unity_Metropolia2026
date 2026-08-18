@@ -149,11 +149,20 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnGhosts()
     {
-        EnemyPoolManager.Instance.Get(EnemyType.Ghost,
-            EnemyManager.Instance.GetEnemySpawnLocationsManager()
-            .GetRandomInnerWallSpawn(),
-            Quaternion.identity,
-            GameManager.Instance.GetPlayerReference().transform.position);
+
+       Vector3 spawnPos =
+       EnemyManager.Instance.GetEnemySpawnLocationsManager().
+       GetRandomInnerWallSpawn();
+
+        GameObject ghost =
+            EnemyPoolManager.Instance.Get(
+                EnemyType.Ghost,
+                spawnPos,
+                Quaternion.identity,
+                GameManager.Instance.GetPlayerReference().transform.position);
+
+        if (ghost == null) return;
+        EnemyManager.Instance.RegisterEnemy(ghost);
 
     }
 
@@ -175,7 +184,7 @@ public class EnemySpawner : MonoBehaviour
     void SpawnBats()
     {
 
-        int amount = Random.Range(0, 7);
+        int amount = Random.Range(0, 3);
         for(int i = 0; i < amount; ++i)
         {
             GameObject bat  = EnemyPoolManager.Instance.Get(EnemyType.Bat,

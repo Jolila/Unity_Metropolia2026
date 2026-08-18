@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FollowerEnemy
   leader: {fileID: 0}
   isPanic: 0
-  speed: 4
+  speed: 2
   lifetime: 0
   followLeader: 0
   sprite: {fileID: 4355706441492227380}

@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
 
         if (BloodSystem.Instance.TotalBloodCollected < BloodSystem.Instance.BloodMoonVisibleQuota) return;
 
-        float intensity = Mathf.Lerp(0f, 5.0f, 
+        float intensity = Mathf.Lerp(0f, 2.5f, 
             BloodSystem.Instance.TotalBloodCollected - BloodSystem.Instance.BloodMoonVisibleQuota
             / BloodSystem.Instance.BloodMoonFullQuota);
 

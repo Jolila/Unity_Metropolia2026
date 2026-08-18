@@ -77,14 +77,14 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private UpdatePass defaultUpdatePass = new()
     {
-        ratLeaders = 2,
-        slimeLeaders = 2,
-        zombies = 2,
+        ratLeaders = 5,
+        slimeLeaders = 5,
+        zombies = 10,
 
-        followers = 30,
+        followers = 50,
 
-        bats = 20,
-        ghosts = 20
+        bats = 40,
+        ghosts = 40
     };
 
 

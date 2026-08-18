@@ -43,7 +43,7 @@ public class BloodDroplet : MonoBehaviour
 
    private void SetGlow(float amount)
     {
-        Debug.Log($"Setting glow to {amount}");
+        
         _renderer.GetPropertyBlock(propertyBlock);
         propertyBlock.SetFloat(GlowIntensityID, amount);
         _renderer.SetPropertyBlock(propertyBlock);

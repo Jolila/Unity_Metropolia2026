@@ -21,15 +21,12 @@ public class PlayerHealthSystem : MonoBehaviour
     public float CurrentHealth => _currentHealth;
 
    
-    float damageRadius = 0.4f;
-    float contactDPS = 1.0f;
+    float damageRadius = 0.5f;
+    float contactDPS = 2.5f;
 
-    float ambientBloodLoss = 1.5f;
-    float ambientBloodLossOnOverdrive = 5f;
-    float ambientBloodLossOnUnderdrive = 1.0f;
-
-
-    float BloodLostOnFireRing = 20.0f;
+    float ambientBloodLoss = 0.20f;
+    float ambientBloodLossOnOverdrive = 2f;
+    float ambientBloodLossOnUnderdrive = 0.05f;
 
 
 
@@ -200,6 +197,16 @@ public class PlayerHealthSystem : MonoBehaviour
             return true;
         }
         else return false;
+    }
+
+    public bool TryRequestProjectile()
+    {
+        if(_currentHealth > 0.6f)
+        {
+            _currentHealth -= 0.2f;
+            return true;
+        }
+        return false;
     }
 
 
