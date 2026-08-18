@@ -290,24 +290,26 @@ public class BloodSystem : MonoBehaviour
 
     public void TrySpawnReward(GameRound round, float percentage)
     {
-        int permille = (int)Mathf.Round(percentage * 1000f);
+        float percent = (int)Mathf.Round(percentage * 100f);
 
 
         // get the percentage. A better ratio would be : for 25% a big one, for 5% medium one, 1% small one.
 
-        int bigs = permille / 100;
-        int meds = (permille % 100) / 10;
-        int smalls = permille % 10;
+        int bigs = (int)(percent / 25f);
+        float percent2 = percent - bigs * 25;
+        int meds = (int)(percent2 / 10f);
+        float percent3 = percent2 - meds * 10f;
+        int smalls = (int)(percent3);
+
 
         Vector2 playerpos = 
             new Vector2(GameManager.Instance.GetPlayerReference().transform.position.x,
             GameManager.Instance.GetPlayerReference().transform.position.y);
 
-       
-        for(int i = 0; i < bigs; ++i)
+        for (int i = 0; i < bigs; ++i)
         {
             Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
-            Instantiate(largeDroplet, new Vector3(pos.x,pos.y, 0), Quaternion.identity);
+            Instantiate(largeDroplet, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
         }
 
         for (int i = 0; i < meds; ++i)
@@ -321,6 +323,7 @@ public class BloodSystem : MonoBehaviour
             Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
             Instantiate(smallDroplet, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
         }
+
     }
 
 

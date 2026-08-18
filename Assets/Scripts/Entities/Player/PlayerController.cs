@@ -169,9 +169,14 @@ public class PlayerController : MonoBehaviour
     private void HandleMoonLightIntensity()
     {
         // min is 0f, max is 10f. Lerping needs to happen between 0 and bloodmoonfull.
-        float intensity = Mathf.Lerp(0f, 10.0f, 
+
+        if (BloodSystem.Instance.TotalBloodCollected < BloodSystem.Instance.BloodMoonVisibleQuota) return;
+
+        float intensity = Mathf.Lerp(0f, 5.0f, 
             BloodSystem.Instance.TotalBloodCollected - BloodSystem.Instance.BloodMoonVisibleQuota
             / BloodSystem.Instance.BloodMoonFullQuota);
+
+
         moonlight.intensity = intensity;
     }
 }
