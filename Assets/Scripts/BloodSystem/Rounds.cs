@@ -152,7 +152,10 @@ public static class Rounds
             {
                 { EnemyType.Ghost, 1.0f},
                 { EnemyType.RatLeader, 1.0f},
-                { EnemyType.RatFollower, 1.0f}
+                { EnemyType.RatFollower, 1.0f},
+                { EnemyType.Zombie, 0.6f},
+                { EnemyType.SlimeLeader, 0.6f},
+                { EnemyType.SlimeFollower, 0.6f }
             }
         }
         },

@@ -21,7 +21,7 @@ public class RewardSystem : MonoBehaviour
     }
 
     public bool IsActive => rewardWindowRemaining > 0f;
-    private float StartingRewardWindow = 5f;
+    private float StartingRewardWindow = 7f;
     private float RewardWindowDuration;
 
     private float rewardWindowRemaining;

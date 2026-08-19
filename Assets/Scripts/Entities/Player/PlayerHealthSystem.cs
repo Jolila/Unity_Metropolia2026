@@ -201,7 +201,7 @@ public class PlayerHealthSystem : MonoBehaviour
 
     public bool TryRequestProjectile()
     {
-        if(_currentHealth > 0.6f)
+        if(_currentHealth > 0.4f)
         {
             _currentHealth -= 0.2f;
             return true;
