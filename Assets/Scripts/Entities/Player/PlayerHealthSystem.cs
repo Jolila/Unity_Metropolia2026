@@ -191,9 +191,9 @@ public class PlayerHealthSystem : MonoBehaviour
 
     public bool TryRequestFireRing()
     {
-        if (_currentHealth > 30.0f)
+        if (_currentHealth > 55.0f)
         {
-            _currentHealth -= 20f;
+            _currentHealth -= 40f;
             return true;
         }
         else return false;
