@@ -9,7 +9,7 @@ public class GameProgressionManager : MonoBehaviour
     private float CanonEvent2 => BloodSystem.Instance.BloodMoonFullQuota;
 
     private const float CanonEvent1RoundProgressionExponent = 1.25f;
-    private const float CanonEvent2RoundProgressionExponent = 1.5f; // This needs tweaking, might be as high as 4, but likely needs a linear component.
+    private const float CanonEvent2RoundProgressionExponent = 1.75f; // This needs tweaking, might be as high as 4, but likely needs a linear component.
 
     public Action <GameRound> OnCurrentRoundChanged;
     public Action OnBloodMoonFull;
