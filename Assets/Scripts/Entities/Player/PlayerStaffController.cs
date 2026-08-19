@@ -8,6 +8,8 @@ public class PlayerStaffController : MonoBehaviour
     [SerializeField] FireRing _fireRing;
     [SerializeField] Transform _tip;
     [SerializeField] float _fireRate;
+    float _ringRate = 0.5f;
+    float _nextRingTime = 0f;
 
     [SerializeField] GameObject player;
     [SerializeField] ObjectPool _projectilePool;
@@ -45,6 +47,7 @@ public class PlayerStaffController : MonoBehaviour
         mainCamera = Camera.main;
         _fireRate = _defaultFireRate;
         currentSpread = defaultSpread;
+        _ringRate = 0.5f;
     }
 
     void Start()
@@ -83,8 +86,9 @@ public class PlayerStaffController : MonoBehaviour
             _nextFireTime = Time.time + 1f / _fireRate;
             Shoot();
         }
-        if(Input.GetButton("Fire2") && playerHealth.TryRequestFireRing())
+        if(Input.GetButton("Fire2") && Time.time >= _nextRingTime && playerHealth.TryRequestFireRing() )
         {
+            _nextRingTime = Time.time + 1f / _ringRate;
             UseFireRing();
         }
     }
