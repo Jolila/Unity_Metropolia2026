@@ -1,16 +1,18 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.Rendering.DebugUI;
 
 public class BloodDroplet : MonoBehaviour
 {
 
-    private float killTimer = 5f;
+    private float killTimer = 6f;
     [SerializeField] private BloodDropletTier tier;
     [SerializeField] SpriteRenderer _renderer;
     private Material dropletMaterial;
     private static readonly int GlowIntensityID =
     Shader.PropertyToID("_Glow_Intensity");
+    [SerializeField] Light2D _light;
 
     private MaterialPropertyBlock propertyBlock;
 
@@ -47,6 +49,7 @@ public class BloodDroplet : MonoBehaviour
         _renderer.GetPropertyBlock(propertyBlock);
         propertyBlock.SetFloat(GlowIntensityID, amount);
         _renderer.SetPropertyBlock(propertyBlock);
+        _light.intensity = amount * 0.5f;
     }
 
     IEnumerator Lifetime()
@@ -56,7 +59,7 @@ public class BloodDroplet : MonoBehaviour
         while(start < killTimer)
         {
             float t = start / killTimer;
-            SetGlow(1 - t);
+            SetGlow(1 - 0.5f*t);
 
             start += Time.deltaTime;
             yield return null;
