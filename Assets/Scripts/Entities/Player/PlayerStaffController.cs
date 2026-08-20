@@ -35,7 +35,7 @@ public class PlayerStaffController : MonoBehaviour
     Vector2 overdriveSpread = new Vector2(-11.5f, 11.5f);
 
     Color defaultStafflightColor = new Color(0.2f, 0.45f, 0.2f);
-    Color overdriveStaffLightColor = new Color(0.6f, 0.15f, 0.15f);
+    Color overdriveStaffLightColor = new Color(1.0f, 0.0f, 0.0f);
 
     Vector2 currentSpread;
 
@@ -174,7 +174,7 @@ public class PlayerStaffController : MonoBehaviour
         {
             _fireRate = _underdriveFirerate;
             currentSpread = underdriveSpread;
-            staffLight.intensity = 0.4f;
+            staffLight.intensity = 0.05f;
             doubleShotChance = 0.1f;
         }
         else if (newState == HealthState.Overdrive)

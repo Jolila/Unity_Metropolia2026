@@ -5083,7 +5083,7 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.897
-  m_Color: {r: 0.7132075, g: 0.50068676, b: 0.47771445, a: 1}
+  m_Color: {r: 0.7, g: 0.5, b: 0.5, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -5287,8 +5287,9 @@ MonoBehaviour:
   _animator: {fileID: 4949564755466446461}
   _footstep: {fileID: 8300000, guid: b80107c534a1e2e4b95a420be9c6e197, type: 3}
   _healthSystem: {fileID: 3833155191796550076}
-  _staffController: {fileID: 0}
-  moonlight: {fileID: 0}
+  _staffController: {fileID: 3480183630426177931}
+  moonlight: {fileID: 8578443528865898236}
+  torch: {fileID: 2574556843782218203}
   playerSprite: {fileID: 5206972489622863278}
 --- !u!58 &7437102445447723579
 CircleCollider2D:
