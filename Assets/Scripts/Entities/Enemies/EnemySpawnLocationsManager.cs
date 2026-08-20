@@ -28,7 +28,7 @@ public class EnemySpawnLocationsManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        currentPlayerCell = GetCell(GameManager.Instance.GetPlayerReference().transform.position);
 
     }
 
@@ -104,11 +104,12 @@ public class EnemySpawnLocationsManager : MonoBehaviour
     void Update()
     {
 
-        if (GameManager.Instance.GetState() != GameState.Countdown || GameManager.Instance.GetState() != GameState.Playing) return; // OR later
+        if (GameManager.Instance.GetState() != GameState.Playing) return;
         
         Vector2Int playerCell = GetCell(GameManager.Instance.GetPlayerReference().transform.position);
         if(playerCell != currentPlayerCell)
         {
+            
             currentPlayerCell = playerCell;
             RefreshCandidates();
         }

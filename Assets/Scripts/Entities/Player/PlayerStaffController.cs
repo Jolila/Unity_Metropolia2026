@@ -93,7 +93,7 @@ public class PlayerStaffController : MonoBehaviour
         {
             _nextRingTime = Time.time + 1f / _ringRate;
             float expended = playerHealth.TryRequestFireRing();
-            UseFireRing(expended);
+            if(expended > 0.0f) UseFireRing(expended);
         }
     }
 

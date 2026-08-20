@@ -191,7 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FollowerEnemy
   leader: {fileID: 1032460311878993800, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
   isPanic: 0
-  speed: 4
+  speed: 2.5
   lifetime: 0
   followLeader: 0
   sprite: {fileID: 4355706441492227380}

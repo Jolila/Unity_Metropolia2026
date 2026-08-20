@@ -22,7 +22,7 @@ public class PlayerHealthSystem : MonoBehaviour
 
    
     float damageRadius = 0.5f;
-    float contactDPS = 2.5f;
+    float contactDPS = 12.5f;
 
     float ambientBloodLoss = 0.20f;
     float ambientBloodLossOnOverdrive = 5f;
