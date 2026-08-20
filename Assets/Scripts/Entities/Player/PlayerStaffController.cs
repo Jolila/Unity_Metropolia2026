@@ -20,6 +20,7 @@ public class PlayerStaffController : MonoBehaviour
     Vector2 _lookDirection;
     float _nextFireTime;
     private Camera mainCamera;
+    [SerializeField] CircleCollider2D _staffCollider;
 
 
     float _defaultFireRate = 15f;

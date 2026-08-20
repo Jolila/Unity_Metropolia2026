@@ -14,10 +14,16 @@ public class BloodDroplet : MonoBehaviour
     Shader.PropertyToID("_Glow_Intensity");
     [SerializeField] Light2D _light;
 
+    [SerializeField] private AnimationCurve vacuumSpeed;
+    [SerializeField] private float maxDistance = 3.0f;
+    [SerializeField] private float maxSpeed = 2.5f;
+    private float stopHomingDistance = 4.0f;
+
     private MaterialPropertyBlock propertyBlock;
 
     public BloodDropletTier Tier => tier;
-
+    bool closeToPlayer;
+    
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
@@ -33,14 +39,33 @@ public class BloodDroplet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(closeToPlayer)
+        {
+            Vector3 helper = 
+                GameManager.Instance.GetPlayerReference().transform.position - transform.position;
+
+            float distance = helper.magnitude;
+            if(distance > stopHomingDistance)
+            {
+                closeToPlayer = false;
+                return;
+            }
+
+            float t = Mathf.Clamp01(distance / maxDistance);
+
+            float speed = vacuumSpeed.Evaluate(t) * maxSpeed;
+            transform.position += 
+                helper.normalized
+                * speed
+                * Time.deltaTime;
+        }
     }
 
     public void OnEnable()
     {
         SetGlow(1f);
         StartCoroutine(Lifetime());
-        
+        closeToPlayer = false;
     }
 
    private void SetGlow(float amount)
@@ -49,7 +74,7 @@ public class BloodDroplet : MonoBehaviour
         _renderer.GetPropertyBlock(propertyBlock);
         propertyBlock.SetFloat(GlowIntensityID, amount);
         _renderer.SetPropertyBlock(propertyBlock);
-        _light.intensity = amount * 0.5f;
+        _light.intensity = amount * 0.25f;
     }
 
     IEnumerator Lifetime()
@@ -75,6 +100,11 @@ public class BloodDroplet : MonoBehaviour
             BloodSystem.Instance.CollectBlood(tier);
             gameObject.SetActive(false);
 
+        }
+
+        if(other.CompareTag("PlayerStaff"))
+        {
+            closeToPlayer = true;
         }
         
     }

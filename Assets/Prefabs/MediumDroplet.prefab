@@ -173,6 +173,32 @@ MonoBehaviour:
   tier: 1
   _renderer: {fileID: 1237136914779814792}
   _light: {fileID: 4620324507699897495}
+  vacuumSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.013332367
+      value: 0.8353882
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9299927
+      value: 0.06945801
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxDistance: 3
+  maxSpeed: 15
 --- !u!114 &4620324507699897495
 MonoBehaviour:
   m_ObjectHideFlags: 0

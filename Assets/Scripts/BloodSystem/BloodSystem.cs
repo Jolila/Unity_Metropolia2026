@@ -52,9 +52,9 @@ public class BloodSystem : MonoBehaviour
     public Dictionary<BloodDropletTier, float> ContributionToPlayerHealthIncrease =
         new Dictionary<BloodDropletTier, float>
         {
-        { BloodDropletTier.Small, 1.0f},
-        { BloodDropletTier.Medium, 3.0f},
-        { BloodDropletTier.Large, 9.0f},
+        { BloodDropletTier.Small, 0.5f},
+        { BloodDropletTier.Medium, 2.0f},
+        { BloodDropletTier.Large, 5.0f},
         };
 
 

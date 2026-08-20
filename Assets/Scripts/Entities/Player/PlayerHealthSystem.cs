@@ -193,7 +193,7 @@ public class PlayerHealthSystem : MonoBehaviour
     {
         if (_currentHealth > 55.0f)
         {
-            _currentHealth -= 40f;
+            _currentHealth = CurrentHealth * 0.25f;
             return true;
         }
         else return false;

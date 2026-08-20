@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Terrain
   - Collectible
+  - PlayerStaff
   layers:
   - Default
   - TransparentFX

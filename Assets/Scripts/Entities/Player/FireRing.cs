@@ -6,7 +6,7 @@ public class FireRing : MonoBehaviour
 
     Transform _playerTransform;
     [SerializeField] float _timer = 0.5f;
-    [SerializeField] float _dps = 10.0f;
+    [SerializeField] float _dps = 2.0f;
     float radius = 4.9f;
     Vector2 offset = new Vector2(0f, -0.3f);
 
@@ -34,7 +34,7 @@ public class FireRing : MonoBehaviour
 
             if (enemy.TryGetComponent(out EntityHealth entityHealth))
             {
-                entityHealth.LoseHealth(_dps);
+                entityHealth.LoseHealth(_dps * Time.deltaTime);
             }
         }
     }
