@@ -229,34 +229,63 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlayAudio(AudioClip audioClip, SoundType soundType, float volume, bool loop)
-    {
-        
-
-        //GameObject audioObject = new GameObject(audioClip.name + " Source");
-        //AudioSource audioSource = audioObject.AddComponent<AudioSource>();
-        //audioSource.clip = audioClip;
-        //audioSource.volume = volume;
-        //audioSource.loop = false;
-        //audioSource.outputAudioMixerGroup = _sfxGroup;
-        //audioSource.Play();
-        //Destroy(audioObject, audioClip.length);
-      
-       
-    }
+    { }
 
     public void PlaySFX(AudioClip clip, float volume)
     {
-        AudioSource source = _sfxSources[currentSource];
+        AudioSource source = GetNextSFXSource();
+        source.clip = clip;
+        source.volume = volume;
+        source.loop = false;
+        source.Play();
+      
+    }
 
+    public void PlaySFX(AudioClip clip, float volume, float time)
+    {
+        AudioSource source = GetNextSFXSource();
         source.clip = clip;
         source.volume = volume;
         source.loop = false;
         source.Play();
 
-        currentSource++;
+        StartCoroutine(FadeOutSFX(source, time));
+    }
 
+    private IEnumerator FadeOutSFX(AudioSource source, float time)
+    {
+        float fadeDuration = Mathf.Min(0.1f, time);
+        float playDuration = time - fadeDuration;
+
+        yield return new WaitForSeconds(playDuration);
+
+        float startVolume = source.volume;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            source.volume = Mathf.Lerp(
+                startVolume,
+                0f,
+                elapsed / fadeDuration
+            );
+
+            yield return null;
+        }
+
+        source.Stop();
+        source.volume = 0f;
+    }
+
+    private AudioSource GetNextSFXSource()
+    {
+        AudioSource source = _sfxSources[currentSource];
+        currentSource++;
         if (currentSource >= _sfxSources.Length)
             currentSource = 0;
+        return source;
     }
 
 
@@ -275,9 +304,9 @@ public class AudioManager : MonoBehaviour
         PlaySFX(projectileShoot, 0.6f);
     }
 
-    public void PlayFireRing()
+    public void PlayFireRing(float time)
     {
-        PlaySFX(fireRing, 0.6f);
+        PlaySFX(fireRing, 0.6f, time);
     }
 
     public void PlayGhostDeath()

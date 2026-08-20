@@ -178,7 +178,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NonWallCollidingEnemy
   targetDirection: {x: 0, y: 0, z: 0}
-  speed: 4
+  personalTargetOffset: {x: 0, y: 0, z: 0}
+  speed: 2.5
   sprite: {fileID: 4355706441492227380}
 --- !u!114 &4033199629912058352
 MonoBehaviour:

@@ -87,10 +87,13 @@ public class PlayerStaffController : MonoBehaviour
             _nextFireTime = Time.time + 1f / _fireRate;
             Shoot();
         }
-        if(Input.GetButton("Fire2") && Time.time >= _nextRingTime && playerHealth.TryRequestFireRing() )
+        if(
+            Input.GetButton("Fire2") &&
+            Time.time >= _nextRingTime)
         {
             _nextRingTime = Time.time + 1f / _ringRate;
-            UseFireRing();
+            float expended = playerHealth.TryRequestFireRing();
+            UseFireRing(expended);
         }
     }
 
@@ -152,10 +155,10 @@ public class PlayerStaffController : MonoBehaviour
         //player.transform.position -= new Vector3(playerOffset.x, playerOffset.y, 0);
     }
 
-    void UseFireRing()
+    void UseFireRing(float expended)
     {
         FireRing newFireRing = Instantiate(_fireRing, transform.position, Quaternion.identity);
-        AudioManager.Instance.PlayFireRing();
+        newFireRing.SetExpended(expended);
         newFireRing.InitializeFireAttack(transform);
     }
 
@@ -172,7 +175,7 @@ public class PlayerStaffController : MonoBehaviour
             _fireRate = _underdriveFirerate;
             currentSpread = underdriveSpread;
             staffLight.intensity = 0.4f;
-            doubleShotChance = 0.2f;
+            doubleShotChance = 0.1f;
         }
         else if (newState == HealthState.Overdrive)
         {
@@ -187,7 +190,7 @@ public class PlayerStaffController : MonoBehaviour
             currentSpread = defaultSpread;
             staffLight.color = defaultStafflightColor;
             staffLight.intensity = 1f;
-            doubleShotChance = 0f;
+            doubleShotChance = 0.2f;
         }
     }
 

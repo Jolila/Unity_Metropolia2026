@@ -40,8 +40,8 @@ public static class Rounds
             {
                 PoolFillPercent =
                 {
-                    { EnemyType.RatLeader, 0.35f },
-                    { EnemyType.RatFollower, 0.35f }
+                        { EnemyType.RatLeader, 0.35f },
+                        { EnemyType.RatFollower, 0.35f }
                 }
             }
         },
@@ -80,7 +80,10 @@ public static class Rounds
             {
 
                     { EnemyType.Zombie, 1.0f },
-                    { EnemyType.Bat , 0.2f }
+                    { EnemyType.Bat , 0.2f },
+                    { EnemyType.RatLeader, 0.4f},
+                    { EnemyType.RatFollower, 0.4f}
+
             }
         }
         },
