@@ -42,7 +42,7 @@ public class FireRing : MonoBehaviour
     public void SetExpended(float expended)
     {
         float t = Mathf.Lerp(1.0f, 2.0f, expended / _expendedBloodForFullLength);
-        float d = Mathf.Lerp(1.0f, 3.0f, expended / _expendedBloodForFullDamage);
+        float d = Mathf.Lerp(1.0f, 3.5f, expended / _expendedBloodForFullDamage);
         audioEffectTimer = t;
         _dps = d;
         _timer = t;

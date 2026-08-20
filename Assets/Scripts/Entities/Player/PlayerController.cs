@@ -172,11 +172,13 @@ public class PlayerController : MonoBehaviour
 
         if (BloodSystem.Instance.TotalBloodCollected < BloodSystem.Instance.BloodMoonVisibleQuota) return;
 
-        float intensity = Mathf.Lerp(0f, 2.5f, 
-            BloodSystem.Instance.TotalBloodCollected - BloodSystem.Instance.BloodMoonVisibleQuota
-            / BloodSystem.Instance.BloodMoonFullQuota);
+        float progress =
+            (BloodSystem.Instance.TotalBloodCollected - BloodSystem.Instance.BloodMoonVisibleQuota) /
+            (BloodSystem.Instance.BloodMoonFullQuota - BloodSystem.Instance.BloodMoonVisibleQuota);
 
+        float intensity = Mathf.Lerp(0f, 2.5f, progress);
 
+        
         moonlight.intensity = intensity;
     }
 }
