@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public enum EnemyType
 {
-    RatLeader, RatFollower, SlimeLeader, SlimeFollower, ZombieLeader, ZombieFollower, Bat, Ghost
+    RatLeader, RatFollower, SlimeLeader, SlimeFollower, Zombie, Bat, Ghost
 }
 
 public class EnemyPoolManager : MonoBehaviour
@@ -95,18 +97,14 @@ public class EnemyPoolManager : MonoBehaviour
         return pool;
     }
 
-    public bool PoolHasActiveEnemies(EnemyType type)
+
+
+    public int GetActiveCount(EnemyType type)
     {
-        if (!_poolLookup.TryGetValue(type, out Pool pool))
-            return false;
+        if (!_poolLookup.TryGetValue(type, out Pool pool)) return 0;
 
-        foreach (GameObject enemy in pool.objects)
-        {
-            if (enemy.activeInHierarchy)
-                return true;
-        }
+        return pool.objects.Count(e => e.activeInHierarchy);
 
-        return false;
     }
 
 

@@ -1,9 +1,9 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class LeaderEnemy : MonoBehaviour, IEnemyAI
+public class Zombie : MonoBehaviour, IEnemyAI
 {
+
     bool waiting;
     EntityHealth _entityHealth;
 
@@ -11,7 +11,7 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
     public SpriteRenderer sprite;
     UnityEngine.AI.NavMeshAgent _agent;
     Vector3 cachedTarget;
-    BloodDropletTier maxDropTier = BloodDropletTier.Medium;
+    BloodDropletTier maxDropTier = BloodDropletTier.Large;
 
     void OnEnable()
     {
@@ -31,7 +31,7 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
     void Update()
     {
 
-        if(GameManager.Instance.GetState() == GameState.Ending)
+        if (GameManager.Instance.GetState() == GameState.Ending)
         {
             _agent.isStopped = true;
             return;
@@ -41,8 +41,6 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
             return;
 
     }
-    
-
 
 
     public void Tick(Vector3 playerPosition)
@@ -52,18 +50,18 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
         _agent.SetDestination(playerPosition);
     }
 
-   
+
 
 
     void OnDisable()
     {
         _entityHealth.OnDeath -= DestroyEnemy;
-        
+
     }
 
     void DestroyEnemy()
     {
-        
+
         AudioManager.Instance.PlayEnemyDeath();
         GameManager.Instance.RegisterKill();
         EnemyManager.Instance.UnregisterEnemy(gameObject);
@@ -73,5 +71,4 @@ public class LeaderEnemy : MonoBehaviour, IEnemyAI
     }
 
 
-  
 }

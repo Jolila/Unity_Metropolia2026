@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class FollowerEnemy : MonoBehaviour, IEnemyAI
 {
@@ -15,6 +16,9 @@ public class FollowerEnemy : MonoBehaviour, IEnemyAI
     public SpriteRenderer sprite;
     private Vector3 targetDirection;
     private Vector2 formationOffset;
+    private float killTimer = 0.25f;
+
+    BloodDropletTier maxDropTier = BloodDropletTier.Small;
 
 
     private void Awake()
@@ -37,8 +41,10 @@ public class FollowerEnemy : MonoBehaviour, IEnemyAI
     private void Death()
     {
         GameManager.Instance.RegisterKill();
+        EnemyManager.Instance.GetBloodSystem().TrySpawnDroplet(maxDropTier, transform.position);
         EnemyManager.Instance.UnregisterEnemy(gameObject);
         gameObject.SetActive(false);
+        
     }
 
 
@@ -74,5 +80,23 @@ public class FollowerEnemy : MonoBehaviour, IEnemyAI
     {
         isPanic = true;
         targetDirection = Random.insideUnitCircle * 2.5f;
+        StartCoroutine(Lifetime());
+    }
+
+   
+
+    IEnumerator Lifetime()
+    {
+
+        float start = 0f;
+        while (start < killTimer)
+        {
+            float t = start / killTimer;
+           
+            start += Time.deltaTime;
+            yield return null;
+        }
+        EnemyManager.Instance.UnregisterEnemy(gameObject);
+        gameObject.SetActive(false);
     }
 }

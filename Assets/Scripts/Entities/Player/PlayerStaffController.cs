@@ -8,6 +8,8 @@ public class PlayerStaffController : MonoBehaviour
     [SerializeField] FireRing _fireRing;
     [SerializeField] Transform _tip;
     [SerializeField] float _fireRate;
+    float _ringRate = 0.5f;
+    float _nextRingTime = 0f;
 
     [SerializeField] GameObject player;
     [SerializeField] ObjectPool _projectilePool;
@@ -18,24 +20,29 @@ public class PlayerStaffController : MonoBehaviour
     Vector2 _lookDirection;
     float _nextFireTime;
     private Camera mainCamera;
+    [SerializeField] CircleCollider2D _staffCollider;
 
 
     float _defaultFireRate = 15f;
     float _overdriveFireRate = 25f;
     float _underdriveFirerate = 10f;
 
+    float doubleShotChance = 0.2f;
 
-    Vector2 defaultSpread = new Vector2(-7.5f, 7.5f);
-    Vector2 underdriveSpread = new Vector2(-3f, 3f);
+
+    Vector2 defaultSpread = new Vector2(-5f, 5f);
+    Vector2 underdriveSpread = new Vector2(-2.5f, 2.5f);
     Vector2 overdriveSpread = new Vector2(-11.5f, 11.5f);
 
     Color defaultStafflightColor = new Color(0.2f, 0.45f, 0.2f);
-    Color overdriveStaffLightColor = new Color(0.6f, 0.15f, 0.15f);
+    Color overdriveStaffLightColor = new Color(1.0f, 0.0f, 0.0f);
 
     Vector2 currentSpread;
 
 
-    // Update is called once per frame
+    private float maxSpreadTime = 3.0f;
+    [SerializeField] AnimationCurve spreadBuildUpCurve = AnimationCurve.EaseInOut(0, 0, 1, 0);
+    private float spreadTime = 0f;
 
     void Awake()
     {
@@ -43,6 +50,7 @@ public class PlayerStaffController : MonoBehaviour
         mainCamera = Camera.main;
         _fireRate = _defaultFireRate;
         currentSpread = defaultSpread;
+        _ringRate = 0.5f;
     }
 
     void Start()
@@ -74,15 +82,31 @@ public class PlayerStaffController : MonoBehaviour
         RotateStaff();
 
         if (GameManager.Instance.GetState() == GameState.Countdown) return;
-        
-        if (Input.GetButton("Fire1") && Time.time >= _nextFireTime)
+
+        bool isFiring = Input.GetButton("Fire1");
+
+        if(isFiring)
+        {
+            spreadTime += Time.deltaTime;
+            spreadTime = Mathf.Clamp(spreadTime, 0f, maxSpreadTime);
+        }
+        else
+        {
+            spreadTime = 0f;
+        }
+        if (isFiring && Time.time >= _nextFireTime
+            && playerHealth.TryRequestProjectile())
         {
             _nextFireTime = Time.time + 1f / _fireRate;
             Shoot();
         }
-        if(Input.GetButton("Fire2") && playerHealth.TryRequestFireRing())
+        if(
+            Input.GetButton("Fire2") &&
+            Time.time >= _nextRingTime)
         {
-            UseFireRing();
+            _nextRingTime = Time.time + 1f / _ringRate;
+            float expended = playerHealth.TryRequestFireRing();
+            if(expended > 0.0f) UseFireRing(expended);
         }
     }
 
@@ -101,16 +125,22 @@ public class PlayerStaffController : MonoBehaviour
     void Shoot()
     {
 
-        // add some amount of spread
+        // scale the amount of spread based on the players previous shooting
 
-        
-        float randomizedSpread = Random.Range(currentSpread.x, currentSpread.y);
+        float spreadProgress = Mathf.Clamp01(spreadTime / maxSpreadTime);
+        spreadProgress = spreadBuildUpCurve.Evaluate(spreadProgress);
+
+        float minSpread = Mathf.Lerp(0f, currentSpread.x, spreadProgress);
+        float maxSpread = Mathf.Lerp(0f, currentSpread.y, spreadProgress);
+
+        float randomizedSpread = Random.Range(minSpread, maxSpread);
+
         float doubleSpread = currentSpread.x * 1.33f;
         //Vector2 spreadDirection = Quaternion.Euler(0, 0, Random.Range(-7.5f, 7.5f)) * _lookDirection;
 
       
         // roll for doubleshot
-        if (Random.Range(0, 1.0f) > 0.8f)
+        if (Random.Range(0, 1.0f) > 1.0f - doubleShotChance)
         {
             GameObject go1 = _projectilePool.GetPooledObject();
             Projectile projectile1 = go1.GetComponent<Projectile>();
@@ -144,10 +174,10 @@ public class PlayerStaffController : MonoBehaviour
         //player.transform.position -= new Vector3(playerOffset.x, playerOffset.y, 0);
     }
 
-    void UseFireRing()
+    void UseFireRing(float expended)
     {
         FireRing newFireRing = Instantiate(_fireRing, transform.position, Quaternion.identity);
-        AudioManager.Instance.PlayFireRing();
+        newFireRing.SetExpended(expended);
         newFireRing.InitializeFireAttack(transform);
     }
 
@@ -163,13 +193,15 @@ public class PlayerStaffController : MonoBehaviour
         {
             _fireRate = _underdriveFirerate;
             currentSpread = underdriveSpread;
-            staffLight.intensity = 0.4f;
+            staffLight.intensity = 0.05f;
+            doubleShotChance = 0.1f;
         }
         else if (newState == HealthState.Overdrive)
         {
             _fireRate = _overdriveFireRate;
             currentSpread = overdriveSpread;
             staffLight.color = overdriveStaffLightColor;
+            doubleShotChance = 0.45f;
         }
         else if (newState == HealthState.Normal)
         {
@@ -177,6 +209,7 @@ public class PlayerStaffController : MonoBehaviour
             currentSpread = defaultSpread;
             staffLight.color = defaultStafflightColor;
             staffLight.intensity = 1f;
+            doubleShotChance = 0.2f;
         }
     }
 

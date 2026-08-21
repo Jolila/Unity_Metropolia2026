@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 1545903563749983598}
   - component: {fileID: 495556684075647202}
   - component: {fileID: 8963156237579227603}
-  - component: {fileID: 2581260967417898083}
   - component: {fileID: 2855840870429806729}
   - component: {fileID: 7306700025055461948}
+  - component: {fileID: 204773734644772944}
   m_Layer: 0
-  m_Name: ZombieLeader
+  m_Name: Zombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -124,20 +124,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &2581260967417898083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 179021077290864179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96a9a5add06584a48b0deaeb49279d13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  _deathSound: {fileID: 8300000, guid: 78b5b2931f63eda4da03efceceafeab2, type: 3}
-  sprite: {fileID: 1952910094458462963}
 --- !u!114 &2855840870429806729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b9b9bda62431941a2024f7e2114774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityHealth
-  _maxHealth: 40
+  _maxHealth: 6
   _currentHealth: 0
   _healthRegen: 2
   _isDead: 0
@@ -166,6 +152,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1ef95fdca48ba46882c645e2c4c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudio
+--- !u!114 &204773734644772944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179021077290864179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf75bf0ba81fe544ca1422690a14fad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zombie
+  _deathSound: {fileID: 0}
+  sprite: {fileID: 1952910094458462963}
 --- !u!1 &1103205922100976843
 GameObject:
   m_ObjectHideFlags: 0

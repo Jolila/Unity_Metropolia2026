@@ -40,8 +40,8 @@ public static class Rounds
             {
                 PoolFillPercent =
                 {
-                    { EnemyType.RatLeader, 0.35f },
-                    { EnemyType.RatFollower, 0.35f }
+                        { EnemyType.RatLeader, 0.35f },
+                        { EnemyType.RatFollower, 0.35f }
                 }
             }
         },
@@ -70,8 +70,177 @@ public static class Rounds
                     { EnemyType.SlimeFollower, 0.40f }
                 }
             }
+        },
+
+        {
+        GameRound.Round3,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+
+                    { EnemyType.Zombie, 1.0f },
+                    { EnemyType.Bat , 0.2f },
+                    { EnemyType.RatLeader, 0.4f},
+                    { EnemyType.RatFollower, 0.4f}
+
+            }
+        }
+        },
+
+        {
+        GameRound.Round4,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                    { EnemyType.Bat, 0.30f },
+                    { EnemyType.SlimeLeader, 0.40f },
+                    { EnemyType.SlimeFollower, 0.40f },
+                    { EnemyType.Ghost, 0.4f }
+            }
+        }
+        },
+
+        {
+        GameRound.Round5,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Bat, 0.6f },
+                { EnemyType.SlimeLeader, 0.40f },
+                { EnemyType.SlimeFollower, 0.40f },
+                { EnemyType.Ghost, 0.40f },
+                { EnemyType.Zombie, 0.6f }
+            }
+        }
+        },
+
+        {
+        GameRound.Round6,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Bat, 0.6f },
+                { EnemyType.SlimeLeader, 0.40f },
+                { EnemyType.SlimeFollower, 0.40f },
+                { EnemyType.Zombie, 0.6f },
+                { EnemyType.RatLeader, 0.4f },
+                { EnemyType.RatFollower, 0.4f }
+            }
+        }
+        },
+
+        {
+        GameRound.Round7,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Bat, 1.0f },
+                { EnemyType.Ghost, 1.0f },
+                { EnemyType.RatLeader, 0.4f},
+                { EnemyType.RatFollower, 0.4f}
+            }
+        }
+        },
+
+        {
+        GameRound.Round8,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Ghost, 1.0f},
+                { EnemyType.RatLeader, 1.0f},
+                { EnemyType.RatFollower, 1.0f},
+                { EnemyType.Zombie, 0.6f},
+                { EnemyType.SlimeLeader, 0.6f},
+                { EnemyType.SlimeFollower, 0.6f }
+            }
+        }
+        },
+
+        {
+        GameRound.Round9,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Ghost, 1.0f},
+                { EnemyType.RatLeader, 1.0f},
+                { EnemyType.RatFollower, 1.0f},
+                { EnemyType.SlimeLeader, 0.8f},
+                { EnemyType.SlimeFollower, 0.8f}
+            }
+        }
+        },
+
+        {
+        GameRound.Round10,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Ghost, 1.0f},
+                { EnemyType.RatLeader, 1.0f},
+                { EnemyType.RatFollower, 1.0f},
+                { EnemyType.SlimeLeader, 0.8f},
+                { EnemyType.SlimeFollower, 0.8f},
+                { EnemyType.Zombie, 0.6f},
+                { EnemyType.Bat, 0.6f}
+            }
+        }
+        },
+
+        {
+        GameRound.Round11,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Ghost, 1.0f},
+                { EnemyType.RatLeader, 1.0f},
+                { EnemyType.RatFollower, 1.0f},
+                { EnemyType.SlimeLeader, 0.8f},
+                { EnemyType.SlimeFollower, 0.8f},
+                { EnemyType.Zombie, 0.6f},
+                { EnemyType.Bat, 0.6f}
+            }
+        }
+        },
+
+        {
+        GameRound.Round12,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Bat, 1.0f },
+                { EnemyType.SlimeLeader, 1.0f },
+                { EnemyType.SlimeFollower, 1.0f },
+                { EnemyType.Ghost, 1.0f },
+                { EnemyType.Zombie, 1.0f },
+                { EnemyType.RatLeader, 1.0f },
+                { EnemyType.RatFollower, 1.0f }
+            }
+        }
+        },
+
+
+        {
+        GameRound.Boss,
+        new RoundDefinition
+        {
+            PoolFillPercent =
+            {
+                { EnemyType.Bat, 0.0f}
+            }
         }
 
+        }
 
     };
 }

@@ -17,14 +17,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerHealthSystem _healthSystem;
     [SerializeField] PlayerStaffController _staffController;
     [SerializeField] Light2D moonlight;
-    BloodSystem bloodSystem;
+    [SerializeField] Light2D torch;
 
+    Color defaultTorchColor = new Color(0.7f, 0.5f, 0.5f);
+    Color overdriveTorchColor = new Color(1.0f, 0.2f, 0.2f);
 
     private Material playerMaterial;
     private static readonly int OverdriveAmount =
     Shader.PropertyToID("_OverdriveAmount");
     [SerializeField] private SpriteRenderer playerSprite;
-    bool isOverdrive;
     Color color;
     private bool isDead; // I guess we can keep this for the animator
 
@@ -48,7 +49,6 @@ public class PlayerController : MonoBehaviour
         _healthSystem.OnPlayerDeath += PlayDeathAnimation;
         playerMaterial = playerSprite.material;
         playerMaterial.SetFloat(OverdriveAmount, 0f);
-        isOverdrive = false;
         _overdriveParticles.Stop();
         _healthSystem.OnHealthStateChanged += HandleHealthStateChanged;
         _staffController = FindAnyObjectByType<PlayerStaffController>();
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         _animator.SetBool("isDead", isDead);
-        StartCoroutine(alphaLerpingFunction(0.5f, 4.5f));
+        StartCoroutine(alphaLerpingFunction(0.1f, 3.0f));
     }
 
     public bool getIsDead()
@@ -148,20 +148,29 @@ public class PlayerController : MonoBehaviour
 
     public void HandleHealthStateChanged(HealthState newState)
     {
-        if(newState == HealthState.Underdrive) movementSpeed = 5.0f;
-        else if(newState == HealthState.Overdrive)
+        if (newState == HealthState.Underdrive)
+        {
+            movementSpeed = 9.0f;
+            color.a = 0.75f;
+            _characterBody.color = color;
+            torch.intensity = 0.25f;
+        }
+        else if (newState == HealthState.Overdrive)
         {
             movementSpeed = 12.5f;
             SetOverdrive(0.7f);
             _overdriveParticles.Play();
-            isOverdrive = true;
+            torch.color = overdriveTorchColor;
         }
-        else if(newState == HealthState.Normal)
+        else if (newState == HealthState.Normal)
         {
-            isOverdrive = false;
             SetOverdrive(0.0f);
             _overdriveParticles.Stop();
             movementSpeed = 10.0f;
+            torch.intensity = 1.0f;
+            torch.color = defaultTorchColor;
+            color.a = 1.0f;
+            _characterBody.color = color;
         }
 
     }
@@ -169,7 +178,16 @@ public class PlayerController : MonoBehaviour
     private void HandleMoonLightIntensity()
     {
         // min is 0f, max is 10f. Lerping needs to happen between 0 and bloodmoonfull.
-        float intensity = Mathf.Lerp(0f, 10.0f, BloodSystem.Instance.TotalBloodCollected / BloodSystem.Instance.BloodMoonFullQuota);
+
+        if (BloodSystem.Instance.TotalBloodCollected < BloodSystem.Instance.BloodMoonVisibleQuota) return;
+
+        float progress =
+            (BloodSystem.Instance.TotalBloodCollected - BloodSystem.Instance.BloodMoonVisibleQuota) /
+            (BloodSystem.Instance.BloodMoonFullQuota - BloodSystem.Instance.BloodMoonVisibleQuota);
+
+        float intensity = Mathf.Lerp(0f, 2.5f, progress);
+
+        
         moonlight.intensity = intensity;
     }
 }

@@ -63,12 +63,13 @@ public class EnemyManager : MonoBehaviour
     {
         public int ratLeaders;
         public int slimeLeaders;
-        public int zombieLeaders;
+        
 
         public int followers;
 
         public int bats;
         public int ghosts;
+        public int zombies;
     }
 
     private readonly Dictionary<EnemyType, int> updateCursors = new();
@@ -76,14 +77,14 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private UpdatePass defaultUpdatePass = new()
     {
-        ratLeaders = 2,
-        slimeLeaders = 2,
-        zombieLeaders = 2,
+        ratLeaders = 5,
+        slimeLeaders = 5,
+        zombies = 10,
 
-        followers = 30,
+        followers = 50,
 
-        bats = 20,
-        ghosts = 20
+        bats = 40,
+        ghosts = 40
     };
 
 
@@ -113,6 +114,7 @@ public class EnemyManager : MonoBehaviour
     public void OnStartGame()
     {
         cachedPlayerPosition = GameManager.Instance.GetPlayerReference().transform.position;
+        _spawner.OnStartGame();
     }
 
 
@@ -150,14 +152,13 @@ public class EnemyManager : MonoBehaviour
 
         UpdatePool(EnemyType.RatLeader, pass.ratLeaders);
         UpdatePool(EnemyType.SlimeLeader, pass.slimeLeaders);
-        UpdatePool(EnemyType.ZombieLeader, pass.zombieLeaders);
-
         UpdatePool(EnemyType.RatFollower, pass.followers);
         UpdatePool(EnemyType.SlimeFollower, pass.followers);
-        UpdatePool(EnemyType.ZombieFollower, pass.followers);
+
 
         UpdatePool(EnemyType.Bat, pass.bats);
         UpdatePool(EnemyType.Ghost, pass.ghosts);
+        UpdatePool(EnemyType.Zombie, pass.zombies);
 
     }
 

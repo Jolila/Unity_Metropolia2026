@@ -52,15 +52,15 @@ public class BloodSystem : MonoBehaviour
     public Dictionary<BloodDropletTier, float> ContributionToPlayerHealthIncrease =
         new Dictionary<BloodDropletTier, float>
         {
-        { BloodDropletTier.Small, 1.5f},
-        { BloodDropletTier.Medium, 4.5f},
-        { BloodDropletTier.Large, 9.0f},
+        { BloodDropletTier.Small, 1.0f},
+        { BloodDropletTier.Medium, 2.0f},
+        { BloodDropletTier.Large, 3.0f},
         };
 
 
     float totalBloodCollected = 0f;
-    float bloodMoonVisibleQuota = 10f; // dummy test values for POC blood collecting
-    float bloodMoonFullQuota = 20f;
+    float bloodMoonVisibleQuota = 200f; // dummy test values for POC blood collecting
+    float bloodMoonFullQuota = 1200f;
 
     [SerializeField] Light2D GlobalLight;
 
@@ -72,11 +72,13 @@ public class BloodSystem : MonoBehaviour
     [SerializeField] ObjectPool MediumDropletPool;
     [SerializeField] ObjectPool LargeDropletPool;
 
-    private float smallEnemyDropChance = 0.30f;
-    private float mediumEnemyDropChance = 0.60f;
-    private float largeEnemyDropChance = 0.80f;
+    [SerializeField] GameObject smallDroplet;
+    [SerializeField] GameObject mediumDroplet;
+    [SerializeField] GameObject largeDroplet;
 
-
+    private float smallEnemyDropChance = 0.155f;
+    private float mediumEnemyDropChance = 0.33f;
+    private float largeEnemyDropChance = 0.50f;
 
     [SerializeField] BloodMoonController _moonController;
     public event Action OnBloodCollected;
@@ -144,8 +146,8 @@ public class BloodSystem : MonoBehaviour
 
     }
 
-    private const float MaxRoundDropChanceBonus = 0.2f;
-    private const float MaxDropWeightTransfer = 0.20f;
+    private const float MaxRoundDropChanceBonus = 0.05f;
+    private const float MaxDropWeightTransfer = 0.05f;
 
     private float GetRoundDropChanceBonus()
     {
@@ -179,11 +181,19 @@ public class BloodSystem : MonoBehaviour
     {
 
         GameObject droplet = GetDropletFromPool(tier);
+        if (droplet == null) return;
+        // Honestly what the fuck is Visual Studio trying to do with this formatting
 
-        if (droplet == null)
-            return;
 
-        droplet.transform.position = pos;
+        
+        Vector3 playerPos = GameManager.Instance.GetPlayerReference().transform.position;
+
+        Vector3 sampledPos = Vector3.Lerp(pos, playerPos,
+            UnityEngine.Random.Range(0.33f, 0.8f));
+
+
+        Vector2 offset = new Vector2(sampledPos.x, sampledPos.y) + UnityEngine.Random.insideUnitCircle * 1.0f;
+        droplet.transform.position = new Vector3(offset.x, offset.y, pos.z);
         droplet.SetActive(true);
     }
 
@@ -284,6 +294,44 @@ public class BloodSystem : MonoBehaviour
             BloodDropletTier.Large => LargeDropletPool.GetPooledObject(),
             _ => null
         };
+    }
+
+    public void TrySpawnReward(GameRound round, float percentage)
+    {
+        float percent = (int)Mathf.Round(percentage * 100f);
+
+
+        // get the percentage. A better ratio would be : for 25% a big one, for 5% medium one, 1% small one.
+
+        int bigs = (int)(percent / 25f);
+        float percent2 = percent - bigs * 25;
+        int meds = (int)(percent2 / 10f);
+        float percent3 = percent2 - meds * 10f;
+        int smalls = (int)(percent3);
+
+
+        Vector2 playerpos = 
+            new Vector2(GameManager.Instance.GetPlayerReference().transform.position.x,
+            GameManager.Instance.GetPlayerReference().transform.position.y);
+
+        for (int i = 0; i < bigs; ++i)
+        {
+            Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
+            Instantiate(largeDroplet, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+        }
+
+        for (int i = 0; i < meds; ++i)
+        {
+            Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
+            Instantiate(mediumDroplet, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+        }
+
+        for (int i = 0; i < smalls; ++i)
+        {
+            Vector2 pos = playerpos + UnityEngine.Random.insideUnitCircle * 2.5f;
+            Instantiate(smallDroplet, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+        }
+
     }
 
 

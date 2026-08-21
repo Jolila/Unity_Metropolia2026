@@ -3,19 +3,39 @@ using UnityEngine;
 public class RewardSystem : MonoBehaviour
 {
 
-    public static RewardSystem Instance { get; private set; }
+    private static RewardSystem _instance;
+    public static RewardSystem Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<RewardSystem>();
+                if (_instance == null)
+                {
+                    Debug.Log(" Error : no reward system instance");
+                }
+            }
+            return _instance;
+        }
+    }
 
     public bool IsActive => rewardWindowRemaining > 0f;
-    private float StartingRewardWindow = 10f;
+    private float StartingRewardWindow = 7f;
     private float RewardWindowDuration;
 
     private float rewardWindowRemaining;
 
 
+  
+
 
     private GameRound rewardRound;
     private float EnemyPollRate = 0.25f;
     private float enemyCheckTimer;
+
+
+
 
     private void OnEnable()
     {
@@ -31,9 +51,12 @@ public class RewardSystem : MonoBehaviour
     private void HandleRoundChanged(GameRound newRound)
     {
         rewardRound = (GameRound)((int)newRound - 1);
-        rewardWindowRemaining = RewardWindowDuration;
+        RewardWindowDuration = StartingRewardWindow; // add calculation here
+        rewardWindowRemaining = RewardWindowDuration; 
         enemyCheckTimer = 0f;
+        Debug.Log("Start reward system!");
     }
+
 
 
 
@@ -48,7 +71,7 @@ public class RewardSystem : MonoBehaviour
 
         foreach(EnemyType e in definition.PoolFillPercent.Keys)
         {
-            if (EnemyPoolManager.Instance.PoolHasActiveEnemies(e)) return false;
+            if (EnemyPoolManager.Instance.GetActiveCount(e) != 0)  return false;
         }
 
         return true;
@@ -68,33 +91,40 @@ public class RewardSystem : MonoBehaviour
         if (!IsActive) return;
 
         rewardWindowRemaining -= Time.deltaTime;
+        enemyCheckTimer -= Time.deltaTime;
+        if (enemyCheckTimer <= 0f)
+        {
+            enemyCheckTimer = EnemyPollRate;
+
+            if (AllEnemiesAreKilled(rewardRound))
+            {
+                ResolveReward();
+                rewardWindowRemaining = 0f;
+                return;
+            }
+        }
+
 
         if (rewardWindowRemaining <= 0f)
         {
             rewardWindowRemaining = 0f;
-            return;
+            Debug.Log("End reward system");
         }
 
-        enemyCheckTimer -= Time.deltaTime;
-        if (enemyCheckTimer > 0f) return;
 
-        enemyCheckTimer = EnemyPollRate;
-        if(AllEnemiesAreKilled(rewardRound))
-        {
-            ResolveReward();
-        }
 
     }
 
     private void ResolveReward()
     {
         float completionTime = rewardWindowRemaining;
-        rewardWindowRemaining = 0f;
-        Debug.Log("Player has received a reward!");
+        float rewardScale = RewardWindowDuration / rewardWindowRemaining;
+        BloodSystem.Instance.TrySpawnReward(rewardRound, rewardScale);
+
     }
 
 
-  
+
 
 
 }

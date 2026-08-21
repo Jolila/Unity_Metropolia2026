@@ -1,62 +1,113 @@
+using JetBrains.Annotations;
+using System.Collections.Generic;
+using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
+
+
 
 public class EnemySpawner : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    void Start()
+    private void OnEnable()
     {
-        
+        GameProgressionManager.Instance.OnCurrentRoundChanged += HandleRoundChanged;
     }
 
 
-    public void SpawnCountDownEnemies()
+    public void OnStartGame()
     {
-
-        SpawnRatSquad();
-        SpawnBats();
-
+        BuildSpawnTargets(GameRound.Round0);
     }
 
-    // Update is called once per frame
+
+    void Start() {}
+
+
+    public void SpawnCountDownEnemies() { }
+
+
+    private float PopulationCheckInterval = 0.25f;
+    private float populationCheckTimer;
+    public float SpawnQuotaTolerance = 0.1f;
+    private SpawnTargets maximumQuotas;
+    private SpawnTargets spawnDeficits;
+
+    private struct SpawnTargets
+    {
+        public int RatSquads;
+        public int SlimeSquads;
+        public int Zombies;
+        public int Bats;
+        public int Ghosts;
+    }
+
+    private struct SpawnDeficits
+    {
+        public int RatSquads;
+        public int SlimeSquads;
+        public int Zombies;
+        public int Bats;
+        public int Ghosts;
+    }
+
+   
+
     void Update()
     {
         if (GameManager.Instance.GetState() != GameState.Playing) return;
 
-        // do some interesting logic here
+        if (RewardSystem.Instance.IsActive) return;
 
-        switch (Time.frameCount % 8)
+        populationCheckTimer -= Time.deltaTime;
+        if (populationCheckTimer <= 0f)
         {
-            case 0:
-                SpawnRatSquad();
-                break;
-            case 1:
-                SpawnBats();
-                break;
-            case 2:
-                SpawnZombieSquad();
-                break;
-            case 3:
-                SpawnSlimeSquad();
-                break;
-            case 4:
-                SpawnGhosts();
-                break;
-            case 5:
-                SpawnRenegadeRats();
-                break;
-            case 6:
-                SpawnRenegadeSlimes();
-                break;
-            case 7:
-                SpawnRenegadeZombies();
-                break;
-
-
+            populationCheckTimer = PopulationCheckInterval;
+            RefreshSpawnTargets();
         }
-
+        else
+        {
+            SpawnEnemies();
+        }
+      
 
     }
+
+    private void SpawnEnemies()
+    {
+        if (spawnDeficits.RatSquads > 0)
+        {
+            SpawnRatSquad();
+            spawnDeficits.RatSquads--;
+        }
+
+        if (spawnDeficits.SlimeSquads > 0)
+        {
+            SpawnSlimeSquad();
+            spawnDeficits.SlimeSquads--;
+        }
+
+        if (spawnDeficits.Zombies > 0)
+        {
+            SpawnZombie();
+            spawnDeficits.Zombies--;
+        }
+
+        if (spawnDeficits.Bats > 0)
+        {
+            SpawnBats();
+            spawnDeficits.Bats--;
+        }
+
+        if (spawnDeficits.Ghosts > 0)
+        {
+            SpawnGhosts();
+            spawnDeficits.Ghosts--;
+        }
+    }
+
+
 
 
     void SpawnRatSquad()
@@ -98,11 +149,20 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnGhosts()
     {
-        EnemyPoolManager.Instance.Get(EnemyType.Ghost,
-            EnemyManager.Instance.GetEnemySpawnLocationsManager()
-            .GetRandomInnerWallSpawn(),
-            Quaternion.identity,
-            GameManager.Instance.GetPlayerReference().transform.position);
+
+       Vector3 spawnPos =
+       EnemyManager.Instance.GetEnemySpawnLocationsManager().
+       GetRandomInnerWallSpawn();
+
+        GameObject ghost =
+            EnemyPoolManager.Instance.Get(
+                EnemyType.Ghost,
+                spawnPos,
+                Quaternion.identity,
+                GameManager.Instance.GetPlayerReference().transform.position);
+
+        if (ghost == null) return;
+        EnemyManager.Instance.RegisterEnemy(ghost);
 
     }
 
@@ -124,7 +184,7 @@ public class EnemySpawner : MonoBehaviour
     void SpawnBats()
     {
 
-        int amount = Random.Range(0, 7);
+        int amount = Random.Range(0, 3);
         for(int i = 0; i < amount; ++i)
         {
             GameObject bat  = EnemyPoolManager.Instance.Get(EnemyType.Bat,
@@ -154,7 +214,7 @@ public class EnemySpawner : MonoBehaviour
 
         LeaderEnemy leaderEnemy = leader.GetComponent<LeaderEnemy>();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 4; i++)
         {
             Vector2 offset = Random.insideUnitCircle * 2.5f;
 
@@ -173,44 +233,113 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void SpawnZombieSquad()
+    void SpawnZombie()
     {
-        Vector3 leaderPos = 
+        Vector3 spawnPos = 
             EnemyManager.Instance.GetEnemySpawnLocationsManager().
-            GetRandomOuterGroundSpawn();
+            GetRandomInnerGroundSpawn();
 
-        GameObject leader =
+        GameObject zom =
             EnemyPoolManager.Instance.Get(
-                EnemyType.ZombieLeader,
-                leaderPos,
+                EnemyType.Zombie,
+                spawnPos,
                 Quaternion.identity);
 
-       
 
-        if (leader == null)
-            return;
-        EnemyManager.Instance.RegisterEnemy(leader);
+        if (zom == null) return;
+        EnemyManager.Instance.RegisterEnemy(zom);
+      
+    }
 
-        LeaderEnemy leaderEnemy = leader.GetComponent<LeaderEnemy>();
 
-        for (int i = 0; i < 10; i++)
+
+
+    public void HandleRoundChanged(GameRound newRound)
+    {
+        BuildSpawnTargets(newRound);
+    }
+
+
+
+    private void BuildSpawnTargets(GameRound newRound)
+    {
+        
+        maximumQuotas = new SpawnTargets();
+
+        RoundDefinition definition = Rounds.Definitions[newRound];
+
+        foreach (var entry in definition.PoolFillPercent)
         {
-            Vector2 offset = Random.insideUnitCircle * 2.5f;
+            EnemyPoolManager.Pool pool =
+                EnemyPoolManager.Instance.GetPool(entry.Key);
 
-            GameObject follower =
-                EnemyPoolManager.Instance.Get(
-                    EnemyType.ZombieFollower,
-                    leaderPos + (Vector3)offset,
-                    Quaternion.identity);
-            
-
-            if (follower == null)
+            if (pool == null)
                 continue;
-            EnemyManager.Instance.RegisterEnemy(follower);
 
-            follower.GetComponent<FollowerEnemy>().leader =
-                leaderEnemy.transform;
+            int maximum = Mathf.FloorToInt(
+                pool.objects.Count * entry.Value
+            );
 
+            switch (entry.Key)
+            {
+                case EnemyType.RatLeader:
+                    maximumQuotas.RatSquads = maximum;
+                    break;
+
+                case EnemyType.SlimeLeader:
+                    maximumQuotas.SlimeSquads = maximum;
+                    break;
+
+                case EnemyType.Zombie:
+                    maximumQuotas.Zombies = maximum;
+                    break;
+
+                case EnemyType.Bat:
+                    maximumQuotas.Bats = maximum;
+                    break;
+
+                case EnemyType.Ghost:
+                    maximumQuotas.Ghosts = maximum;
+                    break;
+            }
         }
     }
+
+    private void RefreshSpawnTargets()
+    {
+        spawnDeficits = new SpawnTargets
+        {
+            RatSquads = Mathf.Max(
+                0,
+                maximumQuotas.RatSquads -
+                EnemyPoolManager.Instance.GetActiveCount(EnemyType.RatLeader)
+            ),
+
+            SlimeSquads = Mathf.Max(
+                0,
+                maximumQuotas.SlimeSquads -
+                EnemyPoolManager.Instance.GetActiveCount(EnemyType.SlimeLeader)
+            ),
+
+            Zombies = Mathf.Max(
+                0,
+                maximumQuotas.Zombies -
+                EnemyPoolManager.Instance.GetActiveCount(EnemyType.Zombie)
+            ),
+
+            Bats = Mathf.Max(
+                0,
+                maximumQuotas.Bats -
+                EnemyPoolManager.Instance.GetActiveCount(EnemyType.Bat)
+            ),
+
+            Ghosts = Mathf.Max(
+                0,
+                maximumQuotas.Ghosts -
+                EnemyPoolManager.Instance.GetActiveCount(EnemyType.Ghost)
+            )
+        };
+    }
+
+
 }
