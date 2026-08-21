@@ -52,9 +52,9 @@ public class BloodSystem : MonoBehaviour
     public Dictionary<BloodDropletTier, float> ContributionToPlayerHealthIncrease =
         new Dictionary<BloodDropletTier, float>
         {
-        { BloodDropletTier.Small, 0.5f},
+        { BloodDropletTier.Small, 1.0f},
         { BloodDropletTier.Medium, 2.0f},
-        { BloodDropletTier.Large, 5.0f},
+        { BloodDropletTier.Large, 3.0f},
         };
 
 
@@ -76,9 +76,9 @@ public class BloodSystem : MonoBehaviour
     [SerializeField] GameObject mediumDroplet;
     [SerializeField] GameObject largeDroplet;
 
-    private float smallEnemyDropChance = 0.175f;
-    private float mediumEnemyDropChance = 0.4f;
-    private float largeEnemyDropChance = 0.60f;
+    private float smallEnemyDropChance = 0.155f;
+    private float mediumEnemyDropChance = 0.33f;
+    private float largeEnemyDropChance = 0.50f;
 
     [SerializeField] BloodMoonController _moonController;
     public event Action OnBloodCollected;
@@ -146,8 +146,8 @@ public class BloodSystem : MonoBehaviour
 
     }
 
-    private const float MaxRoundDropChanceBonus = 0.15f;
-    private const float MaxDropWeightTransfer = 0.15f;
+    private const float MaxRoundDropChanceBonus = 0.05f;
+    private const float MaxDropWeightTransfer = 0.05f;
 
     private float GetRoundDropChanceBonus()
     {
@@ -181,11 +181,19 @@ public class BloodSystem : MonoBehaviour
     {
 
         GameObject droplet = GetDropletFromPool(tier);
+        if (droplet == null) return;
+        // Honestly what the fuck is Visual Studio trying to do with this formatting
 
-        if (droplet == null)
-            return;
 
-        droplet.transform.position = pos;
+        
+        Vector3 playerPos = GameManager.Instance.GetPlayerReference().transform.position;
+
+        Vector3 sampledPos = Vector3.Lerp(pos, playerPos,
+            UnityEngine.Random.Range(0.33f, 0.8f));
+
+
+        Vector2 offset = new Vector2(sampledPos.x, sampledPos.y) + UnityEngine.Random.insideUnitCircle * 1.0f;
+        droplet.transform.position = new Vector3(offset.x, offset.y, pos.z);
         droplet.SetActive(true);
     }
 
