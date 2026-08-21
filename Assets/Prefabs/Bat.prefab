@@ -124,8 +124,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4670574893690212208}
   - component: {fileID: 2410303196235731737}
-  - component: {fileID: 3326590991884971630}
   - component: {fileID: 4033199629912058352}
+  - component: {fileID: 2732915803623161189}
   m_Layer: 15
   m_Name: Bat
   m_TagString: Enemy
@@ -165,22 +165,6 @@ MonoBehaviour:
   _currentHealth: 0
   _healthRegen: 0
   _isDead: 0
---- !u!114 &3326590991884971630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6394731116622321747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48b31aa54255e084a9d8513e822f5341, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NonWallCollidingEnemy
-  targetDirection: {x: 0, y: 0, z: 0}
-  personalTargetOffset: {x: 0, y: 0, z: 0}
-  speed: 2.5
-  sprite: {fileID: 4355706441492227380}
 --- !u!114 &4033199629912058352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,3 +177,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1ef95fdca48ba46882c645e2c4c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudio
+--- !u!114 &2732915803623161189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6394731116622321747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c6f44f7a924094abc1f3ede418bc82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bat
+  targetDirection: {x: 0, y: 0, z: 0}
+  personalTargetOffset: {x: 0, y: 0, z: 0}
+  speed: 2
+  sprite: {fileID: 4355706441492227380}

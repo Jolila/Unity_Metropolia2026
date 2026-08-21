@@ -72,9 +72,9 @@ public class BloodDroplet : MonoBehaviour
     {
         
         _renderer.GetPropertyBlock(propertyBlock);
-        propertyBlock.SetFloat(GlowIntensityID, amount);
+        propertyBlock.SetFloat(GlowIntensityID, amount * 0.1f);
         _renderer.SetPropertyBlock(propertyBlock);
-        _light.intensity = amount * 0.25f;
+        _light.intensity = amount * 0.5f;
     }
 
     IEnumerator Lifetime()

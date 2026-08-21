@@ -10,6 +10,7 @@ public class MainMenuManager : MonoBehaviour
     CanvasGroup _mainMenuCG;
     [SerializeField] CanvasGroup _settingsMenuCG;
     [SerializeField] CanvasGroup _fadeOverlay;
+    [SerializeField] CanvasGroup _logoOverlay;
 
     [SerializeField] CanvasGroup _AudioSettingsCG;
     [SerializeField] CanvasGroup _VideoSettingsCG;

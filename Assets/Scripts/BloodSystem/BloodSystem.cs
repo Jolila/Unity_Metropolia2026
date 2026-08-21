@@ -189,7 +189,7 @@ public class BloodSystem : MonoBehaviour
         Vector3 playerPos = GameManager.Instance.GetPlayerReference().transform.position;
 
         Vector3 sampledPos = Vector3.Lerp(pos, playerPos,
-            UnityEngine.Random.Range(0.33f, 0.8f));
+            UnityEngine.Random.Range(0.25f, 0.8f));
 
 
         Vector2 offset = new Vector2(sampledPos.x, sampledPos.y) + UnityEngine.Random.insideUnitCircle * 1.0f;

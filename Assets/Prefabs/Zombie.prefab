@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8963156237579227603}
   - component: {fileID: 2855840870429806729}
   - component: {fileID: 7306700025055461948}
-  - component: {fileID: 204773734644772944}
+  - component: {fileID: 8510224016930612009}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1ef95fdca48ba46882c645e2c4c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudio
---- !u!114 &204773734644772944
+--- !u!114 &8510224016930612009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 179021077290864179}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf75bf0ba81fe544ca1422690a14fad1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8264a892a4b9b1242b7fe6c0237baed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zombie
   _deathSound: {fileID: 0}
