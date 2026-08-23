@@ -5693,7 +5693,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
   pooledObjects: []
   objectToPool: {fileID: 8633226205050583916, guid: 3d0a9e76a50fb61469acaa7b97154f4d, type: 3}
-  amountToPool: 100
+  amountToPool: 420
+--- !u!114 &690569168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690569164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7abbad07c2c8af3488fc4720e65fbe63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaffShotgunController
+  _projectile: {fileID: 1853368783819410024, guid: 3d0a9e76a50fb61469acaa7b97154f4d, type: 3}
+  _projectilePool: {fileID: 690569167}
+  _tip: {fileID: 1924053383}
+  player: {fileID: 1861740455}
 --- !u!1 &698206683
 GameObject:
   m_ObjectHideFlags: 0
@@ -14067,6 +14083,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923367160}
   m_CullTransparentMesh: 1
+--- !u!4 &1924053383 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2160502468637218513, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+  m_PrefabInstance: {fileID: 6506244965204465635}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1960707011
 GameObject:
   m_ObjectHideFlags: 0
@@ -15602,6 +15623,10 @@ PrefabInstance:
       value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 3480183630426177931, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480183630426177931, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: _projectilePool
       value: 
       objectReference: {fileID: 690569167}
@@ -15620,6 +15645,14 @@ PrefabInstance:
     - target: {fileID: 3602792160879165406, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: m_Color.r
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3602792160879165406, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      propertyPath: m_PointLightInnerAngle
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3602792160879165406, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      propertyPath: m_PointLightOuterAngle
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4519564552527627364, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: m_LocalScale.x
@@ -15739,6 +15772,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6978535814337503609, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       insertIndex: -1
       addedObject: {fileID: 690569167}
+    - targetCorrespondingSourceObject: {fileID: 6978535814337503609, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 690569168}
   m_SourcePrefab: {fileID: 100100000, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
