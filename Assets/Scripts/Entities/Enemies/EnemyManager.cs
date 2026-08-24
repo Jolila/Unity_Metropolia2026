@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static EnemyPoolManager;
 
 
@@ -37,6 +38,7 @@ public class EnemyManager : MonoBehaviour
     private readonly Dictionary<GameObject, Vector2Int> enemyCells = new();
 
     private readonly List<GameObject> fireRingCache = new();
+    private readonly List<GameObject> swipeCache = new();
 
     public List<GameObject> GetEnemiesForFireRing(Vector3 position)
     {
@@ -56,6 +58,26 @@ public class EnemyManager : MonoBehaviour
         }
 
         return fireRingCache;
+    }
+
+
+    public List<GameObject> GetEnemiesForSwipe(Vector3 pos)
+    {
+        swipeCache.Clear();
+
+        Vector2Int center = GetCell(pos);
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                Vector2Int cell = center + new Vector2Int(x, y);
+
+                if (enemyGrid.TryGetValue(cell, out var list))
+                    swipeCache.AddRange(list);
+            }
+        }
+        return swipeCache;
     }
 
     [System.Serializable]

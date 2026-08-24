@@ -5706,6 +5706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abbad07c2c8af3488fc4720e65fbe63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffShotgunController
+  _swipe: {fileID: 1948149831696240166, guid: 58448d8ab857ef34eae459fa6d3a3e3b, type: 3}
   _projectile: {fileID: 1853368783819410024, guid: 3d0a9e76a50fb61469acaa7b97154f4d, type: 3}
   _projectilePool: {fileID: 690569167}
   _tip: {fileID: 1924053383}

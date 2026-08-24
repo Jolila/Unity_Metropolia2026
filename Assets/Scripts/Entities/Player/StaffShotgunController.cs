@@ -7,19 +7,22 @@ public class StaffShotgunController : MonoBehaviour
 
     private Camera mainCamera;
     Vector2 _lookDirection;
+    [SerializeField] Swipe _swipe;
 
     [SerializeField] Projectile _projectile;
     [SerializeField] ObjectPool _projectilePool;
     [SerializeField] Transform _tip;
     [SerializeField] GameObject player;
 
-    float minSpread = 5.0f;
-    float maxSpread = 20.0f;
+
+
+    [SerializeField] private float swipeCooldown = 0.5f;
+    private float nextSwipeTime;
 
     private float chargeTime;
     private float chargeStartTime;
-    private float minChargeTime = 1.0f;
-    private float maxChargeTime = 7.0f;
+    private float minChargeTime = 0.5f;
+    private float maxChargeTime = 3.5f;
     private bool isCharging;
 
     int shots;
@@ -27,7 +30,6 @@ public class StaffShotgunController : MonoBehaviour
     float maxShots = 140.0f;
 
     float innerCone = 7.5f;
-    float outerCone = 30.0f;
 
     float spawnRadius = 0.15f;
     float pelletSpread = 1f;
@@ -78,6 +80,16 @@ public class StaffShotgunController : MonoBehaviour
 
             isCharging = false;
             chargeTime = 0f;
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            if(Time.time >= nextSwipeTime)
+            {
+                nextSwipeTime = Time.time + swipeCooldown;
+                UseSwipe();
+            }
+            
         }
     }
 
@@ -175,6 +187,31 @@ public class StaffShotgunController : MonoBehaviour
         }
 
         
+    }
+
+    void UseSwipe()
+    {
+        Vector2 lookDir = _lookDirection.normalized;
+
+
+
+        float swipe_offset = 1.0f;
+        Vector2 playerpos = new Vector2(player.transform.position.x, player.transform.position.y);
+        Vector2 swipePos = playerpos + lookDir * swipe_offset;
+
+        float angle = Mathf.Atan2(
+            lookDir.y,
+            lookDir.x
+        ) * Mathf.Rad2Deg;
+
+        Quaternion swiperot = Quaternion.Euler(
+        0f,
+        0f,
+        angle
+        );
+
+        Swipe swipe = Instantiate(_swipe, swipePos, swiperot);
+
     }
 
 
