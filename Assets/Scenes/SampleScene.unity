@@ -15602,11 +15602,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1580814770938600476, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.04
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1580814770938600476, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1838576511906671270, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
       propertyPath: m_MaxParticleSize
