@@ -210,7 +210,7 @@ public class StaffShotgunController : MonoBehaviour
         angle
         );
 
-        Swipe swipe = Instantiate(_swipe, swipePos, swiperot);
+        Swipe swipe = Instantiate(_swipe);
 
     }
 
