@@ -191,26 +191,13 @@ public class StaffShotgunController : MonoBehaviour
 
     void UseSwipe()
     {
-        Vector2 lookDir = _lookDirection.normalized;
-
-
-
-        float swipe_offset = 1.0f;
-        Vector2 playerpos = new Vector2(player.transform.position.x, player.transform.position.y);
-        Vector2 swipePos = playerpos + lookDir * swipe_offset;
-
-        float angle = Mathf.Atan2(
-            lookDir.y,
-            lookDir.x
-        ) * Mathf.Rad2Deg;
-
-        Quaternion swiperot = Quaternion.Euler(
-        0f,
-        0f,
-        angle
-        );
-
+   
         Swipe swipe = Instantiate(_swipe);
+
+        swipe.Initialize(
+            player.transform.position,
+            _lookDirection.normalized
+        );
 
     }
 

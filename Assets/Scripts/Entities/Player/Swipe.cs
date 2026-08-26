@@ -5,25 +5,23 @@ using UnityEngine;
 public class Swipe : MonoBehaviour
 {
 
-    [SerializeField] BoxCollider2D _collider;
     [SerializeField] private ParticleSystem _particles;
-    [SerializeField] private float _lifetime = 0.2f;
-    private Camera mainCamera;
+    [SerializeField] private float _lifetime = 0.25f;
 
-    private float dps = 5.0f; // high DPS to combat the short lifetime. A normalization for 0.2s lifetime -
-                              // so torch deals 1 damage killing smallest enemies
 
-    private float _radius = 1.5f;
+    private float dps = 10.0f; // high DPS to combat the short lifetime. A normalization for 0.2s lifetime -
+                               // so torch deals 1 damage killing smallest enemies
+
+    private float _radius = 2.5f;
     private float _angle = 135.0f;
 
-    private Transform _player;
+    private Vector2 _origin;
     private Vector2 _lookDirection;
 
-
-    private void Awake()
+    public void Initialize(Vector2 origin, Vector2 lookDirection)
     {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
-        mainCamera = Camera.main;
+        _origin = origin;
+        _lookDirection = lookDirection.normalized;
     }
 
 
@@ -34,15 +32,14 @@ public class Swipe : MonoBehaviour
         {
             _particles.Play();
         }
-
         Destroy(gameObject, _lifetime);
     }
 
     // Update is called once per frame
     void Update()
     {
-        SetLookDirection();
-        foreach(GameObject enemy in EnemyManager.Instance.GetEnemiesForSwipe(transform.position))
+        
+        foreach(GameObject enemy in EnemyManager.Instance.GetEnemiesForSwipe(_origin))
         {
             if(IsInArc(enemy.transform.position))
             {
@@ -51,63 +48,71 @@ public class Swipe : MonoBehaviour
                     entityHealth.LoseHealth(dps * Time.deltaTime);
                 }
             }
+            else
+            {
+                Debug.Log("Outside arc!");
+            }
+           
         }
 
     }
 
-
-    private bool IsInBox(Vector2 worldPosition)
+    private Vector2 GetUpperBoundary()
     {
-        Vector2 localPosition = transform.InverseTransformPoint(worldPosition);
+        return Quaternion.Euler(
+            0f,
+            0f,
+            _angle * 0.5f) * _lookDirection;
+    }
 
-        Vector2 center = _collider.offset;
-        Vector2 halfSize = _collider.size * 0.5f;
+    private Vector2 GetLowerBoundary()
+    {
+        return Quaternion.Euler(
+            0f,
+            0f,
+            -_angle * 0.5f) * _lookDirection;
+    }
 
-        return
-            localPosition.x >= center.x - halfSize.x &&
-            localPosition.x <= center.x + halfSize.x &&
-            localPosition.y >= center.y - halfSize.y &&
-            localPosition.y <= center.y + halfSize.y;
+
+    /*
+https://stackoverflow.com/questions/243945/calculating-a-2d-vectors-cross-product
+     */
+    float Cross(Vector2 v1, Vector2 v2)
+    {
+        return (v1.x * v2.y) - (v1.y * v2.x);
     }
 
 
     private bool IsInArc(Vector2 worldPosition)
     {
+        
+        Vector2 toEnemy =
+            worldPosition - _origin;
 
-        Vector2 directionToEnemy = worldPosition - (Vector2)transform.position;
-
-        if(directionToEnemy.sqrMagnitude > _radius * _radius)
+        if (toEnemy.sqrMagnitude > _radius * _radius)
         {
             return false;
         }
 
-        // this wont work. 
-        float angleToEnemy = Vector2.Angle(transform.right, directionToEnemy);
+        if(toEnemy.sqrMagnitude < 0.001f)
+        {
+            return true;
+        }
 
-        return angleToEnemy <= _angle * 0.5f;
+        toEnemy.Normalize();
+        float lowerSide = Cross(GetLowerBoundary(), toEnemy);
+        float upperSide = Cross(toEnemy, GetUpperBoundary());
+
+        return lowerSide >= 0f && upperSide >= 0f;
     }
 
 
-
-    void SetLookDirection()
-    {
-        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        _lookDirection = (mousePosition - (Vector2)transform.position).normalized;
-    }
-
-    Vector2 GetPlayerPosition()
-    {
-        return new Vector2(_player.transform.position.x, _player.transform.position.y);
-    }
 
     private Vector2 GetPointOnArc(float angle)
     {
-        
-
         Vector2 direction =
             Quaternion.Euler(0f, 0f, angle) * _lookDirection;
-
-        return GetPlayerPosition() + direction * _radius;
+        return _origin + direction * _radius;
     }
 
 }
