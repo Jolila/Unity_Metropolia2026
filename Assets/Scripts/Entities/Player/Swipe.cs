@@ -12,16 +12,21 @@ public class Swipe : MonoBehaviour
     private float dps = 10.0f; // high DPS to combat the short lifetime. A normalization for 0.2s lifetime -
                                // so torch deals 1 damage killing smallest enemies
 
-    private float _radius = 2.5f;
+    private float _radius = 1.5f; // DAMAGE
+    private float _visualRadius = 1.0f;
     private float _angle = 135.0f;
 
+    private bool _forward;
+    private float _elapsed;
+    public Vector2 SwipePosition { get; private set; } // for sampling the light position change, and maybe for particles as well
     private Vector2 _origin;
     private Vector2 _lookDirection;
 
-    public void Initialize(Vector2 origin, Vector2 lookDirection)
+    public void Initialize(Vector2 origin, Vector2 lookDirection, bool forward)
     {
         _origin = origin;
         _lookDirection = lookDirection.normalized;
+        _forward = forward;
     }
 
 
@@ -38,8 +43,21 @@ public class Swipe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        foreach(GameObject enemy in EnemyManager.Instance.GetEnemiesForSwipe(_origin))
+
+        _elapsed += Time.deltaTime;
+
+        float progress = Mathf.Clamp01(
+            _elapsed / _lifetime
+        );
+
+        if (!_forward)
+        {
+            progress = 1f - progress;
+        }
+
+        SwipePosition = GetPointOnArc(progress);
+
+        foreach (GameObject enemy in EnemyManager.Instance.GetEnemiesForSwipe(_origin))
         {
             if(IsInArc(enemy.transform.position))
             {
@@ -48,11 +66,6 @@ public class Swipe : MonoBehaviour
                     entityHealth.LoseHealth(dps * Time.deltaTime);
                 }
             }
-            else
-            {
-                Debug.Log("Outside arc!");
-            }
-           
         }
 
     }
@@ -75,7 +88,7 @@ public class Swipe : MonoBehaviour
 
 
     /*
-https://stackoverflow.com/questions/243945/calculating-a-2d-vectors-cross-product
+        https://stackoverflow.com/questions/243945/calculating-a-2d-vectors-cross-product
      */
     float Cross(Vector2 v1, Vector2 v2)
     {
@@ -108,11 +121,24 @@ https://stackoverflow.com/questions/243945/calculating-a-2d-vectors-cross-produc
 
 
 
-    private Vector2 GetPointOnArc(float angle)
+    private Vector2 GetPointOnArc(float progress)
     {
+        float angle = ProgressToAngle(progress);
+
         Vector2 direction =
             Quaternion.Euler(0f, 0f, angle) * _lookDirection;
+
         return _origin + direction * _radius;
+    }
+
+    private float ProgressToAngle(float progress)
+    {
+        float halfAngle = _angle * 0.5f;
+
+        return Mathf.Lerp(
+            -halfAngle,
+            halfAngle,
+            progress);
     }
 
 }

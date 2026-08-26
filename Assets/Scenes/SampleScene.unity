@@ -909,6 +909,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &111367094 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2574556843782218203, guid: 638c03f4f93983d4faf02274b21bf692, type: 3}
+  m_PrefabInstance: {fileID: 6506244965204465635}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.Light2D
 --- !u!1 &124837377
 GameObject:
   m_ObjectHideFlags: 0
@@ -5706,6 +5717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abbad07c2c8af3488fc4720e65fbe63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffShotgunController
+  _torchLight: {fileID: 111367094}
   _swipe: {fileID: 1948149831696240166, guid: 58448d8ab857ef34eae459fa6d3a3e3b, type: 3}
   _projectile: {fileID: 1853368783819410024, guid: 3d0a9e76a50fb61469acaa7b97154f4d, type: 3}
   _projectilePool: {fileID: 690569167}

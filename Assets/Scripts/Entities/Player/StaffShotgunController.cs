@@ -7,6 +7,7 @@ public class StaffShotgunController : MonoBehaviour
 
     private Camera mainCamera;
     Vector2 _lookDirection;
+    [SerializeField] private Light2D _torchLight;
     [SerializeField] Swipe _swipe;
 
     [SerializeField] Projectile _projectile;
@@ -17,7 +18,9 @@ public class StaffShotgunController : MonoBehaviour
 
 
     [SerializeField] private float swipeCooldown = 0.5f;
+    private bool _swipeForward = true;
     private float nextSwipeTime;
+    private Swipe _activeSwipe;
 
     private float chargeTime;
     private float chargeStartTime;
@@ -51,8 +54,15 @@ public class StaffShotgunController : MonoBehaviour
         if (GameManager.Instance.GetState() != GameState.Playing) return;
         RotateStaff();
         SetLookDirection();
-        
-        if (Input.GetMouseButtonDown(0))
+
+        if (_activeSwipe != null)
+        {
+            // Swipe is currently active.
+            _torchLight.transform.position = _activeSwipe.SwipePosition;
+
+        }
+
+            if (Input.GetMouseButtonDown(0))
         {
             chargeStartTime = Time.time;
             chargeTime = 0f;
@@ -195,11 +205,13 @@ public class StaffShotgunController : MonoBehaviour
         Swipe swipe = Instantiate(_swipe);
 
         swipe.Initialize(
-            player.transform.position,
-            _lookDirection.normalized
-        );
+        player.transform.position,
+        _lookDirection.normalized,
+        _swipeForward);
 
-    }
+        _activeSwipe = swipe;
+        _swipeForward = !_swipeForward;
+}
 
 
 
