@@ -15,10 +15,6 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
-# By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
-*.blend1
-*.blend1.meta
-
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -44,8 +40,8 @@
 ExportedObj/
 .consulo/
 *.csproj
-*.unityproj
-*.sln
+
+
 *.slnx
 *.suo
 *.tmp
@@ -207,7 +203,6 @@ StyleCopReport.xml
 *_p.c
 *_h.h
 *.ilk
-*.meta
 *.obj
 *.idb
 *.iobj
@@ -536,8 +531,6 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-Assets/LeanTween
 
 Out/*
-
 Out.zip

@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: 67c3c51c8e8bd754a916560d0c02e6b3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1467743449963249814
+    second: underdrive bones_0
+  - first:
+      213: 8265662255485644656
+    second: underdrive bones_1
+  - first:
+      213: -6424610377163592763
+    second: underdrive bones_2
+  - first:
+      213: -5011588951487447988
+    second: underdrive bones_3
+  - first:
+      213: 7576369994305894394
+    second: underdrive bones_4
+  - first:
+      213: -7342695791929538432
+    second: underdrive bones_5
+  - first:
+      213: 3751883464672876928
+    second: underdrive bones_6
+  - first:
+      213: 6268828020713821797
+    second: underdrive bones_7
+  - first:
+      213: 869736993041961996
+    second: underdrive bones_8
+  - first:
+      213: -8387740788410958495
+    second: underdrive bones_9
+  - first:
+      213: -2172165245012922742
+    second: underdrive bones_10
+  - first:
+      213: 6648233049017233296
+    second: underdrive bones_11
+  - first:
+      213: 3992664152705805565
+    second: underdrive bones_12
+  - first:
+      213: -4374100777553792554
+    second: underdrive bones_13
+  - first:
+      213: -569334654040779460
+    second: underdrive bones_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: underdrive bones_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9
+        width: 57
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6fb883db1781abe0800000000000000
+      internalID: -1467743449963249814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_1
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 29
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07f639b270885b270800000000000000
+      internalID: 8265662255485644656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_2
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 30
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cb20e8a6e237d6a0800000000000000
+      internalID: -6424610377163592763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_3
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 24
+        width: 15
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4c7152b662437ab0800000000000000
+      internalID: -5011588951487447988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_4
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 26
+        width: 18
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af7f7855e5ca42960800000000000000
+      internalID: 7576369994305894394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_5
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 89
+        width: 44
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 088c84c9411891a90800000000000000
+      internalID: -7342695791929538432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 25
+        width: 18
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0891d7ef12e511430800000000000000
+      internalID: 3751883464672876928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_7
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 25
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56699a40fd95ff650800000000000000
+      internalID: 6268828020713821797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_8
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 25
+        width: 13
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c045846ef2de11c00800000000000000
+      internalID: 869736993041961996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_9
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 26
+        width: 15
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16db5be6132c89b80800000000000000
+      internalID: -8387740788410958495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_10
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 26
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8e2e81e73bead1e0800000000000000
+      internalID: -2172165245012922742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_11
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 24
+        width: 15
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09f2fa6fbb4434c50800000000000000
+      internalID: 6648233049017233296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_12
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 23
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfc277194eac86730800000000000000
+      internalID: 3992664152705805565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_13
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 27
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d1752e84821c43c0800000000000000
+      internalID: -4374100777553792554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: underdrive bones_14
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 24
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c35549b06215918f0800000000000000
+      internalID: -569334654040779460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      underdrive bones_0: -1467743449963249814
+      underdrive bones_1: 8265662255485644656
+      underdrive bones_10: -2172165245012922742
+      underdrive bones_11: 6648233049017233296
+      underdrive bones_12: 3992664152705805565
+      underdrive bones_13: -4374100777553792554
+      underdrive bones_14: -569334654040779460
+      underdrive bones_2: -6424610377163592763
+      underdrive bones_3: -5011588951487447988
+      underdrive bones_4: 7576369994305894394
+      underdrive bones_5: -7342695791929538432
+      underdrive bones_6: 3751883464672876928
+      underdrive bones_7: 6268828020713821797
+      underdrive bones_8: 869736993041961996
+      underdrive bones_9: -8387740788410958495
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,728 @@
+fileFormatVersion: 2
+guid: 900e3e73fbba5134ca50199e869f0310
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8018440957877008487
+    second: overdrive bones 3_0
+  - first:
+      213: -1687279096618607292
+    second: overdrive bones 3_1
+  - first:
+      213: 1653485846721024450
+    second: overdrive bones 3_2
+  - first:
+      213: -6833311480470570482
+    second: overdrive bones 3_3
+  - first:
+      213: 1014768559103146484
+    second: overdrive bones 3_4
+  - first:
+      213: 7999045493127493592
+    second: overdrive bones 3_5
+  - first:
+      213: 4418248613188900986
+    second: overdrive bones 3_6
+  - first:
+      213: -6808979305082428062
+    second: overdrive bones 3_7
+  - first:
+      213: 55858719434057438
+    second: overdrive bones 3_8
+  - first:
+      213: -3492469051457003525
+    second: overdrive bones 3_9
+  - first:
+      213: -4984646585140272652
+    second: overdrive bones 3_10
+  - first:
+      213: -5063451742527438532
+    second: overdrive bones 3_11
+  - first:
+      213: -3612456559926497425
+    second: overdrive bones 3_12
+  - first:
+      213: 5204388236686272848
+    second: overdrive bones 3_13
+  - first:
+      213: -26149406690698273
+    second: overdrive bones 3_14
+  - first:
+      213: -7593410832000500455
+    second: overdrive bones 3_15
+  - first:
+      213: 4731934489727214675
+    second: overdrive bones 3_16
+  - first:
+      213: -3451506505554713807
+    second: overdrive bones 3_17
+  - first:
+      213: 5857316292308452090
+    second: overdrive bones 3_18
+  - first:
+      213: 6933114223950298899
+    second: overdrive bones 3_19
+  - first:
+      213: 3754941130161690954
+    second: overdrive bones 3_20
+  - first:
+      213: -5900147494829826305
+    second: overdrive bones 3_21
+  - first:
+      213: 8637763150117214305
+    second: overdrive bones 3_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: overdrive bones 3_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 22
+        width: 57
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 768b3b25199374f60800000000000000
+      internalID: 8018440957877008487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_1
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 44
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44d1b19e9949598e0800000000000000
+      internalID: -1687279096618607292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_2
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 45
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c151f6fd9c52f610800000000000000
+      internalID: 1653485846721024450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_3
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 39
+        width: 15
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0af3f6b9633b21a0800000000000000
+      internalID: -6833311480470570482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_4
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 41
+        width: 18
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f9f396c0ae251e00800000000000000
+      internalID: 1014768559103146484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_5
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 35
+        width: 15
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d7bd08ce71520f60800000000000000
+      internalID: 7999045493127493592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_6
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 103
+        width: 44
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a789c7e64b5c05d30800000000000000
+      internalID: 4418248613188900986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_7
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 39
+        width: 18
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2656395c565a181a0800000000000000
+      internalID: -6808979305082428062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_8
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 38
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed6a979953376c000800000000000000
+      internalID: 55858719434057438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_9
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 38
+        width: 13
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bff1cdec6e1488fc0800000000000000
+      internalID: -3492469051457003525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_10
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 41
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f1a9d1375af2dab0800000000000000
+      internalID: -4984646585140272652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_11
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 38
+        width: 15
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c31c15da7710bb9b0800000000000000
+      internalID: -5063451742527438532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_12
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 42
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6f2d0bf5e9fdddc0800000000000000
+      internalID: -3612456559926497425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_13
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 38
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05928e8f683b93840800000000000000
+      internalID: 5204388236686272848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_14
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 41
+        width: 15
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdb1d1fc04913aff0800000000000000
+      internalID: -26149406690698273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_15
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 41
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91db1057419ce9690800000000000000
+      internalID: -7593410832000500455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_16
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 39
+        width: 15
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3542c98f8553ba140800000000000000
+      internalID: 4731934489727214675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_17
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 38
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 133267cbe19c910d0800000000000000
+      internalID: -3451506505554713807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_18
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 42
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af2472c622e594150800000000000000
+      internalID: 5857316292308452090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_19
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 37
+        width: 15
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31ff3c947ae573060800000000000000
+      internalID: 6933114223950298899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_20
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 41
+        width: 12
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a499ac7301b3c1430800000000000000
+      internalID: 3754941130161690954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_21
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 37
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffed1402d177e1ea0800000000000000
+      internalID: -5900147494829826305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overdrive bones 3_22
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 38
+        width: 13
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16812b8f1df7fd770800000000000000
+      internalID: 8637763150117214305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      overdrive bones 3_0: 8018440957877008487
+      overdrive bones 3_1: -1687279096618607292
+      overdrive bones 3_10: -4984646585140272652
+      overdrive bones 3_11: -5063451742527438532
+      overdrive bones 3_12: -3612456559926497425
+      overdrive bones 3_13: 5204388236686272848
+      overdrive bones 3_14: -26149406690698273
+      overdrive bones 3_15: -7593410832000500455
+      overdrive bones 3_16: 4731934489727214675
+      overdrive bones 3_17: -3451506505554713807
+      overdrive bones 3_18: 5857316292308452090
+      overdrive bones 3_19: 6933114223950298899
+      overdrive bones 3_2: 1653485846721024450
+      overdrive bones 3_20: 3754941130161690954
+      overdrive bones 3_21: -5900147494829826305
+      overdrive bones 3_22: 8637763150117214305
+      overdrive bones 3_3: -6833311480470570482
+      overdrive bones 3_4: 1014768559103146484
+      overdrive bones 3_5: 7999045493127493592
+      overdrive bones 3_6: 4418248613188900986
+      overdrive bones 3_7: -6808979305082428062
+      overdrive bones 3_8: 55858719434057438
+      overdrive bones 3_9: -3492469051457003525
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

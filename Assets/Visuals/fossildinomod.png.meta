@@ -1,0 +1,1352 @@
+fileFormatVersion: 2
+guid: 0a0e35423f05cd2459cd050a8ce46740
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8589465530452383103
+    second: fossildinomod_0
+  - first:
+      213: 4770621458642760086
+    second: fossildinomod_1
+  - first:
+      213: -1471042037651174610
+    second: fossildinomod_2
+  - first:
+      213: 7406458204230764082
+    second: fossildinomod_3
+  - first:
+      213: 185569850003766317
+    second: fossildinomod_4
+  - first:
+      213: 5320600004866142567
+    second: fossildinomod_5
+  - first:
+      213: 6056295445263016036
+    second: fossildinomod_6
+  - first:
+      213: 8057103347709489285
+    second: fossildinomod_7
+  - first:
+      213: -402001254139822042
+    second: fossildinomod_8
+  - first:
+      213: 5033783828977836739
+    second: fossildinomod_9
+  - first:
+      213: -7932484259128486197
+    second: fossildinomod_10
+  - first:
+      213: 8548217785220676408
+    second: fossildinomod_11
+  - first:
+      213: 1124646928540088343
+    second: fossildinomod_12
+  - first:
+      213: 4398717377793880691
+    second: fossildinomod_13
+  - first:
+      213: -2967117765036770594
+    second: fossildinomod_14
+  - first:
+      213: -4561675371633009204
+    second: fossildinomod_15
+  - first:
+      213: -74594420603295707
+    second: fossildinomod_16
+  - first:
+      213: -749274204983603865
+    second: fossildinomod_17
+  - first:
+      213: -8152839680918666378
+    second: fossildinomod_18
+  - first:
+      213: 4633274705578195293
+    second: fossildinomod_19
+  - first:
+      213: -5025977173752651263
+    second: fossildinomod_20
+  - first:
+      213: -7460733783581163792
+    second: fossildinomod_21
+  - first:
+      213: 4468176469609239440
+    second: fossildinomod_22
+  - first:
+      213: -9094865869947331902
+    second: fossildinomod_23
+  - first:
+      213: 3759083565906014963
+    second: fossildinomod_24
+  - first:
+      213: -7680374282966085535
+    second: fossildinomod_25
+  - first:
+      213: -244290915372109356
+    second: fossildinomod_26
+  - first:
+      213: -8025283631162733868
+    second: fossildinomod_27
+  - first:
+      213: 8619707623575057352
+    second: fossildinomod_28
+  - first:
+      213: 8286751234931740927
+    second: fossildinomod_29
+  - first:
+      213: -3180809756674747274
+    second: fossildinomod_30
+  - first:
+      213: 7413034278528407884
+    second: fossildinomod_31
+  - first:
+      213: 8278715188874555266
+    second: fossildinomod_32
+  - first:
+      213: 7586852091936808780
+    second: fossildinomod_33
+  - first:
+      213: 8284004944740468656
+    second: fossildinomod_34
+  - first:
+      213: 7823890365742264392
+    second: fossildinomod_35
+  - first:
+      213: -5122660572196727443
+    second: fossildinomod_36
+  - first:
+      213: 4173547611321565302
+    second: fossildinomod_37
+  - first:
+      213: -4348131020622806241
+    second: fossildinomod_38
+  - first:
+      213: -3321526298120745520
+    second: fossildinomod_39
+  - first:
+      213: 6222262419689147479
+    second: fossildinomod_40
+  - first:
+      213: -3280716982861034046
+    second: fossildinomod_41
+  - first:
+      213: -7199950258909649738
+    second: fossildinomod_42
+  - first:
+      213: 7380975244323017052
+    second: fossildinomod_43
+  - first:
+      213: 4755874243136660638
+    second: fossildinomod_44
+  - first:
+      213: -3473758641687072468
+    second: fossildinomod_45
+  - first:
+      213: 4050875231567139324
+    second: fossildinomod_46
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 25
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fossildinomod_0
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 185
+        width: 87
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7593191469e33770800000000000000
+      internalID: 8589465530452383103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_1
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 216
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 691f148d0f6a43240800000000000000
+      internalID: 4770621458642760086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_2
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 223
+        width: 23
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2b82288f0fc59be0800000000000000
+      internalID: -1471042037651174610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_3
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 219
+        width: 23
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 236c3f2ee7609c660800000000000000
+      internalID: 7406458204230764082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_4
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 230
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2c3f7e9bc6439200800000000000000
+      internalID: 185569850003766317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_5
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 219
+        width: 23
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 761fcf1c38196d940800000000000000
+      internalID: 5320600004866142567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_6
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 196
+        width: 21
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 460e7bdae984c0450800000000000000
+      internalID: 6056295445263016036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_7
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 199
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 580b5de6ec490df60800000000000000
+      internalID: 8057103347709489285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_8
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 180
+        width: 18
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6200cbf3dfdcb6af0800000000000000
+      internalID: -402001254139822042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_9
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 181
+        width: 12
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c2645ae8b79bd540800000000000000
+      internalID: 5033783828977836739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_10
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 189
+        width: 51
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc6d44c28972ae190800000000000000
+      internalID: -7932484259128486197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_11
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 187
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83b31c609ce51a670800000000000000
+      internalID: 8548217785220676408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_12
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 183
+        width: 16
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 718bd514c6c8b9f00800000000000000
+      internalID: 1124646928540088343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_13
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 188
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 372fdb256226b0d30800000000000000
+      internalID: 4398717377793880691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_14
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 129
+        width: 56
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eda7b38fc1ea2d6d0800000000000000
+      internalID: -2967117765036770594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_15
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 180
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccd9a251b6ca1b0c0800000000000000
+      internalID: -4561675371633009204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_16
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 180
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 528e6b905ccf6fef0800000000000000
+      internalID: -74594420603295707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_17
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 146
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76dc694941b0a95f0800000000000000
+      internalID: -749274204983603865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_18
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 144
+        width: 34
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 673422c718b4bde80800000000000000
+      internalID: -8152839680918666378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_19
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 147
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d597accebc2bc4040800000000000000
+      internalID: 4633274705578195293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_20
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 144
+        width: 30
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1026045a364204ab0800000000000000
+      internalID: -5025977173752651263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_21
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 170
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fe73e90726267890800000000000000
+      internalID: -7460733783581163792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_22
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 143
+        width: 34
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09351d063d6220e30800000000000000
+      internalID: 4468176469609239440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_23
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 147
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ca17fd8dab88c180800000000000000
+      internalID: -9094865869947331902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_24
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 126
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f236d23692fa2430800000000000000
+      internalID: 3759083565906014963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_25
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 126
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 160d2c13844d96590800000000000000
+      internalID: -7680374282966085535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_26
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 126
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d1f36fe4ba1c9cf0800000000000000
+      internalID: -244290915372109356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_27
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 126
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dac9c6ae0770a090800000000000000
+      internalID: -8025283631162733868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_28
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 126
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c3faea1a6a5f9770800000000000000
+      internalID: 8619707623575057352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_29
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 126
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff0d224d754700370800000000000000
+      internalID: 8286751234931740927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_30
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 126
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6741e43016e7bd3d0800000000000000
+      internalID: -3180809756674747274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_31
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 124
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c49da7f766360e660800000000000000
+      internalID: 7413034278528407884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_32
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 125
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28faf7d0a97e3e270800000000000000
+      internalID: 8278715188874555266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_33
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 128
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4f925fd7c9e94960800000000000000
+      internalID: 7586852091936808780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_34
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 112
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b7c5d05b92b6f270800000000000000
+      internalID: 8284004944740468656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_35
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 90
+        width: 31
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8403babb5da049c60800000000000000
+      internalID: 7823890365742264392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_36
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 113
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d659051c957a8e8b0800000000000000
+      internalID: -5122660572196727443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_37
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 114
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 670800aa07b6be930800000000000000
+      internalID: 4173547611321565302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_38
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 113
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f13cbe6cfd558a3c0800000000000000
+      internalID: -4348131020622806241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_39
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 112
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dd05681e6197e1d0800000000000000
+      internalID: -3321526298120745520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_40
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 111
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75c85d824bae95650800000000000000
+      internalID: 6222262419689147479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_41
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 111
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cd0afb394d8872d0800000000000000
+      internalID: -3280716982861034046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_42
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 110
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b46531f263a41c90800000000000000
+      internalID: -7199950258909649738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_43
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 117
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5153dde0ed7e6660800000000000000
+      internalID: 7380975244323017052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_44
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 86
+        width: 51
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e94279a2d62400240800000000000000
+      internalID: 4755874243136660638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_45
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 17
+        width: 87
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c217cce8beabacfc0800000000000000
+      internalID: -3473758641687072468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fossildinomod_46
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 16
+        width: 76
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf1dcf68f89973830800000000000000
+      internalID: 4050875231567139324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fossildinomod_0: 8589465530452383103
+      fossildinomod_1: 4770621458642760086
+      fossildinomod_10: -7932484259128486197
+      fossildinomod_11: 8548217785220676408
+      fossildinomod_12: 1124646928540088343
+      fossildinomod_13: 4398717377793880691
+      fossildinomod_14: -2967117765036770594
+      fossildinomod_15: -4561675371633009204
+      fossildinomod_16: -74594420603295707
+      fossildinomod_17: -749274204983603865
+      fossildinomod_18: -8152839680918666378
+      fossildinomod_19: 4633274705578195293
+      fossildinomod_2: -1471042037651174610
+      fossildinomod_20: -5025977173752651263
+      fossildinomod_21: -7460733783581163792
+      fossildinomod_22: 4468176469609239440
+      fossildinomod_23: -9094865869947331902
+      fossildinomod_24: 3759083565906014963
+      fossildinomod_25: -7680374282966085535
+      fossildinomod_26: -244290915372109356
+      fossildinomod_27: -8025283631162733868
+      fossildinomod_28: 8619707623575057352
+      fossildinomod_29: 8286751234931740927
+      fossildinomod_3: 7406458204230764082
+      fossildinomod_30: -3180809756674747274
+      fossildinomod_31: 7413034278528407884
+      fossildinomod_32: 8278715188874555266
+      fossildinomod_33: 7586852091936808780
+      fossildinomod_34: 8284004944740468656
+      fossildinomod_35: 7823890365742264392
+      fossildinomod_36: -5122660572196727443
+      fossildinomod_37: 4173547611321565302
+      fossildinomod_38: -4348131020622806241
+      fossildinomod_39: -3321526298120745520
+      fossildinomod_4: 185569850003766317
+      fossildinomod_40: 6222262419689147479
+      fossildinomod_41: -3280716982861034046
+      fossildinomod_42: -7199950258909649738
+      fossildinomod_43: 7380975244323017052
+      fossildinomod_44: 4755874243136660638
+      fossildinomod_45: -3473758641687072468
+      fossildinomod_46: 4050875231567139324
+      fossildinomod_5: 5320600004866142567
+      fossildinomod_6: 6056295445263016036
+      fossildinomod_7: 8057103347709489285
+      fossildinomod_8: -402001254139822042
+      fossildinomod_9: 5033783828977836739
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
